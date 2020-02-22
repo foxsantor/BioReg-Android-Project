@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".ui.refrigerato_temperature">
+    tools:context=".ui.Temperature.refrigerato_temperature">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
@@ -113,7 +113,7 @@
             android:id="@+id/Input2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <CheckBox
                 android:id="@+id/checkBox3"
@@ -277,7 +277,7 @@
             android:id="@+id/Input1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

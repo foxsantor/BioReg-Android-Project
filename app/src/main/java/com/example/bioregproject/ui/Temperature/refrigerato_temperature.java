@@ -1,4 +1,4 @@
-package com.example.bioregproject.ui;
+package com.example.bioregproject.ui.Temperature;
 
 import androidx.lifecycle.ViewModelProviders;
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/refrigerato_temperature">
+    app:startDestination="@id/signIn">
 
     <fragment
         android:id="@+id/nav_home"
@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/accountBindiner"
-        android:name="com.example.bioregproject.ui.Authentication.AccountBindiner"
+        android:name="com.example.bioregproject.ui.Authentication.AccountBinder"
         android:label="account_bindiner_fragment"
         tools:layout="@layout/account_bindiner_fragment" >
         <action
@@ -69,7 +69,52 @@
         tools:layout="@layout/main_menu_fragment" />
     <fragment
         android:id="@+id/refrigerato_temperature"
-        android:name="com.example.bioregproject.ui.refrigerato_temperature"
+        android:name="com.example.bioregproject.ui.Temperature.refrigerato_temperature"
         android:label="refrigerato_temperature_fragment"
         tools:layout="@layout/refrigerato_temperature_fragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.bioregproject.ui.Settings.SettingsFragment"
+        android:label="settings_fragment"
+        tools:layout="@layout/settings_fragment" />
+    <fragment
+        android:id="@+id/cleaning"
+        android:name="com.example.bioregproject.ui.Cleaning.Cleaning"
+        android:label="cleaning_fragment"
+        tools:layout="@layout/cleaning_fragment" />
+    <fragment
+        android:id="@+id/hisotry"
+        android:name="com.example.bioregproject.ui.History.Hisotry"
+        android:label="hisotry_fragment"
+        tools:layout="@layout/hisotry_fragment" />
+    <fragment
+        android:id="@+id/documents"
+        android:name="com.example.bioregproject.ui.Documents.Documents"
+        android:label="documents_fragment"
+        tools:layout="@layout/documents_fragment" />
+    <fragment
+        android:id="@+id/oliControl"
+        android:name="com.example.bioregproject.ui.OilControl.OliControl"
+        android:label="oli_control_fragment"
+        tools:layout="@layout/oli_control_fragment" />
+    <fragment
+        android:id="@+id/labels"
+        android:name="com.example.bioregproject.ui.Printing.Labels"
+        android:label="labels_fragment"
+        tools:layout="@layout/labels_fragment" />
+    <fragment
+        android:id="@+id/products"
+        android:name="com.example.bioregproject.ui.Traceability.Products"
+        android:label="products_fragment"
+        tools:layout="@layout/products_fragment" />
+    <fragment
+        android:id="@+id/storageControl"
+        android:name="com.example.bioregproject.ui.Storage.StorageControl"
+        android:label="storage_control_fragment"
+        tools:layout="@layout/storage_control_fragment" />
+    <fragment
+        android:id="@+id/taskPlan"
+        android:name="com.example.bioregproject.ui.Planification.taskPlan"
+        android:label="task_plan_fragment"
+        tools:layout="@layout/task_plan_fragment" />
 </navigation>

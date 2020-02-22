@@ -1,4 +1,4 @@
-package com.example.bioregproject.ui.Authentication;
+package com.example.bioregproject.ui.Settings.GeneralSettings;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -14,29 +14,24 @@ import android.view.ViewGroup;
 
 import com.example.bioregproject.R;
 
-public class AccountBindiner extends Fragment {
+public class GeneralSettings extends Fragment {
 
-    private AccountBindinerViewModel mViewModel;
+    private GeneralSettingsViewModel mViewModel;
 
-    public static AccountBindiner newInstance() {
-        return new AccountBindiner();
+    public static GeneralSettings newInstance() {
+        return new GeneralSettings();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.account_bindiner_fragment, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        return inflater.inflate(R.layout.general_settings_fragment, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(AccountBindinerViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(GeneralSettingsViewModel.class);
         // TODO: Use the ViewModel
     }
 

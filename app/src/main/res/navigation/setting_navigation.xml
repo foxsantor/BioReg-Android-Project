@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/setting_navigation"
+    app:startDestination="@id/accountMangmentFragment">
+
+    <fragment
+        android:id="@+id/accountMangmentFragment"
+        android:name="com.example.bioregproject.ui.Settings.AccountMangement.AccountMangmentFragment"
+        android:label="account_mangment_fragment"
+        tools:layout="@layout/account_mangment_fragment" />
+    <fragment
+        android:id="@+id/accountCreation"
+        android:name="com.example.bioregproject.ui.Settings.AccountMangement.AccountCreation"
+        android:label="account_creation_fragment"
+        tools:layout="@layout/account_creation_fragment" />
+    <fragment
+        android:id="@+id/generalSettings"
+        android:name="com.example.bioregproject.ui.Settings.GeneralSettings.GeneralSettings"
+        android:label="general_settings_fragment"
+        tools:layout="@layout/general_settings_fragment" />
+</navigation>

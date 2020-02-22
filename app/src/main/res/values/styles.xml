@@ -17,4 +17,14 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="MyCustomBetterPickerTheme">
+
+        <item name="bpTextColor">@color/officialBlue</item>
+        <item name="bpDeleteIcon">@drawable/ic_backspace_custom</item>
+        <item name="bpCheckIcon">@drawable/ic_check_custom</item>
+
+        <item name="bpDividerColor">@color/greenLight</item>
+        <item name="bpKeyboardIndicatorColor">@color/redErrorDeep</item>
+    </style>
+
 </resources>
