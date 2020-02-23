@@ -1,5 +1,6 @@
 package com.example.bioregproject.Adapters;
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.Navigation;
@@ -29,14 +32,14 @@ import org.ocpsoft.prettytime.PrettyTime;
 import java.util.Date;
 
 
-public class AccountAdapter extends ListAdapter<Account,AccountAdapter.AccountsHolder> {
+public class AccountPopUp extends ListAdapter<Account,AccountPopUp.AccountsHolder> {
 
     private OnItemClickLisnter listener;
     private Context mContext;
     private Activity activity;
     private AccountBinderViewModel model;
 
-    public AccountAdapter(Context context,Activity activity) {
+    public AccountPopUp(Context context,Activity activity) {
         super(DIFF_CALLBACK);
         this.mContext = context;
         this.activity = activity;
@@ -62,7 +65,7 @@ public class AccountAdapter extends ListAdapter<Account,AccountAdapter.AccountsH
     public AccountsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.user_card, parent, false);
+                .inflate(R.layout.user_pop, parent, false);
         return new AccountsHolder(itemView);
     }
 
@@ -71,68 +74,16 @@ public class AccountAdapter extends ListAdapter<Account,AccountAdapter.AccountsH
 
         final Account currentItem = getItem(position);
         PrettyTime p = new PrettyTime();
-        final   ConstraintLayout layout = activity.findViewById(R.id.connetcd);
-        final ImageView profileImage= activity.findViewById(R.id.image);
-        final TextView nameProfile= activity.findViewById(R.id.namePopup);
-
 
         final String firstName = currentItem.getFirstName();
         String lastName = currentItem.getLastName();
         Date lastLoggedIn = currentItem.getLastLoggedIn();
         final String fullName = StaticUse.capitalize(firstName)+" "+StaticUse.capitalize(lastName);
         final byte[] image = currentItem.getProfileImage();
+
         Glide.with(mContext).asBitmap().load(image).into(holder.mImageView);
         holder.mTextViewName.setText(fullName);
         holder.mTextViewLoggedIn.setText("Last Logged in "+p.format(lastLoggedIn));
-        holder.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                final AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
-                LayoutInflater layoutInflater =  (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View dialogueView =layoutInflater.inflate(R.layout.password_confirm_dialogue,null);
-                alert.setView(dialogueView);
-                final TextInputLayout textInputLayout = dialogueView.findViewById(R.id.argax);
-                final TextView fullNameView = dialogueView.findViewById(R.id.fullName);
-                final Button logIn = dialogueView.findViewById(R.id.log);
-                final Button back = dialogueView.findViewById(R.id.back);
-
-                alert.setTitle("Sign In");
-                fullNameView.setText("Logging in as "+fullName);
-                //TextInputLayout textInputLayout =
-                // Set an EditText view to get user input
-
-                final AlertDialog alerti =alert.show();
-                //Button save = alerti.getButton(AlertDialog.BUTTON_POSITIVE);
-                back.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alerti.dismiss();
-                    }
-                });
-                logIn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View vi) {
-                        if(!textInputLayout.getEditText().getText().toString().isEmpty() && !textInputLayout.getEditText().getText().toString().equals("") && textInputLayout.getEditText().getText().toString()!=null)
-                        {
-                            if(textInputLayout.getEditText().getText().toString().equals(currentItem.getPassword())){
-                            textInputLayout.setError(null);
-                            StaticUse.saveSession(mContext,currentItem.getPassword(),fullName,currentItem.getId());
-                            layout.setVisibility(View.VISIBLE);
-                            nameProfile.setText(fullName);
-                            Glide.with(mContext).asBitmap().load(image).into(profileImage);
-                            Navigation.findNavController(v).navigate(R.id.mainMenu);
-                            alerti.dismiss();
-                            }else
-                            {
-                                textInputLayout.setError("Password is wrong ");
-                            }
-
-                        }
-
-                    }
-                });
-            }
-        });
 
     }
 
@@ -145,26 +96,23 @@ public class AccountAdapter extends ListAdapter<Account,AccountAdapter.AccountsH
 
         public ImageView mImageView;
         public TextView mTextViewName,mTextViewLoggedIn;
-        public FloatingActionButton button;
+
 
         public AccountsHolder(View itemView) {
             super(itemView);
 
-            mImageView = itemView.findViewById(R.id.imageProfile);
-            mTextViewName = itemView.findViewById(R.id.fullName);
-            mTextViewLoggedIn=itemView.findViewById(R.id.lastLoggedIn);
-            button = itemView.findViewById(R.id.logIn);
+            mImageView = itemView.findViewById(R.id.imagepopup);
+            mTextViewName = itemView.findViewById(R.id.namePopup);
+            mTextViewLoggedIn=itemView.findViewById(R.id.loggedpopoup);
 
-
-
-            /*itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION)
                         listener.OnItemClick(getItem(position));
                 }
-            });*/
+            });
         }
 
     }

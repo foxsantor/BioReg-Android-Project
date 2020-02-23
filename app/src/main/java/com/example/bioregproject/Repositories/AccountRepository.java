@@ -11,6 +11,8 @@ import com.example.bioregproject.DataBases.AccountDB;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 public class AccountRepository {
     private AccountDAO accountDAO;
     private LiveData<List<Account>> allAccounts;
@@ -43,6 +45,12 @@ public class AccountRepository {
 
         return allAccounts;
     }
+    public LiveData<List<Account>> getAccount(long id)
+    {
+        return accountDAO.loadAccountById(id);
+    }
+
+
     private static class InsertAccountAsynTask extends AsyncTask<Account,Void,Void>
     {
         private AccountDAO accountDAO;
@@ -95,4 +103,6 @@ public class AccountRepository {
             return null;
         }
     }
+
+
 }

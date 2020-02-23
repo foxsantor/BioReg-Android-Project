@@ -9,7 +9,18 @@
         android:id="@+id/accountMangmentFragment"
         android:name="com.example.bioregproject.ui.Settings.AccountMangement.AccountMangmentFragment"
         android:label="account_mangment_fragment"
-        tools:layout="@layout/account_mangment_fragment" />
+        tools:layout="@layout/account_mangment_fragment" >
+        <action
+            android:id="@+id/action_accountMangmentFragment_to_mangeAccount"
+            app:destination="@id/mangeAccount"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_accountMangmentFragment_to_accountCreation"
+            app:destination="@id/accountCreation"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
     <fragment
         android:id="@+id/accountCreation"
         android:name="com.example.bioregproject.ui.Settings.AccountMangement.AccountCreation"
@@ -20,4 +31,9 @@
         android:name="com.example.bioregproject.ui.Settings.GeneralSettings.GeneralSettings"
         android:label="general_settings_fragment"
         tools:layout="@layout/general_settings_fragment" />
+    <fragment
+        android:id="@+id/mangeAccount"
+        android:name="com.example.bioregproject.ui.Settings.AccountMangement.MangeAccount"
+        android:label="mange_account_fragment"
+        tools:layout="@layout/mange_account_fragment" />
 </navigation>

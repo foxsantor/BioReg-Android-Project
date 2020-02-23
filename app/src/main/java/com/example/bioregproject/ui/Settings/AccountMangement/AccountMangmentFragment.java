@@ -101,13 +101,17 @@ public class AccountMangmentFragment extends Fragment{
         manageAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.accountCreation);
+                if(StaticUse.loggedInInternalAdmin(getActivity()))
+                    Navigation.findNavController(v).navigate(R.id.action_accountMangmentFragment_to_mangeAccount);
+                else
+                    StaticUse.loginInternal(getActivity(),R.id.action_accountMangmentFragment_to_mangeAccount,v);
             }
         });
         changePriv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.accountCreation);
+                Toast.makeText(getActivity(), "Under Construction", Toast.LENGTH_SHORT).show();
+                //Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.accountCreation);
             }
         });
     }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/popup_navigation"
+    app:startDestination="@id/listAccountPopUp">
+
+    <fragment
+        android:id="@+id/listAccountPopUp"
+        android:name="com.example.bioregproject.ui.others.ListAccountPopUp"
+        android:label="list_account_pop_up_fragment"
+        tools:layout="@layout/list_account_pop_up_fragment" >
+        <action
+            android:id="@+id/action_listAccountPopUp_to_formPopUp"
+            app:destination="@id/formPopUp"
+            app:enterAnim="@anim/nav_default_enter_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/formPopUp"
+        android:name="com.example.bioregproject.ui.others.FormPopUp"
+        android:label="form_pop_up_fragment"
+        tools:layout="@layout/form_pop_up_fragment" >
+        <action
+            android:id="@+id/action_formPopUp_to_listAccountPopUp"
+            app:destination="@id/listAccountPopUp"
+            app:enterAnim="@anim/slide_right" />
+    </fragment>
+</navigation>

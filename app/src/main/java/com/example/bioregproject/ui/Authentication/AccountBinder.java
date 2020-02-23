@@ -73,7 +73,7 @@ public class AccountBinder extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.account_bindiner_fragment, container, false);
-        admin = root.findViewById(R.id.admin);
+
         return root;
 
     }

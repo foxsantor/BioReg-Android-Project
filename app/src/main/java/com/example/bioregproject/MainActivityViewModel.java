@@ -1,21 +1,26 @@
-package com.example.bioregproject.ui.Authentication;
+package com.example.bioregproject;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
+
 import com.example.bioregproject.Repositories.AccountRepository;
 import com.example.bioregproject.entities.Account;
+
 import java.util.List;
 
-public class AccountBinderViewModel extends AndroidViewModel {
+import io.reactivex.Flowable;
+
+public class MainActivityViewModel extends AndroidViewModel {
+
     private AccountRepository repository;
     private LiveData<List<Account>> allAccounts;
 
 
-    public AccountBinderViewModel(@NonNull Application application) {
+
+    public MainActivityViewModel(@NonNull Application application) {
         super(application);
         repository = new AccountRepository(application);
         allAccounts = repository.getAllAccounts();
@@ -25,7 +30,7 @@ public class AccountBinderViewModel extends AndroidViewModel {
     {
         repository.insert(account);
     }
-    public LiveData<List<Account>> getAccount(long id){return repository.getAccount(id);}
+    public LiveData<List<Account>> getAccount(Long id) {return repository.getAccount(id);}
     public void update(Account account)
     {
         repository.update(account);

@@ -77,8 +77,12 @@ public class SignIn extends Fragment {
         emailS = StaticUse.loadEmail(getActivity());
         if(!emailS.isEmpty())
         {
-            Navigation.findNavController(view).navigate(R.id.action_signIn_to_accountBindiner);
+            if(!StaticUse.loggedInInternal(getActivity()))
+            Navigation.findNavController(view).navigate(R.id.accountBindiner);
+            else
+            Navigation.findNavController(view).navigate(R.id.mainMenu);
         }
+
         //Section fo binding views
         login = view.findViewById(R.id.login);
         loading_1 = view.findViewById(R.id.loading_1);

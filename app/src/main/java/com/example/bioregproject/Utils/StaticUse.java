@@ -4,6 +4,7 @@ package com.example.bioregproject.Utils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.android.volley.Request;
@@ -31,6 +33,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.bioregproject.MainActivity;
+import com.example.bioregproject.MainActivityViewModel;
 import com.example.bioregproject.R;
 import com.example.bioregproject.entities.Account;
 import com.google.android.material.textfield.TextInputLayout;
@@ -43,6 +47,7 @@ import java.security.Key;
 public class StaticUse extends AppCompatActivity {
 
     public static final String SKELETON = "http://192.168.1.8:5000/api/";
+    public static final String SKELETON_PRIMITIVE = "http://192.168.1.8:5000/";
     public static final String SHARED_NAME_USER ="user";
     public static final String SHARED_NAME_ADMIN ="admin";
     public static final String SHARED_NAME_USER_LOG ="userLog";
@@ -277,6 +282,8 @@ public class StaticUse extends AppCompatActivity {
         byte[] imageInByte = stream.toByteArray();
         return  imageInByte;
     }
+
+
 
 
 
