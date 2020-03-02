@@ -1,5 +1,6 @@
 package com.example.bioregproject.ui.Settings.AccountMangement;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -86,6 +87,14 @@ public class AccountCreation extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(AccountCreationViewModel.class);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(view).navigate(R.id.accountMangmentFragment);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
         loading = view.findViewById(R.id.loading_1);
         buttons = view.findViewById(R.id.buttons);
@@ -211,7 +220,7 @@ public class AccountCreation extends Fragment {
             @Override
             public void onClick(View v) {
 
-                getActivity().onBackPressed();
+                Navigation.findNavController(view).navigate(R.id.accountMangmentFragment);
             }
         });
 

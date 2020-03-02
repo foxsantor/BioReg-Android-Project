@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/visual_navigation"
+    app:startDestination="@id/printerDiscovery">
+
+    <fragment
+        android:id="@+id/imageFlowHome"
+        android:name="com.example.bioregproject.ui.Traceability.ImageFlow.ImageFlowHome"
+        android:label="image_flow_home_fragment"
+        tools:layout="@layout/image_flow_home_fragment"
+        app:startDestination="@id/action_imageFlowHome_to_imageFlowAddImage">
+        <action
+            android:id="@+id/action_imageFlowHome_to_imageFlowMainHall"
+            app:destination="@id/imageFlowMainHall"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_imageFlowHome_to_imageFlowAddImage"
+            app:destination="@id/imageFlowAddImage"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_imageFlowHome_to_imageFlowQrCode"
+            app:destination="@id/imageFlowQrCode"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageFlowMainHall"
+        android:name="com.example.bioregproject.ui.Traceability.ImageFlow.imageFlowMainHall"
+        android:label="image_flow_main_hall_fragment"
+        tools:layout="@layout/image_flow_main_hall_fragment" >
+        <action
+            android:id="@+id/action_imageFlowMainHall_to_imageFlowHome"
+            app:destination="@id/imageFlowHome"
+            app:enterAnim="@anim/nav_default_enter_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageFlowAddImage"
+        android:name="com.example.bioregproject.ui.Traceability.ImageFlow.ImageFlowAddImage"
+        android:label="image_flow_add_image_fragment"
+        tools:layout="@layout/image_flow_add_image_fragment" >
+        <action
+            android:id="@+id/action_imageFlowAddImage_to_imageFlowHome"
+            app:destination="@id/imageFlowHome"
+            app:enterAnim="@anim/nav_default_enter_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageFlowQrCode"
+        android:name="com.example.bioregproject.ui.Traceability.ImageFlow.ImageFlowQrCode"
+        android:label="image_flow_qr_code_fragment"
+        tools:layout="@layout/image_flow_qr_code_fragment" >
+        <action
+            android:id="@+id/action_imageFlowQrCode_to_imageFlowHome"
+            app:destination="@id/imageFlowHome"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_imageFlowQrCode_to_iamgeFlowPrinting"
+            app:destination="@id/iamgeFlowPrinting"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/iamgeFlowPrinting"
+        android:name="com.example.bioregproject.ui.Traceability.ImageFlow.IamgeFlowPrinting"
+        android:label="iamge_flow_printing_fragment"
+        tools:layout="@layout/iamge_flow_printing_fragment" >
+        <action
+            android:id="@+id/action_iamgeFlowPrinting_to_imageFlowQrCode"
+            app:destination="@id/imageFlowQrCode"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_iamgeFlowPrinting_to_printerDiscovery"
+            app:destination="@id/printerDiscovery" />
+    </fragment>
+    <fragment
+        android:id="@+id/printerDiscovery"
+        android:name="com.example.bioregproject.ui.Printing.PrintingOverView.PrinterDiscovery"
+        android:label="printer_discovery_fragment"
+        tools:layout="@layout/printer_discovery_fragment" />
+</navigation>

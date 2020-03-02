@@ -3,15 +3,18 @@ package com.example.bioregproject.Adapters;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,7 +72,7 @@ public class AccountSettingsAdapter extends ListAdapter<Account,AccountSettingsA
     public void onBindViewHolder(@NonNull AccountsHolder holder, int position) {
 
         final Account currentItem = getItem(position);
-        PrettyTime p = new PrettyTime();
+        final PrettyTime p = new PrettyTime();
         final String firstName = currentItem.getFirstName();
         String lastName = currentItem.getLastName();
         Date lastLoggedIn = currentItem.getCreationDate();
@@ -86,6 +89,23 @@ public class AccountSettingsAdapter extends ListAdapter<Account,AccountSettingsA
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(currentItem.getFirstName().equals("Administrator"))
+                {
+                    Toast.makeText(mContext, "Access Denied", Toast.LENGTH_SHORT).show();
+                   return;
+                }else
+                {
+                    Bundle account = new Bundle();
+                    account.putString("firstname",currentItem.getFirstName());
+                    account.putLong("id",currentItem.getId());
+                    account.putByteArray("image",currentItem.getProfileImage());
+                    account.putString("lastname",currentItem.getLastName());
+                    account.putString("created",p.format(currentItem.getCreationDate()));
+                    account.putString("password",currentItem.getPassword());
+                    account.putString("email",currentItem.getEmail());
+                    account.putString("phone",String.valueOf(currentItem.getPhoneNumber()));
+                    Navigation.findNavController(v).navigate(R.id.action_mangeAccount_to_updateAccount,account);
+                }
 
             }
         });

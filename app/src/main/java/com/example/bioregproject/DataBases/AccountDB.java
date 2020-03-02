@@ -9,15 +9,25 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.bioregproject.DAOs.AccountDAO;
+import com.example.bioregproject.DAOs.CategoryDAO;
+import com.example.bioregproject.DAOs.ProductDAO;
+import com.example.bioregproject.DAOs.ProductLogsDAO;
 import com.example.bioregproject.entities.Account;
+import com.example.bioregproject.entities.Category;
+import com.example.bioregproject.entities.ProductLogs;
+import com.example.bioregproject.entities.Products;
 
 
-@Database(entities = Account.class,version = 1)
+@Database(entities = {Account.class, Category.class, ProductLogs.class, Products.class},version = 2)
 
 public abstract class AccountDB  extends RoomDatabase {
 
     private static AccountDB instance;
     public abstract AccountDAO accountDao();
+    public abstract CategoryDAO categoryDAO();
+    public abstract ProductDAO productDAO();
+    public abstract ProductLogsDAO productLogsDAO();
+
     public static synchronized AccountDB getInstance(Context context){
 
         if(instance == null)

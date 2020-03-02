@@ -16,6 +16,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.bioregproject.Adapters.AccountPopUp;
 import com.example.bioregproject.Services.TaskManger;
+import com.example.bioregproject.Utils.AspectRatioFragment;
 import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.Account;
 
@@ -32,6 +33,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.cameraview.AspectRatio;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -48,12 +50,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     private AppBarConfiguration mAppBarConfiguration;
     private static MainActivityViewModel mViewModel;
@@ -192,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
         if (item.getTitle().equals("Logout")) {
             StaticUse.removeData(StaticUse.SHARED_NAME_USER, "email", this);
             StaticUse.clearShared(StaticUse.SHARED_NAME_USER_LOG,this);
+            layout.setVisibility(View.GONE);
             Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.signIn);
         }
         return super.onOptionsItemSelected(item);
@@ -251,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
         alerti.dismiss();
     }
 
-    public static AlertDialog AskOption(Context context, final Account account)
+    public static AlertDialog AskOption(final Context context, final Account account)
     {
 
 
@@ -264,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         mViewModel.delete(account);
+                        Toast.makeText(context, "The account of "+account.getFirstName()+" "+account.getLastLoggedIn()+" has been deleted", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
 
@@ -279,11 +284,6 @@ public class MainActivity extends AppCompatActivity {
 
         return myQuittingDialogBox;
     }
-
-
-
-
-
 
 
 }

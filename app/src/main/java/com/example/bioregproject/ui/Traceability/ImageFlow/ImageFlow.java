@@ -1,0 +1,41 @@
+package com.example.bioregproject.ui.Traceability.ImageFlow;
+
+import androidx.lifecycle.ViewModelProviders;
+
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.example.bioregproject.R;
+
+public class ImageFlow extends Fragment {
+
+  
+
+    public static ImageFlow newInstance() {
+        return new ImageFlow();
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.image_flow_fragment, container, false);
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+
+    }
+
+
+}

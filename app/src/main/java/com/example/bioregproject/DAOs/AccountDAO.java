@@ -10,8 +10,11 @@ import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.example.bioregproject.entities.Account;
+import com.example.bioregproject.entities.Realtions.LogsAndProducts;
+import com.example.bioregproject.entities.Realtions.LogsAndUser;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,13 +25,13 @@ import io.reactivex.Flowable;
 public interface AccountDAO {
 
     @Insert
-    void insert(Account deal);
+    void insert(Account account);
 
     @Delete
-    void delete(Account deal);
+    void delete(Account account);
 
     @Update
-    void update(Account deal);
+    void update(Account account);
 
     @Query("DELETE FROM account_table")
     void deleteAllAccounts();
@@ -44,6 +47,10 @@ public interface AccountDAO {
 
     @Query("SELECT * FROM account_table where firstName LIKE  :name or lastName LIKE :name ")
     DataSource.Factory<Integer, Account> loadAllAccountbyName(String name);
+
+    @Transaction
+    @Query("SELECT * FROM account_table")
+    LiveData<List<LogsAndUser>> LogsAndUser();
 
 
 }

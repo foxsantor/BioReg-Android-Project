@@ -118,7 +118,8 @@ public class FormPopUp extends Fragment {
                          ImageView imagex = getActivity().findViewById(R.id.image);
                          names.setText(fullName);
                          Glide.with(getActivity()).asBitmap().load(imageBytes).into(imagex);
-                        MainActivity.dismissMessage();
+                         MainActivity.dismissMessage();
+                         Navigation.findNavController(v).navigate(R.id.action_formPopUp_to_listAccountPopUp);
 
                      }else
                      {

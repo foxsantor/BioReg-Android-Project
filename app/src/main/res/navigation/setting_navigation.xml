@@ -35,5 +35,16 @@
         android:id="@+id/mangeAccount"
         android:name="com.example.bioregproject.ui.Settings.AccountMangement.MangeAccount"
         android:label="mange_account_fragment"
-        tools:layout="@layout/mange_account_fragment" />
+        tools:layout="@layout/mange_account_fragment" >
+        <action
+            android:id="@+id/action_mangeAccount_to_updateAccount"
+            app:destination="@id/updateAccount"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateAccount"
+        android:name="com.example.bioregproject.ui.Settings.AccountMangement.UpdateAccount"
+        android:label="update_account_fragment"
+        tools:layout="@layout/update_account_fragment" />
 </navigation>
