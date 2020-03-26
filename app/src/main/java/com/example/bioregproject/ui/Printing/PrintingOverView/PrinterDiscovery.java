@@ -29,7 +29,7 @@ import com.example.bioregproject.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PrinterDiscovery extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener  {
+public class PrinterDiscovery extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener  {
 
     private PrinterDiscoveryViewModel mViewModel;
     private Context mContext = null;
@@ -41,31 +41,18 @@ public class PrinterDiscovery extends Fragment implements View.OnClickListener, 
         return new PrinterDiscovery();
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.printer_discovery_fragment, container, false);
-    }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(PrinterDiscoveryViewModel.class);
-        // TODO: Use the ViewModel
-    }
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        Button button = view.findViewById(R.id.btnRestart);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.printer_discovery_fragment);
+        Button button = findViewById(R.id.btnRestart);
         button.setOnClickListener(this);
         mPrinterList = new ArrayList<HashMap<String, String>>();
-        mPrinterListAdapter = new SimpleAdapter(getActivity(), mPrinterList, R.layout.list_at,
+        mPrinterListAdapter = new SimpleAdapter(this, mPrinterList, R.layout.list_at,
                 new String[] { "PrinterName", "Target" },
                 new int[] { R.id.PrinterName, R.id.Target });
-        ListView list = view.findViewById(R.id.lstReceiveData);
+        ListView list = findViewById(R.id.lstReceiveData);
         list.setAdapter(mPrinterListAdapter);
         list.setOnItemClickListener(this);
 
@@ -74,19 +61,11 @@ public class PrinterDiscovery extends Fragment implements View.OnClickListener, 
         mFilterOption.setEpsonFilter(Discovery.FILTER_NAME);
 
         try {
-            Discovery.start(getActivity(), mFilterOption , mDiscoveryListener);
+            Discovery.start(this, mFilterOption , mDiscoveryListener);
         }
         catch (Exception e) {
             ShowMsg.showException(e, "start", mContext);
         }
-
-
-
-
-
-
-
-
 
     }
 
@@ -128,8 +107,8 @@ public class PrinterDiscovery extends Fragment implements View.OnClickListener, 
 
         HashMap<String, String> item  = mPrinterList.get(position);
         intent.putExtra(getString(R.string.title_target), item.get("Target"));
-        getActivity().setResult(Activity.RESULT_OK, intent);
-        getActivity().finish();
+        setResult(Activity.RESULT_OK, intent);
+        finish();
     }
 
     private void restartDiscovery() {
@@ -150,7 +129,7 @@ public class PrinterDiscovery extends Fragment implements View.OnClickListener, 
         mPrinterListAdapter.notifyDataSetChanged();
 
         try {
-            Discovery.start(getActivity(), mFilterOption, mDiscoveryListener);
+            Discovery.start(this, mFilterOption, mDiscoveryListener);
         }
         catch (Exception e) {
             ShowMsg.showException(e, "stop", mContext);
@@ -160,7 +139,7 @@ public class PrinterDiscovery extends Fragment implements View.OnClickListener, 
     private DiscoveryListener mDiscoveryListener = new DiscoveryListener() {
         @Override
         public void onDiscovery(final DeviceInfo deviceInfo) {
-            getActivity().runOnUiThread(new Runnable() {
+            runOnUiThread(new Runnable() {
                 @Override
                 public synchronized void run() {
                     HashMap<String, String> item = new HashMap<String, String>();

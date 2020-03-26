@@ -75,9 +75,12 @@ public class ImageFlowHome extends Fragment {
         mViewModel.getAllProducts().observe(this, new Observer<List<Products>>() {
             @Override
             public void onChanged(List<Products> product) {
-                Glide.with(getActivity()).asBitmap().load(product.get(0).getImage()).into(imageView8);
-                 size = product.size();
-                number.setText(""+product.size());
+                if(product.size()!=0) {
+                    Glide.with(getActivity()).asBitmap().load(product.get(0).getImage()).into(imageView8);
+                    size = product.size();
+                    number.setText("" + product.size());
+                }else{
+                    return;}
             }
         });
 

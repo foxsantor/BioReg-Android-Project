@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/visual_navigation"
-    app:startDestination="@id/printerDiscovery">
+    app:startDestination="@id/imageFlowHome">
 
     <fragment
         android:id="@+id/imageFlowHome"
@@ -74,12 +74,12 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
         <action
-            android:id="@+id/action_iamgeFlowPrinting_to_printerDiscovery"
-            app:destination="@id/printerDiscovery" />
+            android:id="@+id/action_iamgeFlowPrinting_to_printerMainPage"
+            app:destination="@id/printerMainPage" />
     </fragment>
     <fragment
-        android:id="@+id/printerDiscovery"
-        android:name="com.example.bioregproject.ui.Printing.PrintingOverView.PrinterDiscovery"
-        android:label="printer_discovery_fragment"
-        tools:layout="@layout/printer_discovery_fragment" />
+        android:id="@+id/printerMainPage"
+        android:name="com.example.bioregproject.ui.Printing.PrintingOverView.PrinterMainPage"
+        android:label="printer_main_page_fragment"
+        tools:layout="@layout/printer_main_page_fragment" />
 </navigation>

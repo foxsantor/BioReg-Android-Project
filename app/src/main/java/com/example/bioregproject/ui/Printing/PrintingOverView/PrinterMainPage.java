@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -33,8 +34,8 @@ import com.example.bioregproject.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrinterMainPage extends Fragment {
-/*
+public class PrinterMainPage extends Fragment implements View.OnClickListener, ReceiveListener {
+
     private PrinterMainPageViewModel mViewModel;
     private static final int REQUEST_PERMISSION = 100;
 
@@ -43,6 +44,8 @@ public class PrinterMainPage extends Fragment {
     public static Spinner mSpnSeries = null;
     public static Spinner mSpnLang = null;
     public static Printer  mPrinter = null;
+    EditText mEdtTarget,edtWarnings;
+    Button btnReceipt,btnCoupon;
 
 
     public static PrinterMainPage newInstance() {
@@ -66,9 +69,10 @@ public class PrinterMainPage extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         requestRuntimePermission();
-
-
-
+         edtWarnings = (EditText)view.findViewById(R.id.edtWarnings);
+         btnReceipt = (Button)view.findViewById(R.id.btnSampleReceipt);
+         btnCoupon = (Button)view.findViewById(R.id.btnSampleCoupon);
+         mEdtTarget = (EditText)view.findViewById(R.id.edtTarget);
         int[] target = {
                 R.id.btnDiscovery,
                 R.id.btnSampleReceipt,
@@ -77,7 +81,7 @@ public class PrinterMainPage extends Fragment {
         };
 
         for (int i = 0; i < target.length; i++) {
-            Button button = (Button)findViewById(target[i]);
+            Button button = view.findViewById(target[i]);
             button.setOnClickListener(this);
         }
 
@@ -90,8 +94,8 @@ public class PrinterMainPage extends Fragment {
 
         switch (v.getId()) {
             case R.id.btnDiscovery:
-                intent = new Intent(this, DiscoveryActivity.class);
-                startActivityForResult(intent, 0);
+                intent = new Intent(getActivity(), PrinterDiscovery.class);
+                getActivity().startActivityForResult(intent, 0);
                 break;
 
             case R.id.btnSampleReceipt:
@@ -108,10 +112,6 @@ public class PrinterMainPage extends Fragment {
                 }
                 break;
 
-            case R.id.btnSetting:
-                intent = new Intent(this, SettingActivity.class);
-                startActivityForResult(intent, 0);
-                break;
 
             default:
                 // Do nothing
@@ -123,10 +123,10 @@ public class PrinterMainPage extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null && resultCode == RESULT_OK) {
+        if (data != null && resultCode == Activity.RESULT_OK) {
             String target = data.getStringExtra(getString(R.string.title_target));
             if (target != null) {
-                EditText mEdtTarget = (EditText)findViewById(R.id.edtTarget);
+
                 mEdtTarget.setText(target);
             }
     }}
@@ -150,7 +150,7 @@ public class PrinterMainPage extends Fragment {
 
     private boolean createReceiptData() {
         String method = "";
-        Bitmap logoData = BitmapFactory.decodeResource(getResources(), R.drawable.store);
+        Bitmap logoData = BitmapFactory.decodeResource(getResources(), R.drawable.accountadd);
         StringBuilder textData = new StringBuilder();
         final int barcodeWidth = 2;
         final int barcodeHeight = 100;
@@ -175,13 +175,13 @@ public class PrinterMainPage extends Fragment {
 
             method = "addFeedLine";
             mPrinter.addFeedLine(1);
-            textData.append("THE STORE 123 (555) 555 – 5555\n");
-            textData.append("STORE DIRECTOR – John Smith\n");
+            textData.append("Image ID 0\n");
+            textData.append("Owner Administratot\n");
             textData.append("\n");
-            textData.append("7/01/07 16:58 6153 05 0191 134\n");
-            textData.append("ST# 21 OP# 001 TE# 01 TR# 747\n");
+            //textData.append("7/01/07 16:58 6153 05 0191 134\n");
+            //textData.append("ST# 21 OP# 001 TE# 01 TR# 747\n");
             textData.append("------------------------------\n");
-            method = "addText";
+           /* method = "addText";
             mPrinter.addText(textData.toString());
             textData.delete(0, textData.length());
 
@@ -206,18 +206,18 @@ public class PrinterMainPage extends Fragment {
             textData.append("TAX                      14.43\n");
             method = "addText";
             mPrinter.addText(textData.toString());
-            textData.delete(0, textData.length());
+            textData.delete(0, textData.length());*/
 
             method = "addTextSize";
             mPrinter.addTextSize(2, 2);
             method = "addText";
-            mPrinter.addText("TOTAL    174.81\n");
+            mPrinter.addText("Created at 2020    9887\n");
             method = "addTextSize";
             mPrinter.addTextSize(1, 1);
             method = "addFeedLine";
             mPrinter.addFeedLine(1);
 
-            textData.append("CASH                    200.00\n");
+           /* textData.append("CASH                    200.00\n");
             textData.append("CHANGE                   25.19\n");
             textData.append("------------------------------\n");
             method = "addText";
@@ -231,11 +231,11 @@ public class PrinterMainPage extends Fragment {
             mPrinter.addText(textData.toString());
             textData.delete(0, textData.length());
             method = "addFeedLine";
-            mPrinter.addFeedLine(2);
+            mPrinter.addFeedLine(2);*/
 
             method = "addBarcode";
-            mPrinter.addBarcode("01209457",
-                    Printer.BARCODE_CODE39,
+            mPrinter.addBarcode("helllo",
+                    Printer.SYMBOL_QRCODE_MODEL_2,
                     Printer.HRI_BELOW,
                     Printer.FONT_A,
                     barcodeWidth,
@@ -274,8 +274,8 @@ public class PrinterMainPage extends Fragment {
 
     private boolean createCouponData() {
         String method = "";
-        Bitmap coffeeData = BitmapFactory.decodeResource(getResources(), R.drawable.coffee);
-        Bitmap wmarkData = BitmapFactory.decodeResource(getResources(), R.drawable.wmark);
+        Bitmap coffeeData = BitmapFactory.decodeResource(getResources(), R.drawable.accountadd);
+        Bitmap wmarkData = BitmapFactory.decodeResource(getResources(), R.drawable.accountadd);
 
         final int barcodeWidth = 2;
         final int barcodeHeight = 64;
@@ -461,7 +461,7 @@ public class PrinterMainPage extends Fragment {
             mPrinter.endTransaction();
         }
         catch (final Exception e) {
-            runOnUiThread(new Runnable() {
+            getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public synchronized void run() {
                     ShowMsg.showException(e, "endTransaction", mContext);
@@ -473,7 +473,7 @@ public class PrinterMainPage extends Fragment {
             mPrinter.disconnect();
         }
         catch (final Exception e) {
-            runOnUiThread(new Runnable() {
+            getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public synchronized void run() {
                     ShowMsg.showException(e, "disconnect", mContext);
@@ -552,7 +552,7 @@ public class PrinterMainPage extends Fragment {
     }
 
     private void dispPrinterWarnings(PrinterStatusInfo status) {
-        EditText edtWarnings = (EditText)findViewById(R.id.edtWarnings);
+
         String warningsMsg = "";
 
         if (status == null) {
@@ -571,8 +571,7 @@ public class PrinterMainPage extends Fragment {
     }
 
     private void updateButtonState(boolean state) {
-        Button btnReceipt = (Button)findViewById(R.id.btnSampleReceipt);
-        Button btnCoupon = (Button)findViewById(R.id.btnSampleCoupon);
+
         btnReceipt.setEnabled(state);
         btnCoupon.setEnabled(state);
     }
@@ -642,4 +641,4 @@ public class PrinterMainPage extends Fragment {
         if (!requestPermissions.isEmpty()) {
             ActivityCompat.requestPermissions(getActivity(), requestPermissions.toArray(new String[requestPermissions.size()]), REQUEST_PERMISSION);
         }
-    }*/}
+    }}
