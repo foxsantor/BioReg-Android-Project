@@ -41,6 +41,9 @@ public interface ProductDAO {
     @Query("SELECT * FROM product_table where name LIKE  :name  or brandName LIKE :name")
     DataSource.Factory<Integer, Products> loadAllProductbyName(String name);
 
+    @Query("SELECT * FROM product_table where type =:type ")
+    DataSource.Factory<Integer, Products> loadAllProductbyType(String type);
+
     @Transaction
     @Query("SELECT * FROM product_table")
     LiveData<List<LogsAndProducts>> LogsAndProducts();

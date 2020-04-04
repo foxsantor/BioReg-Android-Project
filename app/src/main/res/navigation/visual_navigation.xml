@@ -26,6 +26,11 @@
             app:destination="@id/imageFlowQrCode"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_imageFlowHome_to_manageData"
+            app:destination="@id/manageData"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/imageFlowMainHall"
@@ -46,6 +51,11 @@
             android:id="@+id/action_imageFlowAddImage_to_imageFlowHome"
             app:destination="@id/imageFlowHome"
             app:enterAnim="@anim/nav_default_enter_anim" />
+        <action
+            android:id="@+id/action_imageFlowAddImage_to_manageData"
+            app:destination="@id/manageData"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/imageFlowQrCode"
@@ -76,10 +86,31 @@
         <action
             android:id="@+id/action_iamgeFlowPrinting_to_printerMainPage"
             app:destination="@id/printerMainPage" />
+        <action
+            android:id="@+id/action_iamgeFlowPrinting_to_manageData"
+            app:destination="@id/manageData"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/printerMainPage"
         android:name="com.example.bioregproject.ui.Printing.PrintingOverView.PrinterMainPage"
         android:label="printer_main_page_fragment"
         tools:layout="@layout/printer_main_page_fragment" />
+    <fragment
+        android:id="@+id/manageData"
+        android:name="com.example.bioregproject.ui.Traceability.ImageFlow.ManageData"
+        android:label="manage_data_fragment"
+        tools:layout="@layout/manage_data_fragment" >
+        <action
+            android:id="@+id/action_manageData_to_iamgeFlowPrinting"
+            app:destination="@id/iamgeFlowPrinting"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_manageData_to_imageFlowAddImage"
+            app:destination="@id/imageFlowAddImage"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
 </navigation>

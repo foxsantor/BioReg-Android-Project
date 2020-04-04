@@ -102,6 +102,10 @@ public class ImageFlowAddImage extends Fragment implements
     private FloatingActionButton fab;
     private ImageView preview;
     private Toolbar toolbar;
+    private  Bundle bundle;
+    private static int  CODE=0;
+    private static int UPDATE_CODE =1;
+    private static int ADD_CODE=2;
     private ConstraintLayout constraintLayout;
     private boolean isSaveChecked = false;
 
@@ -113,12 +117,20 @@ public class ImageFlowAddImage extends Fragment implements
         return root;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+       bundle = getArguments();
+        super.onCreate(savedInstanceState);
 
+    }
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
         mViewModel = ViewModelProviders.of(this).get(ImageFlowAddImageViewModel.class);
+
         mCameraView = view.findViewById(R.id.camera);
         cancel =view.findViewById(R.id.cancel);
         local = view.findViewById(R.id.local);
@@ -127,6 +139,18 @@ public class ImageFlowAddImage extends Fragment implements
         toolbar =view.findViewById(R.id.toolbar);
         constraintLayout = view.findViewById(R.id.mother);
         StaticUse.backgroundAnimator(constraintLayout);
+
+
+        if(bundle != null){
+            CODE = UPDATE_CODE;
+            Glide.with(getActivity()).clear(preview);
+            Glide.with(getActivity()).asBitmap().load(bundle.getByteArray("image")).into(preview);
+
+        }else
+        {
+            CODE = ADD_CODE;
+        }
+
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
@@ -135,8 +159,10 @@ public class ImageFlowAddImage extends Fragment implements
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
+                if(bundle== null)
                 Navigation.findNavController(view).navigate(R.id.action_imageFlowAddImage_to_imageFlowHome);
-
+                else
+                    Navigation.findNavController(view).navigate(R.id.action_imageFlowAddImage_to_manageData);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
@@ -181,6 +207,10 @@ public class ImageFlowAddImage extends Fragment implements
                 products.setCreationDate(new Date());
                 products.setExpirationDate(new Date());
                 products.setFabricationDate(new Date());
+                if(CODE != 2) {
+                  products.setId(bundle.getLong("id"));
+                  //products.setImage(bundle.getByteArray("image"));
+                }
                 if(imageHolder != null){
                 if(isSaveChecked)
                 {
@@ -190,11 +220,20 @@ public class ImageFlowAddImage extends Fragment implements
                     products.setImage_name(name);
                 }
                 products.setImage(imageHolder);
-                mViewModel.insert(products);
+                products.setType("ImageT");
+                if(CODE==2) {
+                    mViewModel.insert(products);
                     Toast.makeText(getActivity(), "added Successfully", Toast.LENGTH_SHORT).show();
                     imageHolder = null;
                     Glide.with(getActivity()).clear(preview);
                     local.setChecked(false);
+                }else {
+                    mViewModel.update(products);
+                    Toast.makeText(getActivity(), "Updated Successfully", Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(view).navigate(R.id.action_imageFlowAddImage_to_manageData);
+
+
+                }
                 }else {
                     Toast.makeText(getActivity(), "You did not Chose an image", Toast.LENGTH_SHORT).show();
                     return;}
@@ -364,6 +403,7 @@ public class ImageFlowAddImage extends Fragment implements
             args.putInt(ARG_MESSAGE, message);
             args.putStringArray(ARG_PERMISSIONS, permissions);
             args.putInt(ARG_REQUEST_CODE, requestCode);
+
             args.putInt(ARG_NOT_GRANTED_MESSAGE, notGrantedMessage);
             fragment.setArguments(args);
             return fragment;

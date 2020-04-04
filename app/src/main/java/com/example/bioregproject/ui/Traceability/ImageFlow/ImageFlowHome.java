@@ -33,7 +33,7 @@ import java.util.List;
 public class ImageFlowHome extends Fragment {
 
     private ImageFlowMainHallViewModel mViewModel;
-    private ConstraintLayout constraintLayout;
+    private ConstraintLayout constraintLayout,imageItems;
     private ImageView imageView8;
     private TextView number;
     private ImageButton gallary,addImage,scanQr,bindData;
@@ -70,6 +70,7 @@ public class ImageFlowHome extends Fragment {
         scanQr= view.findViewById(R.id.scanQR);
         bindData= view.findViewById(R.id.Bind);
         number = view.findViewById(R.id.number);
+        imageItems = view.findViewById(R.id.imageItems);
         imageView8 = view.findViewById(R.id.imageView8);
         mViewModel = ViewModelProviders.of(this).get(ImageFlowMainHallViewModel.class);
         mViewModel.getAllProducts().observe(this, new Observer<List<Products>>() {
@@ -80,6 +81,8 @@ public class ImageFlowHome extends Fragment {
                     size = product.size();
                     number.setText("" + product.size());
                 }else{
+                    imageItems.setBackgroundColor(getActivity().getResources().getColor(R.color.bpWhite));
+                    Glide.with(getActivity()).asDrawable().load(R.drawable.cover_image).into(imageView8);
                     return;}
             }
         });
@@ -88,9 +91,16 @@ public class ImageFlowHome extends Fragment {
         gallary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putInt("size",size);
-                Navigation.findNavController(v).navigate(R.id.action_imageFlowHome_to_imageFlowMainHall,bundle);
+                if(size != 0)
+                {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("size",size);
+                    Navigation.findNavController(v).navigate(R.id.action_imageFlowHome_to_imageFlowMainHall,bundle);
+                }else
+                {
+                    Toast.makeText(getActivity(), "No image found", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -110,7 +120,7 @@ public class ImageFlowHome extends Fragment {
         bindData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Navigation.findNavController(v).navigate(R.id.action_imageFlowHome_to_manageData);
             }
         });
     }

@@ -66,6 +66,10 @@ public class IamgeFlowPrinting extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
+                if(bundle.getInt("dest")==1)
+                {
+                    Navigation.findNavController(view).navigate(R.id.action_iamgeFlowPrinting_to_manageData);
+                }else
                 Navigation.findNavController(view).navigate(R.id.action_iamgeFlowPrinting_to_imageFlowQrCode);
             }
         };

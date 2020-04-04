@@ -20,9 +20,11 @@ public class Products {
     private Date fabricationDate;
     private String image_name;
     private byte[] image;
-    private long refrence;
+    private String refrence;
     private long categoryId;
+    private String categoryName;
     private boolean isExpired;
+    private String type;
     private String brandName;
 
     public Products() {
@@ -85,11 +87,11 @@ public class Products {
         this.image = image;
     }
 
-    public long getRefrence() {
+    public String getRefrence() {
         return refrence;
     }
 
-    public void setRefrence(long refrence) {
+    public void setRefrence(String refrence) {
         this.refrence = refrence;
     }
 
@@ -117,6 +119,19 @@ public class Products {
         this.brandName = brandName;
     }
 
+    public String getType() {
+        return type;
+    }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
 
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

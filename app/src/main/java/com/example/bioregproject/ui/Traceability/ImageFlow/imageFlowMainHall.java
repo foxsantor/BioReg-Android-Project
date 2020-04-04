@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ import com.example.bioregproject.entities.Products;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import me.crosswall.lib.coverflow.CoverFlow;
@@ -44,7 +46,9 @@ public class imageFlowMainHall extends Fragment {
     private ImageFlowMainHallViewModel mViewModel;
     private ConstraintLayout constraintLayout;
     private List<Products> products;
-    private static int size=0;
+    private static int size;
+    private static List<Products> productx;
+    private ViewPager pager;
     private imageFlowMainHall imageFlowMainHall;
     public static imageFlowMainHall newInstance() {
         return new imageFlowMainHall();
@@ -59,8 +63,9 @@ public class imageFlowMainHall extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getArguments()!=null){
         Bundle bundle = getArguments();
-        size = bundle.getInt("size",0);
+        size = bundle.getInt("size",0);}
     }
 
     @Override
@@ -81,8 +86,9 @@ public class imageFlowMainHall extends Fragment {
         constraintLayout = view.findViewById(R.id.constraintLayout);
         StaticUse.backgroundAnimator(constraintLayout);
         PagerContainer container = view.findViewById(R.id.pager_container);
-        ViewPager pager = container.getViewPager();
+        pager = container.getViewPager();
         pager.setAdapter(new MyPagerAdapter());
+        pager.getAdapter().notifyDataSetChanged();
         pager.setClipChildren(false);
         //
         pager.setOffscreenPageLimit(15);
@@ -115,22 +121,22 @@ public class imageFlowMainHall extends Fragment {
         @Override
         public Object instantiateItem(ViewGroup container,final int position ) {
 
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_cover,null);
+            final View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_cover,null);
             final ImageView imageView = view.findViewById(R.id.imageView7);
+            //final ImageButton delete = view.findViewById(R.id.delete);
             final TextView created = view.findViewById(R.id.created);
             mViewModel = ViewModelProviders.of(imageFlowMainHall).get(ImageFlowMainHallViewModel.class);
             mViewModel.getAllProducts().observe(imageFlowMainHall, new Observer<List<Products>>() {
                 @Override
-                public void onChanged(List<Products> product) {
-                    products = product;
-                    String newstring = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(product.get(position).getCreationDate());
-                    created.setText("Taken at: "+newstring);
-                    Glide.with(getActivity()).asBitmap().load(products.get(position).getImage()).into(imageView);
-                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    size = product.size();
-                }
-            });
-
+                public void onChanged(final List<Products> product) {
+                    if (product.isEmpty()) {
+                        Navigation.findNavController(view).navigate(R.id.action_imageFlowMainHall_to_imageFlowHome);
+                    } else {
+                        String newstring = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(product.get(position).getCreationDate());
+                        created.setText("Taken at: " + newstring);
+                        Glide.with(getActivity()).asBitmap().load(product.get(position).getImage()).into(imageView);
+                        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                }}});
 
             container.addView(view);
             return view;

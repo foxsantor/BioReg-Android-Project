@@ -18,7 +18,7 @@ import com.example.bioregproject.entities.ProductLogs;
 import com.example.bioregproject.entities.Products;
 
 
-@Database(entities = {Account.class, Category.class, ProductLogs.class, Products.class},version = 2)
+@Database(entities = {Account.class, Category.class, ProductLogs.class, Products.class},version = 4)
 
 public abstract class AccountDB  extends RoomDatabase {
 
@@ -29,14 +29,12 @@ public abstract class AccountDB  extends RoomDatabase {
     public abstract ProductLogsDAO productLogsDAO();
 
     public static synchronized AccountDB getInstance(Context context){
-
         if(instance == null)
         {
             instance = Room.databaseBuilder(context.getApplicationContext(),AccountDB.class,"account_database")
                     .fallbackToDestructiveMigration()
                     .addCallback(roomCallBack)
                     .build();
-
         }
         return instance;
     }

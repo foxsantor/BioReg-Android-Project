@@ -116,12 +116,13 @@ public class ImageFlowQrCode extends Fragment {
             }
         });
 
-        final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        LayoutInflater layoutInflater =  (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View dialogueView =layoutInflater.inflate(R.layout.poup_qrcode,null,false);
+
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                LayoutInflater layoutInflater =  (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View dialogueView =layoutInflater.inflate(R.layout.poup_qrcode,null,false);
                 if(dialogueView.getParent() != null) {
                     ((ViewGroup)dialogueView.getParent()).removeView(dialogueView); // <- fix
                 }
@@ -138,6 +139,7 @@ public class ImageFlowQrCode extends Fragment {
                 bundle.putString("id",id.getText().toString().trim());
                 bundle.putString("created",creation.getText().toString().trim());
                 bundle.putByteArray("image",image);
+                bundle.putInt("dest",0);
                 Navigation.findNavController(view).navigate(R.id.action_imageFlowQrCode_to_iamgeFlowPrinting,bundle);
             }
         });

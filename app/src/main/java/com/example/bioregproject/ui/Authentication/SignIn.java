@@ -73,7 +73,6 @@ public class SignIn extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.start();
-
         emailS = StaticUse.loadEmail(getActivity());
         if(!emailS.isEmpty())
         {
@@ -176,13 +175,10 @@ public class SignIn extends Fragment {
             }
         });
         requestQueue.add(jsObjRequest);
-
-
     }
     private  boolean haveNetworkConnection() {
         boolean haveConnectedWifi = false;
         boolean haveConnectedMobile = false;
-
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo[] netInfo = cm.getAllNetworkInfo();
         for (NetworkInfo ni : netInfo) {

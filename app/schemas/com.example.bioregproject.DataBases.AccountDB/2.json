@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "0abb7beefd9d394c6f78de02bae24753",
+    "identityHash": "3a62156e5d838142a91ee5b68561d1a2",
     "entities": [
       {
         "tableName": "account_table",
@@ -156,7 +156,7 @@
       },
       {
         "tableName": "product_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `creationDate` INTEGER, `expirationDate` INTEGER, `fabricationDate` INTEGER, `image_name` TEXT, `image` BLOB, `refrence` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL, `isExpired` INTEGER NOT NULL, `brandName` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `creationDate` INTEGER, `expirationDate` INTEGER, `fabricationDate` INTEGER, `image_name` TEXT, `image` BLOB, `refrence` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL, `isExpired` INTEGER NOT NULL, `type` TEXT, `brandName` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -219,6 +219,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "brandName",
             "columnName": "brandName",
             "affinity": "TEXT",
@@ -238,7 +244,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0abb7beefd9d394c6f78de02bae24753')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3a62156e5d838142a91ee5b68561d1a2')"
     ]
   }
 }
