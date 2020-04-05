@@ -219,8 +219,8 @@ public class AccountBinder extends Fragment {
         admin.setPassword(password.getEditText().getText().toString());
         admin.setCreationDate(new Date());
         admin.setLastLoggedIn(new Date());
-        this.admin.setImageResource(R.drawable.user);
-        byte[] bitmapdata = StaticUse.transformerImageBase64(this.admin);
+        this.admin.setImageResource(R.drawable.admin_settings);
+        byte[] bitmapdata = StaticUse.transformerImageBytes(this.admin);
         admin.setProfileImage(bitmapdata);
         mViewModel.insert(admin);
         StaticUse.saveAdmin(getActivity(),password.getEditText().getText().toString());

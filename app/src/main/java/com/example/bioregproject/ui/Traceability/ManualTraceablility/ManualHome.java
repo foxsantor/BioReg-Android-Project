@@ -79,6 +79,7 @@ public class ManualHome extends Fragment {
                             Log.e("Paging ", "PageAll" + pagedList.size());
                             //refresh current list
                             adapter.submitList(pagedList);
+                            tracedObj.setText("Traced items "+pagedList.size());
                             //adapter.submitList(pagedList);
                         } catch (Exception e) {
                         }

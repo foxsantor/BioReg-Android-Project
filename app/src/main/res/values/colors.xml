@@ -20,4 +20,5 @@
     <color name="greenJade">#00A86B</color>
     <color name="redIshWhite">#ffd6d3</color>
     <color name="loading">#FFF5F5F5</color>
+    <color name="backgroundNotSelected">#EDF2FA</color>
 </resources>

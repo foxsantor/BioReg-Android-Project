@@ -3,6 +3,8 @@ package com.example.bioregproject.Utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -32,6 +34,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContentResolverCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -48,6 +52,7 @@ import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.MainActivityViewModel;
 import com.example.bioregproject.R;
 import com.example.bioregproject.entities.Account;
+import com.example.bioregproject.entities.Notification;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONObject;
@@ -188,7 +193,7 @@ public class StaticUse extends AppCompatActivity {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
-    public static byte[] transformerImageBase64(ImageView container)
+    public static byte[] transformerImageBytes(ImageView container)
     {
         BitmapDrawable drawable = (BitmapDrawable) container.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
@@ -196,6 +201,34 @@ public class StaticUse extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] imageInByte = stream.toByteArray();
         return imageInByte;
+    }
+
+    public static String transformerImageBase64(ImageView container)
+    {
+        String base64String ;
+        BitmapDrawable drawable = (BitmapDrawable) container.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,bos);
+        byte[] bb = bos.toByteArray();
+        base64String = Base64.encodeToString(bb,0);
+        //Toast.makeText(getActivity(), ""+base64String, Toast.LENGTH_SHORT).show();
+        return base64String;
+
+    }
+
+    public static String transformerImageBase64frombytes(byte[] bb)
+    {
+        String base64String ;
+        base64String = Base64.encodeToString(bb,0);
+        //Toast.makeText(getActivity(), ""+base64String, Toast.LENGTH_SHORT).show();
+        return base64String;
+
+    }
+
+    public static byte[] transsformerImageBytesBase64(String base64)
+    {
+        return Base64.decode(base64, Base64.DEFAULT);
     }
 
     public static void loginInternal(final Context context,final int destination,final View views)
@@ -408,6 +441,35 @@ public class StaticUse extends AppCompatActivity {
         new Random().nextBytes(array);
         String generatedString = new String(array, Charset.forName("UTF-8"));
         return "BioReg_"+generatedString+bytes;
+    }
+
+
+    public static void createNotificationChannel(Notification notification,Activity activity) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = notification.getCategoryName();
+            String description = notification.getOwner()+" "+notification.getDescription()+" "+notification.getName();
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("123", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = activity.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    public static void displayNotification (Activity activity,int icon,Notification notification)
+    {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(activity,"1234");
+        builder.setSmallIcon(R.drawable.admin_settings);
+        builder.setContentText(notification.getOwner()+" "+notification.getDescription()+" "+notification.getName());
+        builder.setContentTitle(notification.getCategoryName());
+        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(activity);
+        notificationManagerCompat.notify(2,builder.build());
+
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.bioregproject.entities;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -29,6 +30,11 @@ public class Category {
         super();
     }
 
+    @Ignore
+    public Category(String name, Date creation) {
+        this.name = name;
+        this.creation = creation;
+    }
 
     public long getId() {
         return id;

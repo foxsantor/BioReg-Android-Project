@@ -32,6 +32,10 @@ public class FormManualViewModel extends AndroidViewModel {
     {
         repository.insert(product);
     }
+    public void update(Products product)
+    {
+        repository.update(product);
+    }
     public void insert(Category category)
     {
         repositoryCat.insert(category);

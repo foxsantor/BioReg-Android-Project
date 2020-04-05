@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
@@ -85,6 +86,7 @@ public class DataTracedAdapater extends ListAdapter<Products,DataTracedAdapater.
             holder.state.setBackgroundColor(mContext.getResources().getColor(R.color.greenJade));
         }
 
+        holder.bind.setVisibility(View.GONE);
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +123,7 @@ public class DataTracedAdapater extends ListAdapter<Products,DataTracedAdapater.
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog diaBox = MainActivity.AskOptionPro(mContext,currentItem);
+                AlertDialog diaBox = MainActivity.AskOptionPro(mContext,currentItem,(LifecycleOwner)activity,"Visual Traceability");
                 diaBox.show();
 
             }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
@@ -110,7 +111,9 @@ public class ManualTracedAdapater extends ListAdapter<Products,ManualTracedAdapa
                 bundle.putLong("id",currentItem.getId());
                 bundle.putByteArray("image",image);
                 bundle.putString("expirationString",expirationString);
+                bundle.putString("ref",currentItem.getRefrence());
                 bundle.putString("fabricationString",fabricationString);
+                bundle.putString("creationString",creationString);
                 bundle.putString("name",currentItem.getName());
                 bundle.putString("brand",currentItem.getBrandName());
                 bundle.putString("CategoryName",currentItem.getCategoryName());
@@ -134,7 +137,7 @@ public class ManualTracedAdapater extends ListAdapter<Products,ManualTracedAdapa
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog diaBox = MainActivity.AskOptionPro(mContext,currentItem);
+                AlertDialog diaBox = MainActivity.AskOptionPro(mContext,currentItem,(LifecycleOwner)activity,"Manual Traceability");
                 diaBox.show();
 
             }

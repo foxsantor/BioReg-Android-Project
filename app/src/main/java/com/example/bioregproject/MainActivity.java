@@ -15,6 +15,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.bioregproject.Adapters.AccountPopUp;
+import com.example.bioregproject.Adapters.NotificationAdapater;
 import com.example.bioregproject.Services.TaskManger;
 import com.example.bioregproject.Utils.AspectRatioFragment;
 import com.example.bioregproject.Utils.StaticUse;
@@ -26,6 +27,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -33,6 +36,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.bioregproject.entities.Notification;
 import com.example.bioregproject.entities.Products;
 import com.example.bioregproject.ui.Traceability.ImageFlow.ManageDataViewModel;
 import com.google.android.cameraview.AspectRatio;
@@ -56,6 +60,7 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
@@ -67,12 +72,16 @@ public class MainActivity extends AppCompatActivity  {
     private static RequestQueue requestQueue;
     private static boolean hasConnection = false;
     private ImageView image;
-    private ImageButton imageButton  ;
-    private TextView name;
+    private Button seetingsNot;
+    private ImageButton imageButton,notification;
+    private TextView name,num;
     private ConstraintLayout layout;
     private AccountPopUp adapter;
+    private RecyclerView notifications;
+    private ConstraintLayout layoutNotif,menu;
     public static AlertDialog alerti;
     private LinearLayoutManager layoutManager;
+    private static  int numberOfNotificationUnseen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,16 +90,74 @@ public class MainActivity extends AppCompatActivity  {
         startService(stickyService);
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         mViewModelPro = ViewModelProviders.of(this).get(ManageDataViewModel.class);
+        //mViewModel.deleteAllNotif();
         setContentView(R.layout.activity_main);
         conx = this;
         layout = findViewById(R.id.connetcd);
+        notifications = findViewById(R.id.notifica);
+        seetingsNot = findViewById(R.id.seetingsNot);
+        menu =findViewById(R.id.menu);
+        notification = findViewById(R.id.notification);
+        num = findViewById(R.id.num);
+        layoutNotif = findViewById(R.id.layoutNotifica);
         name = findViewById(R.id.namePopup);
         image = findViewById(R.id.image);
         imageButton = findViewById(R.id.imageButton);
+        final NotificationAdapater adapter = new NotificationAdapater(conx,this);
+        notifications.setLayoutManager(new LinearLayoutManager(conx));
+        notifications.setAdapter(adapter);
+        mViewModel.getAllNotifications().observe(this, new Observer<List<Notification>>() {
+            @Override
+            public void onChanged(List<Notification> notifications) {
+                for (Notification n:notifications) {
+
+                   if(n.isSeen() == false){
+                    numberOfNotificationUnseen++;}
+                    }
+                num.setVisibility(View.VISIBLE);
+                num.setText(""+numberOfNotificationUnseen);
+                if(numberOfNotificationUnseen == 0)
+                {
+                    num.setVisibility(View.GONE);
+                }
+                adapter.submitList(notifications);
+
+            }
+        });
+
+
+
+        adapter.setOnIteemClickListener(new NotificationAdapater.OnItemClickLisnter() {
+            @Override
+            public void OnItemClick(Notification Notification) {
+                if(Notification.isSeen() == false){
+                    Notification.setSeen(true);
+                mViewModel.update(Notification);
+                adapter.notifyDataSetChanged();
+                numberOfNotificationUnseen--;
+                num.setText(""+numberOfNotificationUnseen);
+                }
+                else
+                    return;
+            }
+        });
         final AlertDialog.Builder alert = new AlertDialog.Builder(conx);
         LayoutInflater layoutInflater =  (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogueView =layoutInflater.inflate(R.layout.pop_up_user,null,false);
-
+        num.setVisibility(View.GONE);
+        menu.setVisibility(View.GONE);
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(menu.getVisibility()== View.VISIBLE)
+                {
+                   menu.setVisibility(View.GONE);
+                }else
+                {
+                    menu.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +213,7 @@ public class MainActivity extends AppCompatActivity  {
             Glide.with(conx).asBitmap().load(currentAccount.getProfileImage()).into(image);
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        //NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -156,7 +223,7 @@ public class MainActivity extends AppCompatActivity  {
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+        //NavigationUI.setupWithNavController(navigationView, navController);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
 
@@ -272,7 +339,7 @@ public class MainActivity extends AppCompatActivity  {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         mViewModel.delete(account);
                         Toast.makeText(context, "The account of "+account.getFirstName()+" "+account.getLastLoggedIn()+" has been deleted", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
+
                     }
 
                 })
@@ -288,8 +355,17 @@ public class MainActivity extends AppCompatActivity  {
         return myQuittingDialogBox;
     }
 
+    public static void insertNotification(final Notification notification)
+    {
+        mViewModel.insert(notification);
+    }
 
-    public static AlertDialog AskOptionPro(final Context context, final Products account)
+    public static void updateNotification(final Notification notification)
+    {
+        mViewModel.update(notification);
+    }
+
+    public static AlertDialog AskOptionPro(final Context context, final Products account, final LifecycleOwner activity, final String type)
     {
 
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(context)
@@ -301,6 +377,25 @@ public class MainActivity extends AppCompatActivity  {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         mViewModelPro.delete(account);
+                        mViewModel.getAccount(StaticUse.loadSession(context).getId()).observe(activity, new Observer<List<Account>>() {
+                            @Override
+                            public void onChanged(List<Account> accounts) {
+                                final Account user = accounts.get(0);
+                                Notification notification = new Notification();
+                                notification.setCreation(new Date());
+                                notification.setOwner(user.getFirstName());
+                                notification.setCategoryName("Traceability Module");
+                                notification.setSeen(false);
+                                notification.setName(type);
+                                notification.setDescription("has deleted a Traced Product by the ID of "+account.getId()+" from ");
+                                notification.setObjectImageBase64(StaticUse.transformerImageBase64frombytes(account.getImage()));
+                                notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
+                                MainActivity.insertNotification(notification);
+                                StaticUse.createNotificationChannel(notification,(Activity)context);
+                                StaticUse.displayNotification((Activity)context,R.drawable.ic_delete_blue_24dp,notification);
+                            }
+                        });
+                        dialog.dismiss();
                         Toast.makeText(context, "The Trace of "+account.getId()+" has been deleted", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }

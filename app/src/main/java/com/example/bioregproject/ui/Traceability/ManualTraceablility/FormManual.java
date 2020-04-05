@@ -13,6 +13,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -43,9 +44,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.bioregproject.Adapters.SpinnerCatAdapter;
+import com.example.bioregproject.MainActivity;
+import com.example.bioregproject.MainActivityViewModel;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
+import com.example.bioregproject.entities.Account;
 import com.example.bioregproject.entities.Category;
+import com.example.bioregproject.entities.Notification;
 import com.example.bioregproject.entities.Products;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -60,9 +65,10 @@ import java.util.List;
 public class FormManual extends Fragment {
 
     private FormManualViewModel mViewModel;
+    private MainActivityViewModel mainActivityViewModel;
     private Button back,save;
-    private TextView imageNote;
-    private ImageButton addCat,addImage,addImage2,cancel;
+    private TextView imageNote,textView20;
+    private ImageButton addCat,addImage,addImage2,cancel,calender1,calender2;
     private ImageView preiview,container;
     private TextInputLayout dateTimeExipartion,fref,fabrication,Category,brandName,fname;
     private ConstraintLayout constraintLayout,layoutPreview;
@@ -71,7 +77,14 @@ public class FormManual extends Fragment {
     private static final int  MY_CAMERA_PERMISSION_CODE = 2;
     private static final int CAMERA_REQUEST=3;
     private Bitmap bitmapContainer;
-    private String category;
+    private String category,expirationString,fabricationString,name,brand,ref,creationString;
+    private static  int CODE_ADD = 0;
+    private static  int CODE_UPDATE = 1;
+    private static  int CURRENT_RUNNING_CODE = 2;
+    private Bundle bundle ;
+    boolean fired = false;
+    private long id;
+    private byte[] image;
 
     public static FormManual newInstance() {
         return new FormManual();
@@ -85,14 +98,42 @@ public class FormManual extends Fragment {
 
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+         bundle = getArguments();
+        if(bundle !=null)
+        {
+            id =bundle.getLong("id");
+            image = bundle.getByteArray("image");
+            expirationString= bundle.getString("expirationString");
+            fabricationString=bundle.getString("fabricationString");
+            creationString =bundle.getString("creationString");
+            name=bundle.getString("name");
+            ref=bundle.getString("ref");
+            brand=bundle.getString("brand");
+            category=bundle.getString("CategoryName");
+            CURRENT_RUNNING_CODE = CODE_UPDATE;
+
+        }else
+        {
+            CURRENT_RUNNING_CODE = CODE_ADD;
+        }
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(FormManualViewModel.class);
+        mViewModel.insert(new Category("food",new Date()));
+        mViewModel.insert(new Category("Drinks",new Date()));
+        mainActivityViewModel  = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         cancel = view.findViewById(R.id.cancel);
         back = view.findViewById(R.id.Back);
         save = view.findViewById(R.id.Save);
         container = view.findViewById(R.id.container);
         addCat = view.findViewById(R.id.addCat);
+        calender1 = view.findViewById(R.id.calender1);
+        calender2 = view.findViewById(R.id.calender2);
         addImage = view.findViewById(R.id.addImage);
         addImage2 = view.findViewById(R.id.addImage2);
         preiview = view.findViewById(R.id.preiview);
@@ -101,6 +142,7 @@ public class FormManual extends Fragment {
         fabrication = view.findViewById(R.id.fabrication);
         Category = view.findViewById(R.id.Category);
         brandName = view.findViewById(R.id.brandName);
+        textView20 = view.findViewById(R.id.textView20);
         fname = view.findViewById(R.id.fname);
         layoutPreview = view.findViewById(R.id.layoutingPreview);
         spinner = view.findViewById(R.id.spinner);
@@ -117,23 +159,46 @@ public class FormManual extends Fragment {
         constraintLayout = view.findViewById(R.id.constraintlayout);
         StaticUse.backgroundAnimator(constraintLayout);
         dateTimeExipartion = view.findViewById(R.id.expiration);
-
-
-        dateTimeExipartion.getEditText().setOnClickListener(new View.OnClickListener() {
+        dateTimeExipartion.getEditText().setEnabled(false);
+        fabrication.getEditText().setEnabled(false);
+        calender2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDateTimeDialog(dateTimeExipartion.getEditText());
             }
         });
-        dateTimeExipartion.setEnabled(false);
-        dateTimeExipartion.setClickable(false);
+        calender2.setEnabled(false);
+        calender2.setClickable(false);
+        calender2.setImageResource(R.drawable.ic_date_range_gray_35dp);
 
-        fabrication.getEditText().setOnClickListener(new View.OnClickListener() {
+        calender1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDateTimeDialog(fabrication.getEditText());
             }
         });
+        if(CURRENT_RUNNING_CODE == 1 )
+        {
+            save.setText("Update");
+            textView20.setText("Update a product");
+            fabrication.getEditText().setText(fabricationString);
+            dateTimeExipartion.getEditText().setText(expirationString);
+            calender2.setEnabled(true);
+            calender2.setClickable(true);
+            calender2.setImageResource(R.drawable.ic_date_range_blue_24dp);
+            fref.getEditText().setText(ref);
+            fname.getEditText().setText(name);
+            brandName.getEditText().setText(brand);
+            Toast.makeText(getActivity(), ""+category, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), ""+getIndex(spinner,category), Toast.LENGTH_SHORT).show();
+            Glide.with(getActivity()).asBitmap().load(image).into(preiview);
+            //Glide.with(getActivity()).asBitmap().load(image).into(container);
+            layoutPreview.setVisibility(View.GONE);
+            cancel.setVisibility(View.VISIBLE);
+            bitmapContainer = BitmapFactory.decodeByteArray(image, 0, image.length);
+            container.setImageBitmap(bitmapContainer);
+
+        }
 
         fabrication.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
@@ -150,12 +215,14 @@ public class FormManual extends Fragment {
             public void afterTextChanged(Editable s) {
                 if(!fabrication.getEditText().getText().toString().isEmpty())
                 {
-                    dateTimeExipartion.setEnabled(true);
-                    dateTimeExipartion.setClickable(true);
+                    calender2.setEnabled(true);
+                    calender2.setClickable(true);
+                    calender2.setImageResource(R.drawable.ic_date_range_blue_24dp);
                 }else
                 {
-                    dateTimeExipartion.setEnabled(false);
-                    dateTimeExipartion.setClickable(false);
+                    calender2.setEnabled(false);
+                    calender2.setClickable(false);
+                    calender2.setImageResource(R.drawable.ic_date_range_gray_35dp);
                 }
 
             }
@@ -176,9 +243,7 @@ public class FormManual extends Fragment {
                 if(position>0)
                 {
                     category = (String) parent.getItemAtPosition(position);
-
                 }
-
             }
 
             @Override
@@ -222,10 +287,10 @@ public class FormManual extends Fragment {
             public void onClick(View v) {
                 if(!StaticUse.validateEmpty(fname,"Name") | !StaticUse.validateEmpty(brandName,"Brand Name")
                         | !StaticUse.validateEmpty(dateTimeExipartion,"Expiration Date") |!StaticUse.validateEmpty(fabrication,"Fabrication Date")
-                        |!StaticUse.validateEmpty(fref,"Reference")   | !validateSpinner(category) | !validateImage(bitmapContainer)
+                        |!StaticUse.validateEmpty(fref,"Reference")   | !validateSpinner(category) | !validateImage(bitmapContainer) |!validateFabrication(fabrication,dateTimeExipartion)
                 ){return;}
                 else {
-                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy HH:mm");
                     Products product = new Products();
                     product.setType("ManuelT");
                     try {
@@ -235,27 +300,78 @@ public class FormManual extends Fragment {
                     {
                         e.printStackTrace();
                     }
+
                     product.setImage(StaticUse.imageGetter(container));
                     product.setName(fname.getEditText().getText().toString());
-                    product.setCreationDate(new Date());
                     product.setBrandName(brandName.getEditText().getText().toString());
                     product.setCategoryName(category);
                     product.setRefrence(fref.getEditText().getText().toString());
+                    if(CURRENT_RUNNING_CODE == 0){
+                    product.setCreationDate(new Date());
                     mViewModel.insert(product);
                     Toast.makeText(getActivity(), "Product Added Successfully", Toast.LENGTH_SHORT).show();
+
+
+                         mainActivityViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {
+                             @Override
+                             public void onChanged(List<Account> accounts) {
+                                 final Account user = accounts.get(0);
+                                 Notification notification = new Notification();
+                                 notification.setCreation(new Date());
+                                 notification.setOwner(user.getFirstName());
+                                 notification.setCategoryName("Traceability Module");
+                                 notification.setSeen(false);
+                                 notification.setName("Manuel Traceability");
+                                 notification.setDescription("has added a new Traced Product by the name of "+fname.getEditText().getText().toString()+" from ");
+                                 notification.setObjectImageBase64(StaticUse.transformerImageBase64(container));
+                                 notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
+                                 MainActivity.insertNotification(notification);
+                                 StaticUse.createNotificationChannel(notification,getActivity());
+                                 StaticUse.displayNotification(getActivity(),R.drawable.ic_add_circle_blue_24dp,notification);
+                             }
+                         });
+
+                    }
+                    else
+                    {
+                        product.setId(id);
+                        try {
+                            product.setCreationDate(simpleDateFormat.parse(creationString));
+                        }catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                        mViewModel.update(product);
+                        Toast.makeText(getActivity(), "Product Updated Successfully", Toast.LENGTH_SHORT).show();
+                        mainActivityViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {
+                            @Override
+                            public void onChanged(List<Account> accounts) {
+                                final Account user = accounts.get(0);
+                                Notification notification = new Notification();
+                                notification.setCreation(new Date());
+                                notification.setOwner(user.getFirstName());
+                                notification.setCategoryName("Traceability Module");
+                                notification.setSeen(false);
+                                notification.setName("Manuel Traceability");
+                                notification.setDescription("has updated a Traced Product by the name of "+fname.getEditText().getText().toString()+" from ");
+                                notification.setObjectImageBase64(StaticUse.transformerImageBase64(container));
+                                notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
+                                MainActivity.insertNotification(notification);
+                                StaticUse.createNotificationChannel(notification,getActivity());
+                                StaticUse.displayNotification(getActivity(),R.drawable.ic_edit_blue_24dp,notification);
+                            }
+                        });
+
+                    }
                     getActivity().onBackPressed();
                 }
             }
         });
-
-
-
-
     }
-
 
     private void showDateTimeDialog(final EditText date_time_in) {
         final Calendar calendar=Calendar.getInstance();
+
         DatePickerDialog.OnDateSetListener dateSetListener=new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -266,12 +382,14 @@ public class FormManual extends Fragment {
                 TimePickerDialog.OnTimeSetListener timeSetListener=new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
-                        calendar.set(Calendar.MINUTE,minute);
 
-                        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                        Log.i("PEW PEW", "Double fire check");
 
-                        date_time_in.setText(simpleDateFormat.format(calendar.getTime()));
+                            calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                            calendar.set(Calendar.MINUTE,minute);
+                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                            date_time_in.setText(simpleDateFormat.format(calendar.getTime()));
+                            fired = true;
                     }
                 };
 
@@ -284,7 +402,7 @@ public class FormManual extends Fragment {
     }
 
 
-    private void SpinnerLoader(Spinner spinner)
+    private void SpinnerLoader(final Spinner spinner)
     {
         final ArrayList<String> spinnerArray =  new ArrayList<>();
         spinnerArray.add("Choose a Category *");
@@ -293,12 +411,17 @@ public class FormManual extends Fragment {
             public void onChanged(List<Category> categories) {
                 for (Category cat: categories
                      ) {
-                  spinnerArray.add(cat.getName());
+                  spinnerArray.add(cat.getName().trim());
                 }
+
             }
         });
         SpinnerCatAdapter adapter = new SpinnerCatAdapter(getActivity(),spinnerArray);
         spinner.setAdapter(adapter);
+        if(CURRENT_RUNNING_CODE == 1 )
+        {
+            spinner.setSelection(getIndex(spinner,category));
+        }
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
@@ -369,9 +492,6 @@ public class FormManual extends Fragment {
             //Glide.with(getActivity()).asBitmap().load(photo).into(ImageView10);
             container.setImageBitmap(photo);
             bitmapContainer = photo;
-
-
-
         }
 
     }
@@ -397,6 +517,47 @@ public class FormManual extends Fragment {
             imageNote.setText(Html.fromHtml("<font color=white>"+imageNote.getText().toString()+"</font>"));
             return true;
 
+        }
+    }
+
+
+    private int getIndex(Spinner spinner, String myString){
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    private boolean validateFabrication(TextInputLayout fabrication,TextInputLayout expiration)
+    {
+        Date expirationD,fabricationD;
+        if(StaticUse.validateEmpty(fabrication,"Fabrication Date") && StaticUse.validateEmpty(expiration,"Expiration Date"))
+        {
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        try {
+            expirationD= simpleDateFormat.parse(fabrication.getEditText().getText().toString());
+            fabricationD= simpleDateFormat.parse(expiration.getEditText().getText().toString());
+            if( fabricationD.compareTo(expirationD) <= 0)
+            {
+                fabrication.setError("Invalid Fabrication Date");
+                return false;
+            }else
+            {
+                fabrication.setError(null);
+                return true;
+
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            fabrication.setError("Something Went Wrong While Processing the dates please Submit a bug");
+            return  false;
+        }}else
+        {
+            return false;
         }
 
 
