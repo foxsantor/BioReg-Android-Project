@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.android.volley.Request;
@@ -60,6 +61,12 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.List;
 
@@ -72,8 +79,7 @@ public class MainActivity extends AppCompatActivity  {
     private static RequestQueue requestQueue;
     private static boolean hasConnection = false;
     private ImageView image;
-    private Button seetingsNot;
-    private ImageButton imageButton,notification;
+    private ImageButton imageButton,notification,seetingsNot;
     private TextView name,num;
     private ConstraintLayout layout;
     private AccountPopUp adapter;
@@ -95,7 +101,7 @@ public class MainActivity extends AppCompatActivity  {
         conx = this;
         layout = findViewById(R.id.connetcd);
         notifications = findViewById(R.id.notifica);
-        seetingsNot = findViewById(R.id.seetingsNot);
+        seetingsNot = findViewById(R.id.csvExport);
         menu =findViewById(R.id.menu);
         notification = findViewById(R.id.notification);
         num = findViewById(R.id.num);
@@ -110,6 +116,7 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onChanged(List<Notification> notifications) {
                 for (Notification n:notifications) {
+                    numberOfNotificationUnseen = 0;
 
                    if(n.isSeen() == false){
                     numberOfNotificationUnseen++;}
@@ -135,6 +142,10 @@ public class MainActivity extends AppCompatActivity  {
                 mViewModel.update(Notification);
                 adapter.notifyDataSetChanged();
                 numberOfNotificationUnseen--;
+                if(numberOfNotificationUnseen == 0)
+                {
+                    num.setVisibility(View.GONE);
+                }
                 num.setText(""+numberOfNotificationUnseen);
                 }
                 else
@@ -146,6 +157,19 @@ public class MainActivity extends AppCompatActivity  {
         final View dialogueView =layoutInflater.inflate(R.layout.pop_up_user,null,false);
         num.setVisibility(View.GONE);
         menu.setVisibility(View.GONE);
+
+
+        seetingsNot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.getAllNotifications().observe(MainActivity.this, new Observer<List<Notification>>() {
+                    @Override
+                    public void onChanged(List<Notification> list) {
+                     StaticUse.exportCsvFilesNotification(list,MainActivity.this);
+                    }
+                });
+            }
+        });
         notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -409,6 +433,29 @@ public class MainActivity extends AppCompatActivity  {
                 .create();
 
         return myQuittingDialogBox;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri PathHolder = data.getData();
+        FileInputStream fileInputStream = null;
+        StringBuilder text = new StringBuilder();
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(PathHolder);
+            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+            String mLine;
+            while ((mLine = r.readLine()) != null) {
+                text.append(mLine);
+                text.append('\n');
+            }
+            Toast.makeText(conx, ""+text.toString(), Toast.LENGTH_SHORT).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

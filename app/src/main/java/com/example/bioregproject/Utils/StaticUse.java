@@ -10,10 +10,12 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore.Images;
 import android.graphics.Canvas;
 import android.graphics.drawable.AnimationDrawable;
@@ -31,6 +33,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,6 +41,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContentResolverCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -54,15 +58,26 @@ import com.example.bioregproject.R;
 import com.example.bioregproject.entities.Account;
 import com.example.bioregproject.entities.Notification;
 import com.google.android.material.textfield.TextInputLayout;
+import com.opencsv.CSVReader;
 
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.security.Key;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class StaticUse extends AppCompatActivity {
@@ -472,5 +487,79 @@ public class StaticUse extends AppCompatActivity {
 
     }
 
+    //file exports csv for Notification Type
+    public static void exportCsvFilesNotification(List<Notification> list,Activity activity)
+    {
+        StringBuilder data = new StringBuilder();
+        data.append("Name,Category,Creation_Date,Owner,Description");
+        for (Notification n :list
+             ) {
+           data.append("\n"+n.getName()+","+n.getCategoryName()+","
+                   + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(n.getCreation())
+                   +","+n.getOwner()+","+n.getDescription());
+        }
+        try {
+            /*FileOutputStream out = activity.openFileOutput(StaticUse.loadEmail(activity)+"_Notification_BioReg.csv",MODE_PRIVATE);
+            out.write(data.toString().getBytes());
+            out.close();*/
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(activity.openFileOutput(StaticUse.loadEmail(activity)+"_Notification_BioReg.csv", Context.MODE_PRIVATE));
+            outputStreamWriter.write(data.toString());
+            outputStreamWriter.close();
+            File fileLocation = new File(activity.getFilesDir(),StaticUse.loadEmail(activity)+"_Notification_BioReg.csv");
+            Uri path = FileProvider.getUriForFile(activity,"com.example.bioregproject.fileprovider",fileLocation);
+            Intent fileIntent = new Intent(Intent.ACTION_SEND);
+            fileIntent.setType("text/csv");
+            fileIntent.putExtra(Intent.EXTRA_SUBJECT,"Notification_DATA");
+            fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            fileIntent.putExtra(Intent.EXTRA_STREAM,path);
+            activity.startActivity(Intent.createChooser(fileIntent,"0DATA"));
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public  static void readCsvFileType(Activity activity,String Type)
+    {
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("text/csv");
+        activity.startActivityForResult(intent, 7);
+
+
+    }
+
+    public  static  String readFromFile(Context context) {
+
+        String ret = "";
+
+        try {
+            InputStream inputStream = context.openFileInput("config.txt");
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append("\n").append(receiveString);
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
+        return ret;
+    }
 
 }

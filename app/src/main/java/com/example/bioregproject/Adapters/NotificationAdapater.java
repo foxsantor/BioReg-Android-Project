@@ -75,7 +75,7 @@ public class NotificationAdapater extends ListAdapter<Notification,NotificationA
         String imageBase64 = currentItem.getImageBase64();
         String objectImage64 = currentItem.getObjectImageBase64();
         final String ownerormated = StaticUse.capitalize(owner);
-        Log.i("owner", "onBindViewHolder: "+owner);
+        //Log.i("owner", "onBindViewHolder: "+owner);
         final String nameFormated = StaticUse.capitalize(name);
         final String descriptionFormated = StaticUse.capitalize(description);
         final String categoryNameFormated = StaticUse.capitalize(categoryName);

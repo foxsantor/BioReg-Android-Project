@@ -88,7 +88,7 @@
         android:id="@+id/layoutNotifica"
         android:layout_width="450dp"
         android:layout_height="650dp"
-        android:layout_marginLeft="520dp"
+        android:layout_marginLeft="490dp"
         android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -169,12 +169,12 @@
                     android:text="Notifications"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/seetingsNot"
+                    app:layout_constraintEnd_toStartOf="@+id/csvExport"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    android:id="@+id/seetingsNot"
+                <ImageButton
+                    android:id="@+id/csvExport"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginTop="10dp"
@@ -182,6 +182,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="settings"
+                    app:srcCompat="@drawable/ic_insert_drive_file_black_24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
