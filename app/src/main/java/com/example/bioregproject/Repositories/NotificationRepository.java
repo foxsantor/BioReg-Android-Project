@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import com.example.bioregproject.DAOs.NotificationDAO;
-import com.example.bioregproject.DataBases.AccountDB;
+import com.example.bioregproject.DataBases.BioRegDB;
 import com.example.bioregproject.entities.Notification;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class NotificationRepository {
 
     public NotificationRepository(Application application)
     {
-        AccountDB database = AccountDB.getInstance(application);
+        BioRegDB database = BioRegDB.getInstance(application);
         notificationDAO = database.notificationDAO();
         allNotifications = notificationDAO.getAllNotification();
     }

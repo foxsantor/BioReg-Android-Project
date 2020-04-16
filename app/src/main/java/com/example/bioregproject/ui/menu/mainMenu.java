@@ -101,7 +101,7 @@ public class mainMenu extends Fragment {
         categoryItems.add(new MenuItems("Refrigerators temperature",R.drawable.ref,R.id.refrigerato_temperature));
         categoryItems.add(new MenuItems("Products and Services temperature",R.drawable.serv,R.id.refrigerato_temperature));
         categoryItems.add(new MenuItems("Storage Control",R.drawable.stor,R.id.storageControl));
-        categoryItems.add(new MenuItems("History and logs",R.drawable.logs,R.id.history));
+        categoryItems.add(new MenuItems("History and logs",R.drawable.logs,R.id.hisotrys));
         categoryItems.add(new MenuItems("Documents and Sheets Management",R.drawable.docu,R.id.documents));
         return categoryItems;
     }

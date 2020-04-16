@@ -10,33 +10,35 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.bioregproject.DAOs.AccountDAO;
 import com.example.bioregproject.DAOs.CategoryDAO;
+import com.example.bioregproject.DAOs.HistoryDAO;
 import com.example.bioregproject.DAOs.NotificationDAO;
 import com.example.bioregproject.DAOs.ProductDAO;
 import com.example.bioregproject.DAOs.ProductLogsDAO;
 import com.example.bioregproject.entities.Account;
 import com.example.bioregproject.entities.Category;
+import com.example.bioregproject.entities.History;
 import com.example.bioregproject.entities.Notification;
 import com.example.bioregproject.entities.ProductLogs;
 import com.example.bioregproject.entities.Products;
 
 import java.util.Date;
 
+@Database(entities = {Account.class, Category.class, ProductLogs.class, Products.class, Notification.class, History.class},version = 6)
 
-@Database(entities = {Account.class, Category.class, ProductLogs.class, Products.class, Notification.class},version = 5)
+public abstract class BioRegDB  extends RoomDatabase {
 
-public abstract class AccountDB  extends RoomDatabase {
-
-    private static AccountDB instance;
+    private static BioRegDB instance;
     public abstract AccountDAO accountDao();
     public abstract CategoryDAO categoryDAO();
     public abstract ProductDAO productDAO();
     public abstract ProductLogsDAO productLogsDAO();
     public abstract NotificationDAO notificationDAO();
+    public abstract HistoryDAO historyDAO();
 
-    public static synchronized AccountDB getInstance(Context context){
+    public static synchronized BioRegDB getInstance(Context context){
         if(instance == null)
         {
-            instance = Room.databaseBuilder(context.getApplicationContext(),AccountDB.class,"account_database")
+            instance = Room.databaseBuilder(context.getApplicationContext(),BioRegDB.class,"account_database")
                     .fallbackToDestructiveMigration()
                     .addCallback(roomCallBack)
                     .build();
@@ -56,7 +58,7 @@ public abstract class AccountDB  extends RoomDatabase {
     {
         private CategoryDAO bookmarkDataAccessObject;
 
-        private PopulateDatabaseAsyncTask(AccountDB bookmarkDataAccessObject) {
+        private PopulateDatabaseAsyncTask(BioRegDB bookmarkDataAccessObject) {
             this.bookmarkDataAccessObject = bookmarkDataAccessObject.categoryDAO();
         }
 

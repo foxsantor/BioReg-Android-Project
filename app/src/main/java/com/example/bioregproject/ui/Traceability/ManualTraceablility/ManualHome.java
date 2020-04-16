@@ -23,7 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.bioregproject.Adapters.ManualTracedAdapater;
-import com.example.bioregproject.DataBases.AccountDB;
+import com.example.bioregproject.DataBases.BioRegDB;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.Products;
@@ -66,7 +66,7 @@ public class ManualHome extends Fragment {
         manual = view.findViewById(R.id.manual);
         StaticUse.backgroundAnimator(constraintLayout);
 
-        mViewModel.initAllTeams(AccountDB.getInstance(getActivity()).productDAO());
+        mViewModel.initAllTeams(BioRegDB.getInstance(getActivity()).productDAO());
         final ManualTracedAdapater adapter = new ManualTracedAdapater(getActivity(),getActivity());
         manual.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
         manual.setAdapter(adapter);

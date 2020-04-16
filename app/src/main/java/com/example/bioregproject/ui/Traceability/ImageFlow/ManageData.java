@@ -24,7 +24,7 @@ import android.view.ViewGroup;
 import com.example.bioregproject.Adapters.AccountSettingsAdapter;
 import com.example.bioregproject.Adapters.DataTracedAdapater;
 import com.example.bioregproject.DAOs.ProductDAO;
-import com.example.bioregproject.DataBases.AccountDB;
+import com.example.bioregproject.DataBases.BioRegDB;
 import com.example.bioregproject.R;
 import com.example.bioregproject.entities.Account;
 import com.example.bioregproject.entities.Products;
@@ -63,7 +63,7 @@ public class ManageData extends Fragment {
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
-        mViewModel.initAllTeams(AccountDB.getInstance(getActivity()).productDAO());
+        mViewModel.initAllTeams(BioRegDB.getInstance(getActivity()).productDAO());
         final DataTracedAdapater adapter = new DataTracedAdapater(getActivity(),getActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);

@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.bioregproject.DAOs.AccountDAO;
 import com.example.bioregproject.DAOs.ProductLogsDAO;
-import com.example.bioregproject.DataBases.AccountDB;
+import com.example.bioregproject.DataBases.BioRegDB;
 import com.example.bioregproject.entities.Account;
 import com.example.bioregproject.entities.ProductLogs;
 import com.example.bioregproject.entities.Products;
@@ -20,7 +20,7 @@ public class ProductLogsRepository {
 
     public ProductLogsRepository(Application application)
     {
-        AccountDB database = AccountDB.getInstance(application);
+        BioRegDB database = BioRegDB.getInstance(application);
         productLogsDAO = database.productLogsDAO();
         allProdductsLogs = productLogsDAO.getAllProductLogs();
     }

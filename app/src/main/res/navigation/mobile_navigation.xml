@@ -89,11 +89,6 @@
         android:label="cleaning_fragment"
         tools:layout="@layout/cleaning_fragment" />
     <fragment
-        android:id="@+id/hisotry"
-        android:name="com.example.bioregproject.ui.History.Hisotry"
-        android:label="hisotry_fragment"
-        tools:layout="@layout/hisotry_fragment" />
-    <fragment
         android:id="@+id/documents"
         android:name="com.example.bioregproject.ui.Documents.Documents"
         android:label="documents_fragment"
@@ -123,4 +118,9 @@
         android:name="com.example.bioregproject.ui.Planification.taskPlan"
         android:label="task_plan_fragment"
         tools:layout="@layout/task_plan_fragment" />
+    <fragment
+        android:id="@+id/hisotrys"
+        android:name="com.example.bioregproject.ui.History.Hisotry"
+        android:label="hisotry_fragment"
+        tools:layout="@layout/hisotry_fragment" />
 </navigation>

@@ -24,7 +24,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.bioregproject.Adapters.AccountSettingsAdapter;
-import com.example.bioregproject.DataBases.AccountDB;
+import com.example.bioregproject.DataBases.BioRegDB;
 import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
@@ -66,7 +66,7 @@ public class MangeAccount extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
 
-        mViewModel.initAllTeams(AccountDB.getInstance(getActivity()).accountDao());
+        mViewModel.initAllTeams(BioRegDB.getInstance(getActivity()).accountDao());
         final AccountSettingsAdapter adapter = new AccountSettingsAdapter(getActivity(),getActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);

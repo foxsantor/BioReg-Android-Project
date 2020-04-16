@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 import com.example.bioregproject.DAOs.CategoryDAO;
-import com.example.bioregproject.DataBases.AccountDB;
+import com.example.bioregproject.DataBases.BioRegDB;
 import com.example.bioregproject.entities.Category;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class CategoryRepository {
 
     public CategoryRepository(Application application)
     {
-        AccountDB database = AccountDB.getInstance(application);
+        BioRegDB database = BioRegDB.getInstance(application);
         categoryDAO = database.categoryDAO();
         allCategories = categoryDAO.getAllAccounts();
     }

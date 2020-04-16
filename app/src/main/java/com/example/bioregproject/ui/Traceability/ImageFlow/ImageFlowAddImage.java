@@ -53,8 +53,10 @@ import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.AspectRatioFragment;
 import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.Account;
+import com.example.bioregproject.entities.History;
 import com.example.bioregproject.entities.Notification;
 import com.example.bioregproject.entities.Products;
+import com.example.bioregproject.ui.History.DeviceHistoryViewModel;
 import com.google.android.cameraview.AspectRatio;
 import com.google.android.cameraview.CameraView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -100,6 +102,7 @@ public class ImageFlowAddImage extends Fragment implements
 
     private CameraView mCameraView;
     private MainActivityViewModel mainActivityViewModel;
+    private DeviceHistoryViewModel deviceHistoryViewModel;
     private byte[] imageHolder;
     private Handler mBackgroundHandler;
     private CheckBox local;
@@ -136,6 +139,7 @@ public class ImageFlowAddImage extends Fragment implements
 
         mViewModel = ViewModelProviders.of(this).get(ImageFlowAddImageViewModel.class);
         mainActivityViewModel  = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        deviceHistoryViewModel = ViewModelProviders.of(this).get(DeviceHistoryViewModel.class);
         mCameraView = view.findViewById(R.id.camera);
         cancel =view.findViewById(R.id.cancel);
         local = view.findViewById(R.id.local);
@@ -246,8 +250,24 @@ public class ImageFlowAddImage extends Fragment implements
                             MainActivity.insertNotification(notification);
                             StaticUse.createNotificationChannel(notification,getActivity());
                         }
-                    });
 
+                    });
+                    deviceHistoryViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {
+                        @Override
+                        public void onChanged(List<Account> accounts) {
+                            final Account user = accounts.get(0);
+                            History notification = new History();
+                            notification.setCreation(new Date());
+                            notification.setOwner(user.getFirstName());
+                            notification.setCategoryName("Traceability Module");
+                            //notification.setName(products.getName());
+                            notification.setDescription("has updated a Traced Product");
+                            notification.setOwnerLinking(user.getId());
+                            //notification.setSubjectLinking(products.getId());
+                            deviceHistoryViewModel.insert(notification);
+                            Log.i("added","yes it did");
+                        }
+                    });
                     Glide.with(getActivity()).clear(preview);
                     local.setChecked(false);
                 }else {
@@ -271,6 +291,7 @@ public class ImageFlowAddImage extends Fragment implements
                             StaticUse.createNotificationChannel(notification,getActivity());
                         }
                     });
+
 
                     Navigation.findNavController(view).navigate(R.id.action_imageFlowAddImage_to_manageData);
                     imageHolder = null;
