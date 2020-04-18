@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.bioregproject.Adapters.HistoryAdapter;
-import com.example.bioregproject.Adapters.InnerHistoryAdapter;
+import com.example.bioregproject.Adapters.HistoryAdapter;
 import com.example.bioregproject.R;
 import com.example.bioregproject.entities.ExternalHistory;
 import com.example.bioregproject.entities.History;
@@ -30,9 +30,10 @@ import java.util.Set;
 
 public class DeviceHistory extends Fragment {
 
-    private DeviceHistoryViewModel mViewModel;
+    public static DeviceHistoryViewModel mViewModel;
     private RecyclerView history;
-    private HistoryAdapter innerHistoryAdapter;
+    private HistoryAdapter HistoryAdapter;
+    private  static int j;
 
     public static DeviceHistory newInstance() {
         return new DeviceHistory();
@@ -51,8 +52,8 @@ public class DeviceHistory extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(DeviceHistoryViewModel.class);
         history = view.findViewById(R.id.history);
         history.setLayoutManager(new LinearLayoutManager(getActivity()));
-        innerHistoryAdapter = new HistoryAdapter(getActivity(),getActivity());
-        history.setAdapter(innerHistoryAdapter);
+        HistoryAdapter = new HistoryAdapter(getActivity(),getActivity(),this);
+        history.setAdapter(HistoryAdapter);
         mViewModel.getAllHistorys().observe(this, new Observer<List<History>>() {
             @Override
             public void onChanged(List<History> histories) {
@@ -63,19 +64,22 @@ public class DeviceHistory extends Fragment {
                 object.setCreation(histories.get(0).getCreation());
                 object.setList(history);
                 externalHistories.add(0,object);
+                j=0;
                 for(int i = 0 ; i<histories.size();i++){
-                    int j=0;
                         if( !(new SimpleDateFormat("EEEE,MMMMM d, yyyy").format(histories.get(i).getCreation()).equals(new SimpleDateFormat("EEEE,MMMMM d, yyyy").format(externalHistories.get(j).getCreation()))))
                         {
                             List<History> historyx = new ArrayList<>();
-                            object.setCreation(histories.get(i).getCreation());
+                            ExternalHistory objecto = new ExternalHistory();
+                            objecto.setCreation(histories.get(i).getCreation());
                             //historyx.add(histories.get(i));
-                            object.setList(historyx);
-                            externalHistories.add(object);
+                            Toast.makeText(getActivity(), ""+new SimpleDateFormat("EEEE,MMMMM d, yyyy").format(objecto.getCreation()), Toast.LENGTH_SHORT).show();
+                            objecto.setList(historyx);
+                             j = j+1;
+                            externalHistories.add(j,objecto);
                             //Toast.makeText(getActivity(), "was here", Toast.LENGTH_SHORT).show();
-                            j++;
-                        }else
-                        //if(histories.get(i).getCreation().compareTo(externalHistories.get(j).getCreation()) == 0)
+
+                        }
+                        if((new SimpleDateFormat("EEEE,MMMMM d, yyyy").format(histories.get(i).getCreation()).equals(new SimpleDateFormat("EEEE,MMMMM d, yyyy").format(externalHistories.get(j).getCreation()))))
                         {
                             History objects = histories.get(i);
                             externalHistories.get(j).getList().add(objects);
@@ -84,12 +88,21 @@ public class DeviceHistory extends Fragment {
                     }
 
 
-                        innerHistoryAdapter.submitList(externalHistories);
+                        HistoryAdapter.submitList(externalHistories);
             }
         });
 
 
 
 
+
+
+    }
+
+    public static void deleteHistory(long id)
+    {
+        History deletable = new History();
+        deletable.setId(id);
+        mViewModel.delete(deletable);
     }
 }

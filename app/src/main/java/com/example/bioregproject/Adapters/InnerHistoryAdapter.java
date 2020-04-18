@@ -126,10 +126,13 @@ public class InnerHistoryAdapter extends ListAdapter<History,InnerHistoryAdapter
             menu = itemView.findViewById(R.id.menu);
             time = itemView.findViewById(R.id.time);
 
-                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                checkBox.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                    public void onClick(View v) {
+                        if(checkBox.isChecked())
+                        listener.Select(v,getHistoryAt(getAdapterPosition()).getId(),getHistoryAt(getAdapterPosition()).getId());
+                        else
+                        listener.Select(v,0,getHistoryAt(getAdapterPosition()).getId());
                     }
                 });
 
@@ -147,6 +150,7 @@ public class InnerHistoryAdapter extends ListAdapter<History,InnerHistoryAdapter
 
     public interface OnItemClickLisnter {
         void OnItemClick(History History);
+        void Select(View v, long position,long id);
     }
 
     public void setOnIteemClickListener(OnItemClickLisnter listener) {
