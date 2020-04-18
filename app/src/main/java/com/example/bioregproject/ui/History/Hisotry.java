@@ -51,7 +51,7 @@ public class Hisotry extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.menu);
+                Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.mainMenu);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);

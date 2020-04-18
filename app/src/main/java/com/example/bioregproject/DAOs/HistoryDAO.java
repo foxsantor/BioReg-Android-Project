@@ -38,7 +38,7 @@ public interface HistoryDAO {
     @Query("SELECT * FROM history_table ")
     DataSource.Factory<Integer, History> loadAllHistory();
 
-    @Query("SELECT * FROM history_table where name LIKE  :name  or owner LIKE :name")
+    @Query("SELECT * FROM history_table where name LIKE  :name  or owner LIKE :name or description LIKE :name")
     DataSource.Factory<Integer, History> loadAllHistorybyName(String name);
 
     @Query("SELECT * FROM history_table where categoryName =:type ")
