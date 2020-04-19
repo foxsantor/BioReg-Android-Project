@@ -42,6 +42,9 @@ public interface AccountDAO {
     @Query("SELECT * from account_table where id = :id LIMIT 1")
     LiveData<List<Account>> loadAccountById(long id);
 
+    @Query("SELECT * from account_table where email = :email LIMIT 1")
+    LiveData<List<Account>> loadAccountByEmail(String email);
+
     @Query("SELECT * FROM account_table ")
     DataSource.Factory<Integer, Account> loadAllAccount();
 

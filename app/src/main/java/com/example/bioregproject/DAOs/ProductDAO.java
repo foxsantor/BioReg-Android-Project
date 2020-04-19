@@ -35,6 +35,9 @@ public interface ProductDAO {
     @Query("SELECT * from product_table where id = :id LIMIT 1")
     LiveData<List<Products>> loadProductById(long id);
 
+    @Query("SELECT * from product_table where name = :name and brandName=:brandName LIMIT 1")
+    LiveData<List<Products>> loadProductByNameAndBrand(String name,String brandName);
+
     @Query("SELECT * FROM product_table ")
     DataSource.Factory<Integer, Products> loadAllProducts();
 

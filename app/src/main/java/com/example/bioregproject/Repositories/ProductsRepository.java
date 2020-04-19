@@ -51,6 +51,11 @@ public class ProductsRepository {
         return productDAO.loadProductById(id);
     }
 
+    public LiveData<List<Products>> getProductByNameAndBrand(String name,String brand)
+    {
+        return productDAO.loadProductByNameAndBrand(name,brand);
+    }
+
 
     private static class InsertProductAsynTask extends AsyncTask<Products,Void,Void>
     {

@@ -39,6 +39,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.bioregproject.entities.Notification;
 import com.example.bioregproject.entities.Products;
+import com.example.bioregproject.ui.History.DeviceHistoryViewModel;
 import com.example.bioregproject.ui.Traceability.ImageFlow.ManageDataViewModel;
 import com.google.android.cameraview.AspectRatio;
 import com.google.android.material.navigation.NavigationView;
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity  {
     private AppBarConfiguration mAppBarConfiguration;
     private static MainActivityViewModel mViewModel;
     private static ManageDataViewModel mViewModelPro;
+    private static DeviceHistoryViewModel deviceHistoryViewModel;
     private static  Context conx;
     private static RequestQueue requestQueue;
     private static boolean hasConnection = false;
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity  {
         startService(stickyService);
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         mViewModelPro = ViewModelProviders.of(this).get(ManageDataViewModel.class);
+        deviceHistoryViewModel = ViewModelProviders.of(this).get(DeviceHistoryViewModel.class);
         //mViewModel.deleteAllNotif();
         setContentView(R.layout.activity_main);
         conx = this;
@@ -362,7 +365,15 @@ public class MainActivity extends AppCompatActivity  {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         mViewModel.delete(account);
-                        Toast.makeText(context, "The account of "+account.getFirstName()+" "+account.getLastLoggedIn()+" has been deleted", Toast.LENGTH_SHORT).show();
+                        StaticUse.SaveNotification((LifecycleOwner)context,mViewModel,(Activity)context,"Administration Module"
+                                ,"has deleted a User by the name of"+account.getFirstName()+" "+account.getLastName()+" from ",
+                                "Account Management",account.getProfileImage(),null,R.drawable.ic_delete_blue_24dp);
+
+                        StaticUse.SaveHistory((LifecycleOwner)context,deviceHistoryViewModel,(Activity)context,"Traceability Module",
+                                "has deleted the User ",
+                                account.getFirstName()+" "+account.getLastName(),account.getId(),"");
+
+                        Toast.makeText(context, "The account of "+account.getFirstName()+" "+account.getLastName()+" has been deleted", Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -401,24 +412,33 @@ public class MainActivity extends AppCompatActivity  {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         mViewModelPro.delete(account);
-                        mViewModel.getAccount(StaticUse.loadSession(context).getId()).observe(activity, new Observer<List<Account>>() {
-                            @Override
-                            public void onChanged(List<Account> accounts) {
-                                final Account user = accounts.get(0);
-                                Notification notification = new Notification();
-                                notification.setCreation(new Date());
-                                notification.setOwner(user.getFirstName());
-                                notification.setCategoryName("Traceability Module");
-                                notification.setSeen(false);
-                                notification.setName(type);
-                                notification.setDescription("has deleted a Traced Product by the ID of "+account.getId()+" from ");
-                                notification.setObjectImageBase64(StaticUse.transformerImageBase64frombytes(account.getImage()));
-                                notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
-                                MainActivity.insertNotification(notification);
-                                StaticUse.createNotificationChannel(notification,(Activity)context);
-                                StaticUse.displayNotification((Activity)context,R.drawable.ic_delete_blue_24dp,notification);
-                            }
-                        });
+
+                        StaticUse.SaveNotification(activity,mViewModel,(Activity)context,"Traceability Module"
+                                ,"has deleted a Traced Product"+ " from ",
+                                "Traceability",account.getImage(),null,R.drawable.ic_delete_blue_24dp);
+
+                        StaticUse.SaveHistory(activity,deviceHistoryViewModel,(Activity)context,"Traceability Module",
+                                "has deleted a Traced Product",
+                                "",account.getId(),"");
+
+//                        mViewModel.getAccount(StaticUse.loadSession(context).getId()).observe(activity, new Observer<List<Account>>() {
+//                            @Override
+//                            public void onChanged(List<Account> accounts) {
+//                                final Account user = accounts.get(0);
+//                                Notification notification = new Notification();
+//                                notification.setCreation(new Date());
+//                                notification.setOwner(user.getFirstName());
+//                                notification.setCategoryName("Traceability Module");
+//                                notification.setSeen(false);
+//                                notification.setName(type);
+//                                notification.setDescription("has deleted a Traced Product by the ID of "+account.getId()+" from ");
+//                                notification.setObjectImageBase64(StaticUse.transformerImageBase64frombytes(account.getImage()));
+//                                notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
+//                                MainActivity.insertNotification(notification);
+//                                StaticUse.createNotificationChannel(notification,(Activity)context);
+//                                StaticUse.displayNotification((Activity)context,R.drawable.ic_delete_blue_24dp,notification);
+//                            }
+//                        });
                         dialog.dismiss();
                         Toast.makeText(context, "The Trace of "+account.getId()+" has been deleted", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();

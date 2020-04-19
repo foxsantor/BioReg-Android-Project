@@ -4,6 +4,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
@@ -35,15 +36,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.bioregproject.MainActivityViewModel;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.Account;
+import com.example.bioregproject.entities.Products;
+import com.example.bioregproject.ui.History.DeviceHistoryViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class AccountCreation extends Fragment {
@@ -54,6 +59,8 @@ public class AccountCreation extends Fragment {
     private Bitmap bitmapContainer;
     private Bundle message;
     private AccountCreationViewModel mViewModel;
+    private MainActivityViewModel mainActivityViewModel;
+    private DeviceHistoryViewModel deviceHistoryViewModel;
     private TextView imagenote,imageHinter;
     private CardView buttons;
     private ConstraintLayout loading,imageViews;
@@ -87,6 +94,8 @@ public class AccountCreation extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(AccountCreationViewModel.class);
+        mainActivityViewModel  = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        deviceHistoryViewModel = ViewModelProviders.of(this).get(DeviceHistoryViewModel.class);
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
@@ -299,6 +308,21 @@ public class AccountCreation extends Fragment {
         account.setPhoneNumber(phoneNumber);
         account.setProfileImage(StaticUse.imageGetter(profile));
         mViewModel.insert(account);
+
+        StaticUse.SaveNotification(getActivity(),mainActivityViewModel,getActivity(),"Administration Module"
+                ,"has added a new User by the name of "+account.getFirstName()+" "+account.getLastName()+" from "
+                ,"Account Management",account.getProfileImage(),null,R.drawable.ic_add_circle_blue_24dp);
+
+        mainActivityViewModel.getAccountByEmail(account.getEmail()).observe(getActivity(), new Observer<List<Account>>() {
+            @Override
+            public void onChanged(List<Account> account) {
+                StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Administration Module",
+                        "has added a new User by the name of ",
+                        account.get(0).getFirstName()+" "+account.get(0).getLastName(),account.get(0).getId(),"Account Management");
+            }
+        });
+
+
     }
     @Override
 

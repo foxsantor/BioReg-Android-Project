@@ -216,14 +216,17 @@ public class ImageFlowAddImage extends Fragment implements
                 products.setCreationDate(new Date());
                 products.setExpirationDate(new Date());
                 products.setFabricationDate(new Date());
+                String name =StaticUse.randomizerName(imageHolder.toString());
+                products.setName(name);
+                products.setBrandName("none");
                 if(CODE != 2) {
                   products.setId(bundle.getLong("id"));
                   //products.setImage(bundle.getByteArray("image"));
                 }
                 if(imageHolder != null){
+
                 if(isSaveChecked)
                 {
-                    String name =StaticUse.randomizerName(imageHolder.toString());
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageHolder, 0, imageHolder.length);
                     MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, name, "BioReg Product");
                     products.setImage_name(name);
@@ -234,63 +237,83 @@ public class ImageFlowAddImage extends Fragment implements
                     mViewModel.insert(products);
                     Toast.makeText(getActivity(), "added Successfully", Toast.LENGTH_SHORT).show();
 
-                    mainActivityViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {
-                        @Override
-                        public void onChanged(List<Account> accounts) {
-                            final Account user = accounts.get(0);
-                            Notification notification = new Notification();
-                            notification.setCreation(new Date());
-                            notification.setOwner(user.getFirstName());
-                            notification.setCategoryName("Traceability Module");
-                            notification.setSeen(false);
-                            notification.setName("Visual Traceability");
-                            notification.setDescription("has added a Traced Product"+" from ");
-                            notification.setObjectImageBase64(StaticUse.transformerImageBase64frombytes(imageHolder));
-                            notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
-                            MainActivity.insertNotification(notification);
-                            StaticUse.createNotificationChannel(notification,getActivity());
-                        }
+                    StaticUse.SaveNotification(getActivity(),mainActivityViewModel,getActivity(),"Traceability Module"
+                            ,"has added a Traced Product"+" from ","Visual Traceability",imageHolder,null,R.drawable.ic_add_circle_blue_24dp);
 
-                    });
-                    deviceHistoryViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {
+//                    mainActivityViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {
+//                        @Override
+//                        public void onChanged(List<Account> accounts) {
+//                            final Account user = accounts.get(0);
+//                            Notification notification = new Notification();
+//                            notification.setCreation(new Date());
+//                            notification.setOwner(user.getFirstName());
+//                            notification.setCategoryName("Traceability Module");
+//                            notification.setSeen(false);
+//                            notification.setName("Visual Traceability");
+//                            notification.setDescription("has added a Traced Product"+" from ");
+//                            notification.setObjectImageBase64(StaticUse.transformerImageBase64frombytes(imageHolder));
+//                            notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
+//                            MainActivity.insertNotification(notification);
+//                            StaticUse.createNotificationChannel(notification,getActivity());
+//                        }
+//
+//                    });
+                    mainActivityViewModel.getProductByNameAndBrand(products.getName(),products.getBrandName()).observe(getActivity(), new Observer<List<Products>>() {
                         @Override
-                        public void onChanged(List<Account> accounts) {
-                            final Account user = accounts.get(0);
-                            History notification = new History();
-                            notification.setCreation(new Date());
-                            notification.setOwner(user.getFirstName());
-                            notification.setCategoryName("Traceability Module");
-                            //notification.setName(products.getName());
-                            notification.setDescription("has updated a Traced Product");
-                            notification.setOwnerLinking(user.getId());
-                            //notification.setSubjectLinking(products.getId());
-                            deviceHistoryViewModel.insert(notification);
-                            Log.i("added","yes it did");
+                        public void onChanged(List<Products> products) {
+                            StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Traceability Module",
+                                    "has added a new Traced Product by the name of ",
+                                    "",products.get(0).getId(),"Manuel Traceability");
                         }
                     });
+//                    deviceHistoryViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {
+//                        @Override
+//                        public void onChanged(List<Account> accounts) {
+//                            final Account user = accounts.get(0);
+//                            History notification = new History();
+//                            notification.setCreation(new Date());
+//                            notification.setOwner(user.getFirstName());
+//                            notification.setCategoryName("Traceability Module");
+//                            //notification.setName(products.getName());
+//                            notification.setDescription("has updated a Traced Product");
+//                            notification.setOwnerLinking(user.getId());
+//                            //notification.setSubjectLinking(products.getId());
+//                            deviceHistoryViewModel.insert(notification);
+//                            Log.i("added","yes it did");
+//                        }
+//                    });
                     Glide.with(getActivity()).clear(preview);
                     local.setChecked(false);
                 }else {
                     mViewModel.update(products);
                     Toast.makeText(getActivity(), "Updated Successfully", Toast.LENGTH_SHORT).show();
 
-                    mainActivityViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {
-                        @Override
-                        public void onChanged(List<Account> accounts) {
-                            final Account user = accounts.get(0);
-                            Notification notification = new Notification();
-                            notification.setCreation(new Date());
-                            notification.setOwner(user.getFirstName());
-                            notification.setCategoryName("Traceability Module");
-                            notification.setSeen(false);
-                            notification.setName("Visual Traceability");
-                            notification.setDescription("has updated a Traced Product"+" from ");
-                            notification.setObjectImageBase64(StaticUse.transformerImageBase64frombytes(imageHolder));
-                            notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
-                            MainActivity.insertNotification(notification);
-                            StaticUse.createNotificationChannel(notification,getActivity());
-                        }
-                    });
+
+
+                    StaticUse.SaveNotification(getActivity(),mainActivityViewModel,getActivity(),"Traceability Module"
+                    ,"has updated a Traced Product"+" from ","Visual Traceability",imageHolder,null,R.drawable.ic_edit_blue_24dp);
+
+                    StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Traceability Module",
+                            "has updated a Traced Product",
+                            "",products.getId(),"");
+
+//                    mainActivityViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {
+//                        @Override
+//                        public void onChanged(List<Account> accounts) {
+//                            final Account user = accounts.get(0);
+//                            Notification notification = new Notification();
+//                            notification.setCreation(new Date());
+//                            notification.setOwner(user.getFirstName());
+//                            notification.setCategoryName("Traceability Module");
+//                            notification.setSeen(false);
+//                            notification.setName("Visual Traceability");
+//                            notification.setDescription("has updated a Traced Product"+" from ");
+//                            notification.setObjectImageBase64(StaticUse.transformerImageBase64frombytes(imageHolder));
+//                            notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
+//                            MainActivity.insertNotification(notification);
+//                            StaticUse.createNotificationChannel(notification,getActivity());
+//                        }
+//                    });
 
 
                     Navigation.findNavController(view).navigate(R.id.action_imageFlowAddImage_to_manageData);

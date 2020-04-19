@@ -1,5 +1,6 @@
 package com.example.bioregproject.ui.Traceability.ImageFlow;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,15 @@ public class ImageFlow extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.mainMenu);
+
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
 
 

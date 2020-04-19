@@ -50,6 +50,10 @@ public class AccountRepository {
         return accountDAO.loadAccountById(id);
     }
 
+    public LiveData<List<Account>> getAccountByEmail(String email)
+    {
+        return accountDAO.loadAccountByEmail(email);
+    }
 
     private static class InsertAccountAsynTask extends AsyncTask<Account,Void,Void>
     {

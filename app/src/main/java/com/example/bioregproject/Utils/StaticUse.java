@@ -43,6 +43,9 @@ import androidx.core.content.ContentResolverCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
@@ -56,7 +59,10 @@ import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.MainActivityViewModel;
 import com.example.bioregproject.R;
 import com.example.bioregproject.entities.Account;
+import com.example.bioregproject.entities.History;
 import com.example.bioregproject.entities.Notification;
+import com.example.bioregproject.ui.History.DeviceHistory;
+import com.example.bioregproject.ui.History.DeviceHistoryViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 import com.opencsv.CSVReader;
 
@@ -77,6 +83,7 @@ import java.nio.charset.Charset;
 import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -561,5 +568,52 @@ public class StaticUse extends AppCompatActivity {
 
         return ret;
     }
+
+
+    public static void SaveHistory(LifecycleOwner lifecycleOwner,DeviceHistoryViewModel viewModel, Activity activity, String catName, String description, String objectName, long objectLinking, String subCategory) {
+        viewModel.getAccount(StaticUse.loadSession(activity).getId()).observe(lifecycleOwner, new Observer<List<Account>>() {
+            @Override
+            public void onChanged(List<Account> accounts) {
+                final Account user = accounts.get(0);
+                History history = new History();
+                history.setCreation(new Date());
+                history.setOwner(user.getFirstName());
+                history.setCategoryName(catName);
+                history.setName(objectName);
+                history.setDescription(description);
+                history.setOwnerLinking(user.getId());
+                history.setSubCategoryName(subCategory);
+                history.setSubjectLinking(objectLinking);
+                viewModel.insert(history);
+            }
+        });
+    }
+
+    public static void SaveNotification(LifecycleOwner lifecycleOwner,MainActivityViewModel viewModel, Activity activity, String catName, String description, String objectName, byte[] imageHolder,ImageView container,int img) {
+        viewModel.getAccount(StaticUse.loadSession(activity).getId()).observe(lifecycleOwner, new Observer<List<Account>>() {
+            @Override
+            public void onChanged(List<Account> accounts) {
+                final Account user = accounts.get(0);
+                Notification notification = new Notification();
+                notification.setCreation(new Date());
+                notification.setOwner(user.getFirstName());
+                notification.setCategoryName(catName);
+                notification.setName(objectName);
+                notification.setDescription(description);
+                notification.setSeen(false);
+                if(imageHolder != null)
+                notification.setObjectImageBase64(StaticUse.transformerImageBase64frombytes(imageHolder));
+                if(container!=null)
+                notification.setObjectImageBase64(StaticUse.transformerImageBase64(container));
+
+                notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
+                viewModel.insert(notification);
+                StaticUse.createNotificationChannel(notification,activity);
+                StaticUse.displayNotification(activity,img,notification);
+            }
+        });
+    }
+
+
 
 }

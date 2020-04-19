@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.bioregproject.Repositories.CategoryRepository;
 import com.example.bioregproject.Repositories.ProductsRepository;
+import com.example.bioregproject.entities.Account;
 import com.example.bioregproject.entities.Category;
 import com.example.bioregproject.entities.Products;
 
@@ -32,6 +33,7 @@ public class FormManualViewModel extends AndroidViewModel {
     {
         repository.insert(product);
     }
+    public LiveData<List<Products>> getProductByNameAndBrand(String name,String brand) {return repository.getProductByNameAndBrand(name,brand);}
     public void update(Products product)
     {
         repository.update(product);

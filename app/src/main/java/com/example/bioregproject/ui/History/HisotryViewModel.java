@@ -30,11 +30,11 @@ public class HisotryViewModel extends ViewModel {
     public void populateList() {
 
         Settings device_history = new Settings(R.drawable.ic_tablet_android_gray_24dp,"Device History",true,R.id.deviceHistory,R.drawable.ic_tablet_android_blue_24dp);
-        Settings logs= new Settings(R.drawable.ic_description_gray_24dp,"Logs & Analysis ",false,R.id.deviceHistory,R.drawable.ic_description_blue_24dp);
+        Settings logs= new Settings(R.drawable.ic_description_gray_24dp,"Logs & Analysis ",false,R.id.logsAndAnalysisFragment,R.drawable.ic_description_blue_24dp);
         //Settings cloud_settings= new Settings(R.drawable.ic_cloud_unselected_24dp,"Cloud Synchronisation",false,R.id.cloudFragment,R.drawable.ic_cloud_selected_24dp);
         settingsArrayList = new ArrayList<>();
-        settingsArrayList.add(logs);
         settingsArrayList.add(device_history);
+        settingsArrayList.add(logs);
         //settingsArrayList.add(cloud_settings);
     }
 }

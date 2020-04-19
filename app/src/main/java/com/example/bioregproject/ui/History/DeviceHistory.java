@@ -1,6 +1,7 @@
 package com.example.bioregproject.ui.History;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -52,6 +53,7 @@ public class DeviceHistory extends Fragment {
     private MaterialCardView CardSearch;
     private TextView keyValue, noSearch;
     private TextInputLayout searchView;
+    private ConstraintLayout upperConst;
     private static int number;
 
     private  static int j;
@@ -86,6 +88,8 @@ public class DeviceHistory extends Fragment {
         Fragment parent = (Fragment) navHostFragment.getParentFragment();
         searchView = parent.getView().findViewById(R.id.search);
         noSearch = parent.getView().findViewById(R.id.noSearch);
+        upperConst = parent.getView().findViewById(R.id.upperConst);
+        upperConst.setVisibility(View.VISIBLE);
         mViewModel = ViewModelProviders.of(this).get(DeviceHistoryViewModel.class);
         history = view.findViewById(R.id.history);
         history.setVisibility(View.VISIBLE);

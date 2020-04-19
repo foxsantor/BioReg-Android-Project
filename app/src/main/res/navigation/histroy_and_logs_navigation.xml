@@ -10,4 +10,9 @@
         android:name="com.example.bioregproject.ui.History.DeviceHistory"
         android:label="device_history_fragment"
         tools:layout="@layout/device_history_fragment" />
+    <fragment
+        android:id="@+id/logsAndAnalysisFragment"
+        android:name="com.example.bioregproject.ui.History.LogsAndAnalysisFragment"
+        android:label="logs_and_analysis_fragment"
+        tools:layout="@layout/logs_and_analysis_fragment" />
 </navigation>

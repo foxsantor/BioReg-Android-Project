@@ -52,6 +52,7 @@ import com.example.bioregproject.entities.Account;
 import com.example.bioregproject.entities.Category;
 import com.example.bioregproject.entities.Notification;
 import com.example.bioregproject.entities.Products;
+import com.example.bioregproject.ui.History.DeviceHistoryViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayOutputStream;
@@ -66,6 +67,7 @@ public class FormManual extends Fragment {
 
     private FormManualViewModel mViewModel;
     private MainActivityViewModel mainActivityViewModel;
+    private DeviceHistoryViewModel deviceHistoryViewModel;
     private Button back,save;
     private TextView imageNote,textView20;
     private ImageButton addCat,addImage,addImage2,cancel,calender1,calender2;
@@ -127,6 +129,7 @@ public class FormManual extends Fragment {
         mViewModel.insert(new Category("food",new Date()));
         mViewModel.insert(new Category("Drinks",new Date()));
         mainActivityViewModel  = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        deviceHistoryViewModel = ViewModelProviders.of(this).get(DeviceHistoryViewModel.class);
         cancel = view.findViewById(R.id.cancel);
         back = view.findViewById(R.id.Back);
         save = view.findViewById(R.id.Save);
@@ -311,25 +314,38 @@ public class FormManual extends Fragment {
                     mViewModel.insert(product);
                     Toast.makeText(getActivity(), "Product Added Successfully", Toast.LENGTH_SHORT).show();
 
+                        StaticUse.SaveNotification(getActivity(),mainActivityViewModel,getActivity(),"Traceability Module"
+                                ,"has added a new Traced Product by the name of "+fname.getEditText().getText().toString()+" from "
+                                ,"Manuel Traceability",null,container,R.drawable.ic_add_circle_blue_24dp);
 
-                         mainActivityViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {
-                             @Override
-                             public void onChanged(List<Account> accounts) {
-                                 final Account user = accounts.get(0);
-                                 Notification notification = new Notification();
-                                 notification.setCreation(new Date());
-                                 notification.setOwner(user.getFirstName());
-                                 notification.setCategoryName("Traceability Module");
-                                 notification.setSeen(false);
-                                 notification.setName("Manuel Traceability");
-                                 notification.setDescription("has added a new Traced Product by the name of "+fname.getEditText().getText().toString()+" from ");
-                                 notification.setObjectImageBase64(StaticUse.transformerImageBase64(container));
-                                 notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
-                                 MainActivity.insertNotification(notification);
-                                 StaticUse.createNotificationChannel(notification,getActivity());
-                                 StaticUse.displayNotification(getActivity(),R.drawable.ic_add_circle_blue_24dp,notification);
-                             }
-                         });
+                        mainActivityViewModel.getProductByNameAndBrand(product.getName(),product.getBrandName()).observe(getActivity(), new Observer<List<Products>>() {
+                            @Override
+                            public void onChanged(List<Products> products) {
+                                StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Traceability Module",
+                                        "has added a new Traced Product by the name of ",
+                                        fname.getEditText().getText().toString(),products.get(0).getId(),"Manuel Traceability");
+                            }
+                        });
+
+
+//                         mainActivityViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {
+//                             @Override
+//                             public void onChanged(List<Account> accounts) {
+//                                 final Account user = accounts.get(0);
+//                                 Notification notification = new Notification();
+//                                 notification.setCreation(new Date());
+//                                 notification.setOwner(user.getFirstName());
+//                                 notification.setCategoryName("Traceability Module");
+//                                 notification.setSeen(false);
+//                                 notification.setName("Manuel Traceability");
+//                                 notification.setDescription("has added a new Traced Product by the name of "+fname.getEditText().getText().toString()+" from ");
+//                                 notification.setObjectImageBase64(StaticUse.transformerImageBase64(container));
+//                                 notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
+//                                 MainActivity.insertNotification(notification);
+//                                 StaticUse.createNotificationChannel(notification,getActivity());
+//                                 StaticUse.displayNotification(getActivity(),R.drawable.ic_add_circle_blue_24dp,notification);
+//                             }
+//                         });
 
                     }
                     else
@@ -342,25 +358,36 @@ public class FormManual extends Fragment {
                             e.printStackTrace();
                         }
                         mViewModel.update(product);
+
+
+                        StaticUse.SaveNotification(getActivity(),mainActivityViewModel,getActivity(),"Traceability Module"
+                                ,"has updated a Traced Product by the name of "+fname.getEditText().getText().toString()+" from "
+                                ,"Manuel Traceability",null,container,R.drawable.ic_edit_blue_24dp);
+
+
+                                StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Traceability Module",
+                                        "has updated a Traced Product by the name of ",
+                                        fname.getEditText().getText().toString(),product.getId(),"Manuel Traceability");
+
                         Toast.makeText(getActivity(), "Product Updated Successfully", Toast.LENGTH_SHORT).show();
-                        mainActivityViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {
-                            @Override
-                            public void onChanged(List<Account> accounts) {
-                                final Account user = accounts.get(0);
-                                Notification notification = new Notification();
-                                notification.setCreation(new Date());
-                                notification.setOwner(user.getFirstName());
-                                notification.setCategoryName("Traceability Module");
-                                notification.setSeen(false);
-                                notification.setName("Manuel Traceability");
-                                notification.setDescription("has updated a Traced Product by the name of "+fname.getEditText().getText().toString()+" from ");
-                                notification.setObjectImageBase64(StaticUse.transformerImageBase64(container));
-                                notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
-                                MainActivity.insertNotification(notification);
-                                StaticUse.createNotificationChannel(notification,getActivity());
-                                StaticUse.displayNotification(getActivity(),R.drawable.ic_edit_blue_24dp,notification);
-                            }
-                        });
+//                        mainActivityViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {
+//                            @Override
+//                            public void onChanged(List<Account> accounts) {
+//                                final Account user = accounts.get(0);
+//                                Notification notification = new Notification();
+//                                notification.setCreation(new Date());
+//                                notification.setOwner(user.getFirstName());
+//                                notification.setCategoryName("Traceability Module");
+//                                notification.setSeen(false);
+//                                notification.setName("Manuel Traceability");
+//                                notification.setDescription("has updated a Traced Product by the name of "+fname.getEditText().getText().toString()+" from ");
+//                                notification.setObjectImageBase64(StaticUse.transformerImageBase64(container));
+//                                notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
+//                                MainActivity.insertNotification(notification);
+//                                StaticUse.createNotificationChannel(notification,getActivity());
+//                                StaticUse.displayNotification(getActivity(),R.drawable.ic_edit_blue_24dp,notification);
+//                            }
+//                        });
 
                     }
                     getActivity().onBackPressed();

@@ -8,8 +8,11 @@ import androidx.lifecycle.LiveData;
 
 import com.example.bioregproject.Repositories.AccountRepository;
 import com.example.bioregproject.Repositories.NotificationRepository;
+import com.example.bioregproject.Repositories.ProductsRepository;
 import com.example.bioregproject.entities.Account;
+import com.example.bioregproject.entities.Category;
 import com.example.bioregproject.entities.Notification;
+import com.example.bioregproject.entities.Products;
 
 import java.util.List;
 
@@ -18,6 +21,7 @@ import io.reactivex.Flowable;
 public class MainActivityViewModel extends AndroidViewModel {
 
     private AccountRepository repository;
+    private ProductsRepository repositoryPro;
     private NotificationRepository notificationRepository;
     private LiveData<List<Account>> allAccounts;
     private LiveData<List<Notification>> allNotifiactions;
@@ -26,6 +30,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         super(application);
         repository = new AccountRepository(application);
         allAccounts = repository.getAllAccounts();
+        repositoryPro = new ProductsRepository(application);
         notificationRepository = new NotificationRepository(application);
         allNotifiactions = notificationRepository.getAllNotification();
     }
@@ -51,6 +56,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         notificationRepository.delete(notification);
     }
     public LiveData<List<Account>> getAccount(Long id) {return repository.getAccount(id);}
+    public LiveData<List<Account>> getAccountByEmail(String email) {return repository.getAccountByEmail(email);}
     public void update(Account account)
     {
         repository.update(account);
@@ -71,4 +77,14 @@ public class MainActivityViewModel extends AndroidViewModel {
     {
         return allNotifiactions;
     }
+    public void insert(Products product)
+    {
+        repositoryPro.insert(product);
+    }
+    public LiveData<List<Products>> getProductByNameAndBrand(String name,String brand) {return repositoryPro.getProductByNameAndBrand(name,brand);}
+    public void update(Products product)
+    {
+        repositoryPro.update(product);
+    }
+
 }
