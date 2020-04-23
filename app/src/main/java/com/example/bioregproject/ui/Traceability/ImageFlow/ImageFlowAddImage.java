@@ -59,7 +59,9 @@ import com.example.bioregproject.entities.Products;
 import com.example.bioregproject.ui.History.DeviceHistoryViewModel;
 import com.google.android.cameraview.AspectRatio;
 import com.google.android.cameraview.CameraView;
+import com.google.android.gms.vision.text.Text;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -107,6 +109,7 @@ public class ImageFlowAddImage extends Fragment implements
     private Handler mBackgroundHandler;
     private CheckBox local;
     private Button done,cancel;
+    private TextInputLayout brand,name;
     private FloatingActionButton fab;
     private ImageView preview;
     private Toolbar toolbar;
@@ -144,6 +147,8 @@ public class ImageFlowAddImage extends Fragment implements
         cancel =view.findViewById(R.id.cancel);
         local = view.findViewById(R.id.local);
         preview = view.findViewById(R.id.Preview);
+        brand = view.findViewById(R.id.brand);
+        name = view.findViewById(R.id.name);
         done = view.findViewById(R.id.done);
         toolbar =view.findViewById(R.id.toolbar);
         constraintLayout = view.findViewById(R.id.mother);
@@ -154,6 +159,8 @@ public class ImageFlowAddImage extends Fragment implements
             CODE = UPDATE_CODE;
             Glide.with(getActivity()).clear(preview);
             Glide.with(getActivity()).asBitmap().load(bundle.getByteArray("image")).into(preview);
+            brand.getEditText().setText(bundle.getString("brand"));
+            name.getEditText().setText(bundle.getString("name"));
 
         }else
         {
@@ -212,13 +219,22 @@ public class ImageFlowAddImage extends Fragment implements
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!StaticUse.validateEmpty(name,"Name")){return;}else
+                {
+
+
                 Products products = new Products();
                 products.setCreationDate(new Date());
                 products.setExpirationDate(new Date());
                 products.setFabricationDate(new Date());
-                String name =StaticUse.randomizerName(imageHolder.toString());
-                products.setName(name);
-                products.setBrandName("none");
+                products.setName(name.getEditText().getText().toString());
+                String brandS =brand.getEditText().getText().toString();
+                if(brandS ==null || brandS.equals("") || brandS.isEmpty() )
+                products.setBrandName("");
+                else
+                products.setBrandName(brandS);
+
+
                 if(CODE != 2) {
                   products.setId(bundle.getLong("id"));
                   //products.setImage(bundle.getByteArray("image"));
@@ -227,6 +243,7 @@ public class ImageFlowAddImage extends Fragment implements
 
                 if(isSaveChecked)
                 {
+                    String name =StaticUse.randomizerName(imageHolder.toString());
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageHolder, 0, imageHolder.length);
                     MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, name, "BioReg Product");
                     products.setImage_name(name);
@@ -258,14 +275,28 @@ public class ImageFlowAddImage extends Fragment implements
 //                        }
 //
 //                    });
-                    mainActivityViewModel.getProductByNameAndBrand(products.getName(),products.getBrandName()).observe(getActivity(), new Observer<List<Products>>() {
+                    Glide.with(getActivity()).clear(preview);
+                    name.getEditText().setText("");
+                    brand.getEditText().setText("");
+                    local.setChecked(false);
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
                         @Override
-                        public void onChanged(List<Products> products) {
-                            StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Traceability Module",
-                                    "has added a new Traced Product by the name of ",
-                                    "",products.get(0).getId(),"Manuel Traceability");
+                        public void run() {
+
+                            mainActivityViewModel.getProductByNameAndBrand(products.getName(),products.getBrandName()).observe(getActivity(), new Observer<List<Products>>() {
+                                @Override
+                                public void onChanged(List<Products> products) {
+                                    StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Traceability Module",
+                                            "has added a new Traced Product by the name of ",
+                                            products.get(0).getName(),products.get(0).getId(),"Manuel Traceability");
+
+                                }
+                            });
+                            handler.removeCallbacksAndMessages(null);
                         }
-                    });
+                    }, 1000);
+
 //                    deviceHistoryViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {
 //                        @Override
 //                        public void onChanged(List<Account> accounts) {
@@ -282,8 +313,7 @@ public class ImageFlowAddImage extends Fragment implements
 //                            Log.i("added","yes it did");
 //                        }
 //                    });
-                    Glide.with(getActivity()).clear(preview);
-                    local.setChecked(false);
+
                 }else {
                     mViewModel.update(products);
                     Toast.makeText(getActivity(), "Updated Successfully", Toast.LENGTH_SHORT).show();
@@ -323,6 +353,7 @@ public class ImageFlowAddImage extends Fragment implements
                 }else {
                     Toast.makeText(getActivity(), "You did not Chose an image", Toast.LENGTH_SHORT).show();
                     return;}
+            }
             }
         });
 

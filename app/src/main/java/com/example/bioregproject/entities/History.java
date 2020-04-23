@@ -13,7 +13,8 @@ import java.util.Date;
 public class History {
 
     private String name;
-    private String owner;
+    private String ownerFirstName;
+    private String ownerLastName;
     @PrimaryKey(autoGenerate = true)
     private long id;
     private String description;
@@ -35,12 +36,20 @@ public class History {
         this.name = name;
     }
 
-    public String getOwner() {
-        return owner;
+    public String getOwnerFirstName() {
+        return ownerFirstName;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setOwnerFirstName(String ownerFirstName) {
+        this.ownerFirstName = ownerFirstName;
+    }
+
+    public String getOwnerLastName() {
+        return ownerLastName;
+    }
+
+    public void setOwnerLastName(String ownerLastName) {
+        this.ownerLastName = ownerLastName;
     }
 
     public long getId() {

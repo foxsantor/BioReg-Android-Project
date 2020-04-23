@@ -77,7 +77,7 @@ public class HistorySearchAdapter extends ListAdapter<History,HistorySearchAdapt
         final History currentItem = getItem(position);
         PrettyTime p = new PrettyTime();
         Date creation = currentItem.getCreation();
-        String  owner = currentItem.getOwner();
+        String  owner = currentItem.getOwnerFirstName() + " "+ currentItem.getOwnerLastName();
         String action = currentItem.getDescription();
         String nameH = currentItem.getName();
         String categoryName = currentItem.getCategoryName();

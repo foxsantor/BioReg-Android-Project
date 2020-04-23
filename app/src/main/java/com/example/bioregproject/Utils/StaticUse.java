@@ -471,7 +471,7 @@ public class StaticUse extends AppCompatActivity {
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = notification.getCategoryName();
-            String description = notification.getOwner()+" "+notification.getDescription()+" "+notification.getName();
+            String description = notification.getOwnerFirstName()+" "+notification.getOwnerFirstName()+" "+notification.getDescription()+" "+notification.getName();
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel("123", name, importance);
             channel.setDescription(description);
@@ -486,7 +486,7 @@ public class StaticUse extends AppCompatActivity {
     {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(activity,"1234");
         builder.setSmallIcon(R.drawable.admin_settings);
-        builder.setContentText(notification.getOwner()+" "+notification.getDescription()+" "+notification.getName());
+        builder.setContentText(notification.getOwnerFirstName()+" "+notification.getOwnerFirstName()+" "+notification.getDescription()+" "+notification.getName());
         builder.setContentTitle(notification.getCategoryName());
         builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(activity);
@@ -495,28 +495,29 @@ public class StaticUse extends AppCompatActivity {
     }
 
     //file exports csv for Notification Type
-    public static void exportCsvFilesNotification(List<Notification> list,Activity activity)
+    public static void exportCsvFilesNotification(List<History> list,Activity activity)
     {
         StringBuilder data = new StringBuilder();
-        data.append("Name,Category,Creation_Date,Owner,Description");
-        for (Notification n :list
+        data.append("Name,Category,Creation_Date,Owner_FirstName,Owner_LastName,OwnerId,Description,SubjectName,SubjectId,Sub_Category");
+        for (History n :list
              ) {
            data.append("\n"+n.getName()+","+n.getCategoryName()+","
                    + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(n.getCreation())
-                   +","+n.getOwner()+","+n.getDescription());
+                   +","+n.getOwnerFirstName()+","+n.getOwnerLastName()+","+n.getOwnerLinking()+","+n.getDescription()+","+n.getName()
+                   +","+n.getSubjectLinking()+","+n.getSubCategoryName());
         }
         try {
             /*FileOutputStream out = activity.openFileOutput(StaticUse.loadEmail(activity)+"_Notification_BioReg.csv",MODE_PRIVATE);
             out.write(data.toString().getBytes());
             out.close();*/
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(activity.openFileOutput(StaticUse.loadEmail(activity)+"_Notification_BioReg.csv", Context.MODE_PRIVATE));
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(activity.openFileOutput(StaticUse.loadEmail(activity)+"_History_BioReg.csv", Context.MODE_PRIVATE));
             outputStreamWriter.write(data.toString());
             outputStreamWriter.close();
-            File fileLocation = new File(activity.getFilesDir(),StaticUse.loadEmail(activity)+"_Notification_BioReg.csv");
+            File fileLocation = new File(activity.getFilesDir(),StaticUse.loadEmail(activity)+"_History_BioReg.csv");
             Uri path = FileProvider.getUriForFile(activity,"com.example.bioregproject.fileprovider",fileLocation);
             Intent fileIntent = new Intent(Intent.ACTION_SEND);
             fileIntent.setType("text/csv");
-            fileIntent.putExtra(Intent.EXTRA_SUBJECT,"Notification_DATA");
+            fileIntent.putExtra(Intent.EXTRA_SUBJECT,"History_DATA");
             fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             fileIntent.putExtra(Intent.EXTRA_STREAM,path);
             activity.startActivity(Intent.createChooser(fileIntent,"0DATA"));
@@ -577,7 +578,8 @@ public class StaticUse extends AppCompatActivity {
                 final Account user = accounts.get(0);
                 History history = new History();
                 history.setCreation(new Date());
-                history.setOwner(user.getFirstName());
+                history.setOwnerFirstName(user.getFirstName());
+                history.setOwnerLastName(user.getLastName());
                 history.setCategoryName(catName);
                 history.setName(objectName);
                 history.setDescription(description);
@@ -596,7 +598,8 @@ public class StaticUse extends AppCompatActivity {
                 final Account user = accounts.get(0);
                 Notification notification = new Notification();
                 notification.setCreation(new Date());
-                notification.setOwner(user.getFirstName());
+                notification.setOwnerFirstName(user.getFirstName());
+                notification.setOwnerLastName(user.getLastName());
                 notification.setCategoryName(catName);
                 notification.setName(objectName);
                 notification.setDescription(description);

@@ -104,6 +104,11 @@ public class DeviceHistory extends Fragment {
             @Override
             public void onChanged(List<History> histories) {
                 //Toast.makeText(getActivity(), ""+histories.get(0).getId(), Toast.LENGTH_SHORT).show();
+                if(histories.isEmpty())
+                {
+                    return;
+                }else
+                {
                 List<ExternalHistory> externalHistories = new ArrayList<>();
                 List<History> history = new ArrayList<>();
                 ExternalHistory object = new ExternalHistory();
@@ -128,7 +133,7 @@ public class DeviceHistory extends Fragment {
                         }
                     }
                         HistoryAdapter.submitList(externalHistories);
-            }
+            }}
         });
 
         mViewModel.initAllTeams(BioRegDB.getInstance(getActivity()).historyDAO());

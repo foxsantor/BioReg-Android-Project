@@ -38,7 +38,7 @@ public interface NotificationDAO {
     @Query("SELECT * FROM notification_table ")
     DataSource.Factory<Integer, Notification> loadAllNotification();
 
-    @Query("SELECT * FROM notification_table where name LIKE  :name  or owner LIKE :name")
+    @Query("SELECT * FROM notification_table where name LIKE  :name  or ownerLastName  LIKE :name or ownerFirstName  LIKE :name")
     DataSource.Factory<Integer, Notification> loadAllNotificationbyName(String name);
 
     @Query("SELECT * FROM notification_table where categoryName =:type ")

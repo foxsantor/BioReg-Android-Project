@@ -77,7 +77,7 @@ public class LogsAdapter extends ListAdapter<History,LogsAdapter.HistoryHolder> 
         final History currentItem = getItem(position);
         //PrettyTime p = new PrettyTime();
         Date creation = currentItem.getCreation();
-        String  owner = currentItem.getOwner();
+        String  owner = StaticUse.capitalize(currentItem.getOwnerFirstName()) + " "+ StaticUse.capitalize(currentItem.getOwnerLastName());
         String action = currentItem.getDescription();
         String nameH = currentItem.getName();
         String categoryName = currentItem.getCategoryName();
@@ -88,7 +88,7 @@ public class LogsAdapter extends ListAdapter<History,LogsAdapter.HistoryHolder> 
             nameH="";
         }else
         {
-            nameH=" by the name of "+nameH;
+            nameH=" by the name of "+"<font color='#1877F2'><strong>"+nameH+"</strong></font>";
         }
         if(subCat== null ||subCat.equals("") || subCat.isEmpty())
         {
@@ -96,10 +96,12 @@ public class LogsAdapter extends ListAdapter<History,LogsAdapter.HistoryHolder> 
         }else
         {
 
-            subCat=" Especially  the "+subCat;
+            subCat=" more precisely the "+"<strong>"+subCat+"</strong>";
         }
+
         final String textString = "<font color='#1877F2'><strong>"+owner+"</strong></font>"+" "+action+
-                "<font color='#1877F2'><strong>"+nameH+"</strong></font>"+" on the "+"<font color='#1877F2'><strong>"+creationString+"</strong></font>"+ " affecting the "+"<strong>"+categoryName+"</strong>"+ subCat+".";
+                nameH+" on the <font color='#1877F2'><strong>"+creationString+"</strong></font>"+
+                " affecting the "+"<strong>"+categoryName+"</strong>"+ subCat+".";
         holder.text.setText( Html.fromHtml(textString));
         holder.id.setText(Html.fromHtml("<strong>"+currentItem.getId()+"</strong>"));
 

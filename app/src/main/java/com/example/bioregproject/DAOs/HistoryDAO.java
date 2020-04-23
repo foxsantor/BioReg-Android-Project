@@ -38,10 +38,16 @@ public interface HistoryDAO {
     @Query("SELECT * FROM history_table ")
     DataSource.Factory<Integer, History> loadAllHistory();
 
-    @Query("SELECT * FROM history_table where name LIKE  :name  or owner LIKE :name or description LIKE :name")
+    @Query("SELECT * FROM history_table ORDER BY creation DESC ")
+    DataSource.Factory<Integer, History> loadAllHistoryNewst();
+
+    @Query("SELECT * FROM history_table ORDER BY creation ASC ")
+    DataSource.Factory<Integer, History> loadAllHistoryOldst();
+
+    @Query("SELECT * FROM history_table where name LIKE  :name  or description LIKE :name")
     DataSource.Factory<Integer, History> loadAllHistorybyName(String name);
 
-    @Query("SELECT * FROM history_table where categoryName =:type ")
-    DataSource.Factory<Integer, History> loadAllHistorybyType(String type);
+    @Query("SELECT * FROM history_table where ownerFirstName =:ownerFirst and ownerLastName =:ownerLast  ")
+    DataSource.Factory<Integer, History> loadAllHistorybyOwner(String ownerFirst,String ownerLast);
 
 }

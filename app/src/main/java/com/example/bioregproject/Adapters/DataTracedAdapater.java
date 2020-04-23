@@ -94,6 +94,8 @@ public class DataTracedAdapater extends ListAdapter<Products,DataTracedAdapater.
                 final Bundle bundle = new Bundle();
                 bundle.putLong("id",currentItem.getId());
                 bundle.putByteArray("image",image);
+                bundle.putString("name",currentItem.getName());
+                bundle.putString("brand",currentItem.getBrandName());
                 Navigation.findNavController(v).navigate(R.id.action_manageData_to_imageFlowAddImage,bundle);
                    /* Bundle account = new Bundle();
                     account.putString("firstname",currentItem.getFirstName());

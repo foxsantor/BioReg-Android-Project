@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
@@ -317,15 +318,22 @@ public class FormManual extends Fragment {
                         StaticUse.SaveNotification(getActivity(),mainActivityViewModel,getActivity(),"Traceability Module"
                                 ,"has added a new Traced Product by the name of "+fname.getEditText().getText().toString()+" from "
                                 ,"Manuel Traceability",null,container,R.drawable.ic_add_circle_blue_24dp);
-
-                        mainActivityViewModel.getProductByNameAndBrand(product.getName(),product.getBrandName()).observe(getActivity(), new Observer<List<Products>>() {
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
                             @Override
-                            public void onChanged(List<Products> products) {
-                                StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Traceability Module",
-                                        "has added a new Traced Product by the name of ",
-                                        fname.getEditText().getText().toString(),products.get(0).getId(),"Manuel Traceability");
+                            public void run() {
+                                mainActivityViewModel.getProductByNameAndBrand(product.getName(),product.getBrandName()).observe(getActivity(), new Observer<List<Products>>() {
+                                    @Override
+                                    public void onChanged(List<Products> products) {
+                                        StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Traceability Module",
+                                                "has added a new Traced Product by the name of ",
+                                                fname.getEditText().getText().toString(),products.get(0).getId(),"Manuel Traceability");
+                                    }
+                                });
+                                handler.removeCallbacksAndMessages(null);
                             }
-                        });
+                        }, 500);
+
 
 
 //                         mainActivityViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {

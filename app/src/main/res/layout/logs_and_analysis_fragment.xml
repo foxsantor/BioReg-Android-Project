@@ -84,6 +84,15 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
+                    <View
+                        android:id="@+id/view21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:background="@drawable/linerae_shadow"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/bar" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/bar"
                         android:layout_width="match_parent"
@@ -105,21 +114,32 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/search"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="50dp"
                             android:layout_marginLeft="50dp"
+                            android:layout_marginTop="10dp"
                             android:layout_marginEnd="20dp"
                             android:layout_marginRight="20dp"
+                            android:layout_marginBottom="10dp"
+                            android:ems="10"
+                            android:inputType="textPersonName"
+                            app:errorEnabled="false"
+                            app:helperTextEnabled="false"
+                            app:hintEnabled="true"
+                            app:hintTextColor="@color/officialBlue"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/csv"
                             app:layout_constraintStart_toEndOf="@+id/news"
-                            app:layout_constraintTop_toTopOf="parent">
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:startIconDrawable="@drawable/ic_search_blacki_24dp">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="hint" />
+                                android:background="@null"
+                                android:hint="Search" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <Button
@@ -183,6 +203,19 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/imageView11"
                             app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="Export CSV"
+                            android:textColor="@color/officialBlue"
+                            android:textSize="8sp"
+                            app:layout_constraintEnd_toStartOf="@+id/clear"
+                            app:layout_constraintStart_toEndOf="@+id/search"
+                            app:layout_constraintTop_toBottomOf="@+id/csv" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <ScrollView

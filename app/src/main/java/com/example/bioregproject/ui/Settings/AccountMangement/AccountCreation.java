@@ -295,13 +295,13 @@ public class AccountCreation extends Fragment {
     private void addNewAccount(TextInputLayout password,TextInputLayout firstName, TextInputLayout lastName,TextInputLayout phone ,TextInputLayout email,ImageView profile)
     {
         Account account = new Account();
-        account.setEmail(StaticUse.loadEmail(getActivity()));
+        //account.setEmail(StaticUse.loadEmail(getActivity()));
         account.setFirstName(firstName.getEditText().getText().toString().trim());
         account.setLastName(lastName.getEditText().getText().toString().trim());
         account.setPassword(password.getEditText().getText().toString());
         account.setCreationDate(new Date());
         account.setLastLoggedIn(new Date());
-        account.setEmail(email.getEditText().getText().toString().trim());
+        account.setEmail(email.getEditText().getText().toString());
         long phoneNumber = 0;
         if(!phone.getEditText().getText().toString().trim().isEmpty())
             phoneNumber =Long.parseLong(phone.getEditText().getText().toString().trim());
@@ -312,15 +312,23 @@ public class AccountCreation extends Fragment {
         StaticUse.SaveNotification(getActivity(),mainActivityViewModel,getActivity(),"Administration Module"
                 ,"has added a new User by the name of "+account.getFirstName()+" "+account.getLastName()+" from "
                 ,"Account Management",account.getProfileImage(),null,R.drawable.ic_add_circle_blue_24dp);
-
-        mainActivityViewModel.getAccountByEmail(account.getEmail()).observe(getActivity(), new Observer<List<Account>>() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onChanged(List<Account> account) {
-                StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Administration Module",
-                        "has added a new User by the name of ",
-                        account.get(0).getFirstName()+" "+account.get(0).getLastName(),account.get(0).getId(),"Account Management");
+            public void run() {
+                mainActivityViewModel.getAccountByEmail(account.getEmail()).observe(getActivity(), new Observer<List<Account>>() {
+                    @Override
+                    public void onChanged(List<Account> account) {
+                        StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Administration Module",
+                                "has added a new User by the name of ",
+                                account.get(0).getFirstName()+" "+account.get(0).getLastName(),account.get(0).getId(),"Account Management");
+                    }
+                });
+                handler.removeCallbacksAndMessages(null);
             }
-        });
+
+        }, 500);
+
 
 
     }

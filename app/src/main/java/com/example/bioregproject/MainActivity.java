@@ -68,6 +68,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -81,8 +82,9 @@ public class MainActivity extends AppCompatActivity  {
     private static RequestQueue requestQueue;
     private static boolean hasConnection = false;
     private ImageView image;
-    private ImageButton imageButton,notification,seetingsNot;
+    private ImageButton imageButton,notification;
     private TextView name,num;
+    private Button clearAll,seeAll;
     private ConstraintLayout layout;
     private AccountPopUp adapter;
     private RecyclerView notifications;
@@ -104,7 +106,8 @@ public class MainActivity extends AppCompatActivity  {
         conx = this;
         layout = findViewById(R.id.connetcd);
         notifications = findViewById(R.id.notifica);
-        seetingsNot = findViewById(R.id.csvExport);
+        clearAll = findViewById(R.id.clearAll);
+        seeAll = findViewById(R.id.see);
         menu =findViewById(R.id.menu);
         notification = findViewById(R.id.notification);
         num = findViewById(R.id.num);
@@ -118,9 +121,8 @@ public class MainActivity extends AppCompatActivity  {
         mViewModel.getAllNotifications().observe(this, new Observer<List<Notification>>() {
             @Override
             public void onChanged(List<Notification> notifications) {
+                numberOfNotificationUnseen = 0;
                 for (Notification n:notifications) {
-                    numberOfNotificationUnseen = 0;
-
                    if(n.isSeen() == false){
                     numberOfNotificationUnseen++;}
                     }
@@ -149,7 +151,7 @@ public class MainActivity extends AppCompatActivity  {
                 {
                     num.setVisibility(View.GONE);
                 }
-                num.setText(""+numberOfNotificationUnseen);
+                 num.setText(""+numberOfNotificationUnseen);
                 }
                 else
                     return;
@@ -162,13 +164,44 @@ public class MainActivity extends AppCompatActivity  {
         menu.setVisibility(View.GONE);
 
 
-        seetingsNot.setOnClickListener(new View.OnClickListener() {
+        clearAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                mViewModel.getAllNotifications().observe(MainActivity.this, new Observer<List<Notification>>() {
+//                    @Override
+//                    public void onChanged(List<Notification> list) {
+//                     StaticUse.exportCsvFilesNotification(list,MainActivity.this);
+//
+//
+//                    }
+//                });
+
+                mViewModel.deleteAllNotif();
+                //adapter.notifyAll();
+            }
+        });
+
+        seeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mViewModel.getAllNotifications().observe(MainActivity.this, new Observer<List<Notification>>() {
                     @Override
                     public void onChanged(List<Notification> list) {
-                     StaticUse.exportCsvFilesNotification(list,MainActivity.this);
+                        if(list.isEmpty())
+                        {
+
+                            return;
+                        }else
+                        {
+                            for (Notification n:list) {
+                                n.setSeen(true);
+                                mViewModel.update(n);
+
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+
+
                     }
                 });
             }

@@ -70,7 +70,7 @@ public class NotificationAdapater extends ListAdapter<Notification,NotificationA
         final String name = currentItem.getName();
         String description = currentItem.getDescription();
         Date creation = currentItem.getCreation();
-        String owner = currentItem.getOwner();
+        String owner = currentItem.getOwnerFirstName() + " "+ currentItem.getOwnerLastName();
         String categoryName = currentItem.getCategoryName();
         String imageBase64 = currentItem.getImageBase64();
         String objectImage64 = currentItem.getObjectImageBase64();
