@@ -296,7 +296,7 @@ public class LogsAndAnalysisFragment extends Fragment {
     }
 
 
-
+    //pieChat
     private void GetTotalNum(LogsAndAnalysisViewModel mViewModel)
     {
 
@@ -403,7 +403,7 @@ public class LogsAndAnalysisFragment extends Fragment {
 
         }, 1000);
     }
-
+    //H-BarChart
     private void GetModules(LogsAndAnalysisViewModel mViewModel)
     {
         testSubjects2= new ArrayList<>();

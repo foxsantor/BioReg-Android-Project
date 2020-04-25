@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/setting_navigation"
-    app:startDestination="@id/accountMangmentFragment">
+    app:startDestination="@id/generalSettings">
 
     <fragment
         android:id="@+id/accountMangmentFragment"
