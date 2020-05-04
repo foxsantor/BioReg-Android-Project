@@ -1,5 +1,6 @@
 package com.example.bioregproject.Utils;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -186,6 +187,19 @@ public class DriveServiceHelper {
             }
             return  myFile.getId();
 
+        });
+    }
+
+    public Task<Void> saveFileDatabase(String fileId, String name, String content, Activity activity) {
+        return Tasks.call(mExecutor, () -> {
+            // Create a File containing any metadata changes.
+            File fileMetadata = new File();
+            fileMetadata.setName(name+".csv");
+            java.io.File filePath = DatabaseExporter.ExporterCSV(name,activity);
+            FileContent metadata = new FileContent("image/jpeg", filePath);
+            mDriveService.files().create(fileMetadata, metadata).setFields("id")
+                    .execute();
+            return null;
         });
     }
 }
