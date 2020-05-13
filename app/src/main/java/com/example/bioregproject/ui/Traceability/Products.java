@@ -1,5 +1,6 @@
 package com.example.bioregproject.ui.Traceability;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +44,14 @@ public class Products extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.mainMenu);
+
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
         TracePager sectionsPagerAdapter = new TracePager(getActivity(), getChildFragmentManager());
         viewer =  view.findViewById(R.id.pager);
         viewer.setAdapter(sectionsPagerAdapter);

@@ -364,6 +364,18 @@ public class StaticUse extends AppCompatActivity {
 
     }
 
+    public static boolean validateSpinner(String spinner,TextInputLayout container) {
+        if ((spinner == null || spinner.equals("") || spinner.isEmpty())) {
+            container.setError("Must Choose a Category !");
+            return false;
+        } else {
+            container.setError(null);
+            return true;
+
+        }
+    }
+
+
     public static final String insertImage(ContentResolver cr,
                                            Bitmap source,
                                            String title,

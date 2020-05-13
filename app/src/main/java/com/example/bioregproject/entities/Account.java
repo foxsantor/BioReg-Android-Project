@@ -26,6 +26,7 @@ public class Account {
     private Date creationDate;
     private String email;
     private long phoneNumber;
+    private int Selected;
 
 
     public Account() {
@@ -114,5 +115,13 @@ public class Account {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public int getSelected() {
+        return Selected;
+    }
+
+    public void setSelected(int selected) {
+        Selected = selected;
     }
 }
