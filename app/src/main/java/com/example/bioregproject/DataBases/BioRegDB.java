@@ -12,18 +12,20 @@ import com.example.bioregproject.DAOs.AccountDAO;
 import com.example.bioregproject.DAOs.CategoryDAO;
 import com.example.bioregproject.DAOs.HistoryDAO;
 import com.example.bioregproject.DAOs.NotificationDAO;
+import com.example.bioregproject.DAOs.PersoTaskDAO;
 import com.example.bioregproject.DAOs.ProductDAO;
 import com.example.bioregproject.DAOs.ProductLogsDAO;
 import com.example.bioregproject.entities.Account;
 import com.example.bioregproject.entities.Category;
 import com.example.bioregproject.entities.History;
 import com.example.bioregproject.entities.Notification;
+import com.example.bioregproject.entities.PersoTask;
 import com.example.bioregproject.entities.ProductLogs;
 import com.example.bioregproject.entities.Products;
 
 import java.util.Date;
 
-@Database(entities = {Account.class, Category.class, ProductLogs.class, Products.class, Notification.class, History.class},version = 6)
+@Database(entities = {Account.class, Category.class, ProductLogs.class, Products.class, Notification.class, History.class, PersoTask.class},version = 8)
 
 public abstract class BioRegDB  extends RoomDatabase {
 
@@ -34,6 +36,7 @@ public abstract class BioRegDB  extends RoomDatabase {
     public abstract ProductLogsDAO productLogsDAO();
     public abstract NotificationDAO notificationDAO();
     public abstract HistoryDAO historyDAO();
+    public abstract PersoTaskDAO persoTaskDAO();
 
     public static synchronized BioRegDB getInstance(Context context){
         if(instance == null)
