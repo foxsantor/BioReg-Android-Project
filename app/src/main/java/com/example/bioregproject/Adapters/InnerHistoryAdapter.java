@@ -2,39 +2,27 @@ package com.example.bioregproject.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.Html;
-import android.text.format.DateUtils;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.bioregproject.R;
-import com.example.bioregproject.Utils.StaticUse;
-import com.example.bioregproject.entities.History;
 import com.example.bioregproject.entities.History;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class InnerHistoryAdapter extends ListAdapter<History,InnerHistoryAdapter.HistoryHolder> {
 
@@ -118,9 +106,9 @@ public class InnerHistoryAdapter extends ListAdapter<History,InnerHistoryAdapter
 
         public HistoryHolder(View itemView) {
             super(itemView);
-            owner = itemView.findViewById(R.id.owner2);
-            action = itemView.findViewById(R.id.action);
-            name = itemView.findViewById(R.id.name);
+            owner = itemView.findViewById(R.id.action);
+            action = itemView.findViewById(R.id.post);
+            name = itemView.findViewById(R.id.filtrage1);
             category = itemView.findViewById(R.id.category);
             checkBox = itemView.findViewById(R.id.checkBox);
             menu = itemView.findViewById(R.id.menu);

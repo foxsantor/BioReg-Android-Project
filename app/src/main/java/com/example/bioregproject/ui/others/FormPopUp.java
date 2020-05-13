@@ -1,20 +1,14 @@
 package com.example.bioregproject.ui.others;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +21,7 @@ import com.bumptech.glide.Glide;
 import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
-import com.example.bioregproject.entities.Account;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.List;
 
 public class FormPopUp extends Fragment {
 
@@ -72,7 +63,7 @@ public class FormPopUp extends Fragment {
 
 
 
-        name = view.findViewById(R.id.name);
+        name = view.findViewById(R.id.filtrage1);
         profile = view.findViewById(R.id.profile);
         login = view.findViewById(R.id.login);
         password = view.findViewById(R.id.argax);
