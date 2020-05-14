@@ -1,5 +1,7 @@
 package com.example.bioregproject.entities;
 
+import android.graphics.Color;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -9,8 +11,8 @@ import androidx.room.PrimaryKey;
 public class CategorieTache {
     @PrimaryKey(autoGenerate = true) private int idCat;
     @ColumnInfo(name = "name") private String name;
-    private boolean isSelected;
     private byte[] categorieImage;
+    private Color couleur;
 
     public byte[] getCategorieImage() {
         return categorieImage;
@@ -21,22 +23,23 @@ public class CategorieTache {
     }
 
     @Ignore
-    public CategorieTache(String name,Boolean isSelected) {
+    public CategorieTache(String name,byte[] categorieImage ,Color couleur ) {
 
         this.name = name;
-        this.isSelected=isSelected;
-    }
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
+        this.categorieImage = categorieImage;
+        this.couleur = couleur;
     }
 
 
+    public Color getCouleur() {
+        return couleur;
+    }
 
-     public CategorieTache() {super();
+    public void setCouleur(Color couleur) {
+        this.couleur = couleur;
+    }
+
+    public CategorieTache() {super();
     }
 
     public int getIdCat() {
@@ -55,15 +58,7 @@ public class CategorieTache {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CategorieTache)) return false;
-        CategorieTache that = (CategorieTache) o;
-        return idCat == that.idCat &&
-                isSelected == that.isSelected &&
-                name.equals(that.name);
-    }
+  
 
 
 }

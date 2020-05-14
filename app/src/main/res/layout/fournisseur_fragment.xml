@@ -18,8 +18,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:cardBackgroundColor="#4D000000"
             app:cardCornerRadius="8dp"
             app:cardElevation="0dp"
@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="0.5dp"
                 app:cardElevation="0dp"
@@ -62,8 +62,12 @@
                             android:id="@+id/textView28U"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:text="!!!!!!!!!!!!!!!!"
+                            android:layout_marginStart="150dp"
+                            android:layout_marginLeft="150dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="150dp"
+                            android:layout_marginRight="150dp"
+                            android:text="Edit Contact"
                             android:textColor="@color/White"
                             android:textSize="20sp"
                             android:textStyle="bold"
@@ -75,7 +79,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="40dp"
                     android:layout_marginTop="60dp"
@@ -83,18 +87,18 @@
                     android:layout_marginBottom="30dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/nameFrsU"
-                            android:layout_width="match_parent"
+                            android:layout_width="400dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginRight="30dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
@@ -108,13 +112,13 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/categorieFrsU"
-                            android:layout_width="match_parent"
+                            android:layout_width="400dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginLeft="30dp"
                             android:layout_marginTop="5dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginRight="30dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/nameFrsU">
@@ -128,13 +132,13 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/numeroFrsU"
-                            android:layout_width="match_parent"
+                            android:layout_width="400dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginLeft="30dp"
                             android:layout_marginTop="5dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginRight="30dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/categorieFrsU">
@@ -149,13 +153,14 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/emailFrsU"
-                            android:layout_width="match_parent"
+                            android:layout_width="400dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginLeft="30dp"
                             android:layout_marginTop="5dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginRight="30dp"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/numeroFrsU">
 
@@ -169,13 +174,13 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/adressefrsU"
-                            android:layout_width="match_parent"
+                            android:layout_width="400dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginLeft="30dp"
                             android:layout_marginTop="5dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginRight="30dp"
                             app:layout_constraintEnd_toEndOf="@id/emailFrsU"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/emailFrsU">
@@ -191,17 +196,20 @@
                             android:id="@+id/saveU"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
                             android:layout_marginEnd="20dp"
                             android:layout_marginRight="20dp"
                             android:layout_marginBottom="10dp"
                             android:text="Save"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/adressefrsU" />
 
                         <Button
                             android:id="@+id/cancelU"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
                             android:layout_marginEnd="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginBottom="10dp"
@@ -209,7 +217,8 @@
                             android:textColor="@color/colorPrimary"
                             app:backgroundTint="@color/White"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/saveU" />
+                            app:layout_constraintEnd_toStartOf="@+id/saveU"
+                            app:layout_constraintTop_toBottomOf="@+id/adressefrsU" />
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
