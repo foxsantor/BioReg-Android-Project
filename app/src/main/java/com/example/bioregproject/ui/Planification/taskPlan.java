@@ -195,28 +195,36 @@ public class taskPlan extends Fragment {
                 undone.setTextColor(getActivity().getResources().getColor(R.color.White));
                 undone.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
                 reset.setVisibility(View.INVISIBLE);
+                task.setVisibility(View.VISIBLE);
+                CardSearch.setVisibility(View.GONE);
             }
         });
         undone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                task.setVisibility(View.GONE);
+                CardSearch.setVisibility(View.VISIBLE);
                 mViewModel.filterTextAll.setValue("Open,Invalid");
                 done.setTextColor(getActivity().getResources().getColor(R.color.White));
                 done.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
                 undone.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
                 undone.setBackgroundColor(getActivity().getResources().getColor(R.color.White));
                 reset.setVisibility(View.VISIBLE);
+                keyvalue.setText("Found "+number+" search results ");
             }
         });
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                task.setVisibility(View.GONE);
+                CardSearch.setVisibility(View.VISIBLE);
                 mViewModel.filterTextAll.setValue("Done,");
                 done.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
                 done.setBackgroundColor(getActivity().getResources().getColor(R.color.White));
                 undone.setTextColor(getActivity().getResources().getColor(R.color.White));
                 undone.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
                 reset.setVisibility(View.VISIBLE);
+                keyvalue.setText("Found "+number+" search results ");
             }
         });
 
@@ -275,7 +283,8 @@ public class taskPlan extends Fragment {
             public void afterTextChanged(Editable editable) {
                 //just set the current value to search.
                 mViewModel.filterTextAll.setValue("%" + editable.toString() + "%");
-
+                CardSearch.setVisibility(View.VISIBLE);
+                task.setVisibility(View.GONE);
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -289,9 +298,6 @@ public class taskPlan extends Fragment {
                 {
                     task.setVisibility(View.VISIBLE);
                     CardSearch.setVisibility(View.GONE);
-                }else
-                {
-                    keyvalue.setVisibility(View.GONE);
                 }
             }
         });
