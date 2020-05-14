@@ -1,26 +1,38 @@
 package com.example.bioregproject.ui.Settings.CloudSync;
 
+import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.bioregproject.R;
+import com.example.bioregproject.Utils.DatabaseExporter;
 import com.example.bioregproject.Utils.DriveServiceHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -29,6 +41,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.json.gson.GsonFactory;
@@ -43,16 +56,23 @@ import java.util.Collections;
 public class CloudFragment extends Fragment {
 
     private CloudViewModel mViewModel;
-    private Button sync;
+    private FloatingActionButton sync;
     //private DriveServiceHelper driveServiceHelper;
     private static final int REQUEST_CODE_SIGN_IN = 1;
-    private static final int REQUEST_CODE_OPEN_DOCUMENT = 2;
+    private static final int REQUEST_CODE_OPEN_DOCUMENT = 6;
+    private static  final int REQUEST_CODE_UPLOAD = 7;
+    private static final int SYNC_EVERYTHING   =200;
+    private static  int SYNC_CODE = 0;
 
     private DriveServiceHelper mDriveServiceHelper;
-    private String mOpenFileId;
+    private String mOpenFileId,email,nameS;
+    private Button signOff;
+    private ConstraintLayout loadingLayout;
+    private TextView name,mail,profileT;
+    private Switch history,account;
+    private ImageView profile;
+    private ProgressBar progressBar;
 
-    private EditText mFileTitleEditText;
-    private EditText mDocContentEditText;
 
     public static CloudFragment newInstance() {
         return new CloudFragment();
@@ -67,22 +87,83 @@ public class CloudFragment extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(CloudViewModel.class);
-        mFileTitleEditText = view.findViewById(R.id.file_title_edittext);
-        mDocContentEditText = view.findViewById(R.id.doc_content_edittext);
+        signOff = view.findViewById(R.id.googleSign);
+        profileT = view.findViewById(R.id.portraitT);
+        profileT.setBackground(null);
+        sync = view.findViewById(R.id.SyncNow);
+        name = view.findViewById(R.id.name);
+        mail = view.findViewById(R.id.sync);
+        history = view.findViewById(R.id.historysw);
+        account= view.findViewById(R.id.accountSw);
+        profile= view.findViewById(R.id.portrait);
+        loadingLayout = view.findViewById(R.id.leoadding);
+        progressBar = view.findViewById(R.id.progressBar);
 
-        // Set the onClick listeners for the button bar.
-        view.findViewById(R.id.open_btn).setOnClickListener(v -> openFilePicker());
-        view.findViewById(R.id.create_btn).setOnClickListener(v -> createFile());
-        view.findViewById(R.id.save_btn).setOnClickListener(v -> saveFile());
-        view.findViewById(R.id.query_btn).setOnClickListener(v -> query());
+        loadingLayout.setVisibility(View.VISIBLE);
+        //progressBar.getProgressDrawable().setColorFilter(getActivity().getResources().getColor(R.color.officialBlue),android.graphics.PorterDuff.Mode.MULTIPLY);
+        //progressBar.setProgressTintList(ColorStateList.valueOf(getActivity().getResources().getColor(R.color.officialBlue)));
+
+        requestSignIn();
+        profileT.setVisibility(View.INVISIBLE);
+        profile.setVisibility(View.INVISIBLE);
+
+
+
+        account.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                   SYNC_CODE = 2;
+                }else
+                {
+                    SYNC_CODE = 0;
+                }
+            }
+        });
+
+        history.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    SYNC_CODE = 2;
+                }else
+                {
+                    SYNC_CODE = 0;
+                }
+            }
+        });
+        sync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(SYNC_CODE != 0)
+                {
+                    requestSignIn();
+                }else {
+                    Toast.makeText(getActivity(), "Nothing to Sync please check at least one table ", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        signOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestSignOff();
+
+            }
+        });
 
         // Authenticate the user. For most apps, this should be done when the user performs an
         // action that requires Drive access rather than in onCreate.
-        requestSignIn();
+
+
+       // DatabaseExporter.ExporterCSV("history_table",getActivity());
 
 
 
@@ -179,7 +260,6 @@ public class CloudFragment extends Fragment {
                     handleSignInResult(resultData);
                 }
                 break;
-
             case REQUEST_CODE_OPEN_DOCUMENT:
                 if (resultCode == Activity.RESULT_OK && resultData != null) {
                     Uri uri = resultData.getData();
@@ -205,7 +285,20 @@ public class CloudFragment extends Fragment {
                         .requestScopes(new Scope(DriveScopes.DRIVE_FILE))
                         .build();
         GoogleSignInClient client = GoogleSignIn.getClient(getActivity(), signInOptions);
+        //loadingLayout.setVisibility(View.GONE);
+        // The result of the sign-in Intent is handled in onActivityResult.
+        startActivityForResult(client.getSignInIntent(), REQUEST_CODE_SIGN_IN);
+    }
 
+    private void requestSignOff() {
+        GoogleSignInOptions signInOptions =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .requestScopes(new Scope(DriveScopes.DRIVE_FILE))
+                        .build();
+        GoogleSignInClient client = GoogleSignIn.getClient(getActivity(), signInOptions);
+        client.signOut();
+        //loadingLayout.setVisibility(View.GONE);
         // The result of the sign-in Intent is handled in onActivityResult.
         startActivityForResult(client.getSignInIntent(), REQUEST_CODE_SIGN_IN);
     }
@@ -215,6 +308,8 @@ public class CloudFragment extends Fragment {
      * #requestSignIn()}.
      */
     private void handleSignInResult(Intent result) {
+
+        loadingLayout.setVisibility(View.VISIBLE);
         GoogleSignIn.getSignedInAccountFromIntent(result)
                 .addOnSuccessListener(googleAccount -> {
 
@@ -224,6 +319,19 @@ public class CloudFragment extends Fragment {
                             GoogleAccountCredential.usingOAuth2(
                                     getActivity(), Collections.singleton(DriveScopes.DRIVE_FILE));
                     credential.setSelectedAccount(googleAccount.getAccount());
+                    name.setText(googleAccount.getDisplayName());
+                    mail.setText("Syncing to "+googleAccount.getEmail());
+                    if(googleAccount.getPhotoUrl()==null)
+                    {
+                      profile.setVisibility(View.GONE);
+                      profileT.setVisibility(View.VISIBLE);
+                      profileT.setText(""+googleAccount.getDisplayName().charAt(0));
+                    }
+                    else {
+                        profileT.setVisibility(View.GONE);
+                        profile.setVisibility(View.VISIBLE);
+                        Glide.with(getActivity()).load(googleAccount.getPhotoUrl()).into(profile);
+                    }
                     Drive googleDriveService =
                             new Drive.Builder(
                                     AndroidHttp.newCompatibleTransport(),
@@ -235,9 +343,21 @@ public class CloudFragment extends Fragment {
                     // The DriveServiceHelper encapsulates all REST API and SAF functionality.
                     // Its instantiation is required before handling any onClick actions.
                     mDriveServiceHelper = new DriveServiceHelper(googleDriveService);
+                    loadingLayout.setVisibility(View.GONE);
+                    if(account.isChecked()){
+                        mDriveServiceHelper.saveFileDatabase("history_table","history_table","history_table",getActivity());
+                    }
+                    if(history.isChecked())
+                    {
+                        mDriveServiceHelper.saveFileDatabase("account_table","account_table","account_table",getActivity());
+                    }
+
+
+
                 })
-                .addOnFailureListener(exception -> Log.e("error", "Unable to sign in.", exception));
-    }
+                .addOnFailureListener(exception -> Log.e("error", "Unable to sign in.", exception));}
+
+
 
     /**
      * Opens the Storage Access Framework file picker using {@link #REQUEST_CODE_OPEN_DOCUMENT}.
@@ -266,8 +386,6 @@ public class CloudFragment extends Fragment {
                         String name = nameAndContent.first;
                         String content = nameAndContent.second;
 
-                        mFileTitleEditText.setText(name);
-                        mDocContentEditText.setText(content);
 
                         // Files opened through SAF cannot be modified.
                         setReadOnlyMode();
@@ -303,8 +421,7 @@ public class CloudFragment extends Fragment {
                         String name = nameAndContent.first;
                         String content = nameAndContent.second;
 
-                        mFileTitleEditText.setText(name);
-                        mDocContentEditText.setText(content);
+
 
                         setReadWriteMode(fileId);
                     })
@@ -320,8 +437,8 @@ public class CloudFragment extends Fragment {
         if (mDriveServiceHelper != null && mOpenFileId != null) {
             Log.d("error", "Saving " + mOpenFileId);
 
-            String fileName = mFileTitleEditText.getText().toString();
-            String fileContent = mDocContentEditText.getText().toString();
+            String fileName = "";
+            String fileContent = "";
 
             mDriveServiceHelper.saveFile(mOpenFileId, fileName, fileContent)
                     .addOnFailureListener(exception ->
@@ -344,8 +461,8 @@ public class CloudFragment extends Fragment {
                         }
                         String fileNames = builder.toString();
 
-                        mFileTitleEditText.setText("File List");
-                        mDocContentEditText.setText(fileNames);
+//                        mFileTitleEditText.setText("File List");
+//                        mDocContentEditText.setText(fileNames);
 
                         setReadOnlyMode();
                     })
@@ -357,8 +474,8 @@ public class CloudFragment extends Fragment {
      * Updates the UI to read-only mode.
      */
     private void setReadOnlyMode() {
-        mFileTitleEditText.setEnabled(false);
-        mDocContentEditText.setEnabled(false);
+//        mFileTitleEditText.setEnabled(false);
+//        mDocContentEditText.setEnabled(false);
         mOpenFileId = null;
     }
 
@@ -366,8 +483,8 @@ public class CloudFragment extends Fragment {
      * Updates the UI to read/write mode on the document identified by {@code fileId}.
      */
     private void setReadWriteMode(String fileId) {
-        mFileTitleEditText.setEnabled(true);
-        mDocContentEditText.setEnabled(true);
+//        mFileTitleEditText.setEnabled(true);
+//        mDocContentEditText.setEnabled(true);
         mOpenFileId = fileId;
     }
 }

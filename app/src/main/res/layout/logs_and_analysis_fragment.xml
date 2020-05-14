@@ -179,11 +179,12 @@
                             app:helperTextEnabled="false"
                             app:hintEnabled="true"
                             app:hintTextColor="@color/officialBlue"
+                            app:startIconDrawable="@drawable/ic_search_blacki_24dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/csv"
                             app:layout_constraintStart_toEndOf="@+id/news"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:startIconDrawable="@drawable/ic_search_blacki_24dp">
+                           >
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
