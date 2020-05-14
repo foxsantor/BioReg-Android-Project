@@ -117,7 +117,13 @@
         android:id="@+id/taskPlan"
         android:name="com.example.bioregproject.ui.Planification.taskPlan"
         android:label="task_plan_fragment"
-        tools:layout="@layout/task_plan_fragment" />
+        tools:layout="@layout/task_plan_fragment" >
+        <action
+            android:id="@+id/action_taskPlan_to_taskPlanManage"
+            app:destination="@id/taskPlanManage"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
     <fragment
         android:id="@+id/hisotrys"
         android:name="com.example.bioregproject.ui.History.Hisotry"
@@ -128,4 +134,16 @@
         android:name="com.example.bioregproject.ui.Settings.OilSetting.OilSettingFragment"
         android:label="oil_setting_fragment"
         tools:layout="@layout/oil_setting_fragment" />
+    <fragment
+        android:id="@+id/taskPlanManage"
+        android:name="com.example.bioregproject.ui.Planification.taskPlanManage"
+        android:label="task_plan_manage_fragment"
+        tools:layout="@layout/task_plan_manage_fragment" >
+        <action
+            android:id="@+id/action_taskPlanManage_to_taskPlan"
+            app:destination="@id/taskPlan"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+
 </navigation>
