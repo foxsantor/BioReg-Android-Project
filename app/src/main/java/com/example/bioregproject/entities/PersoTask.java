@@ -18,6 +18,7 @@ public class PersoTask {
     @PrimaryKey(autoGenerate = true)
     private long id;
     private String piority;
+    private Date validationDate;
     private String name;
     private String ownerName;
     private long assginedId;
@@ -31,6 +32,14 @@ public class PersoTask {
     @Ignore
     private long objectId;
 
+
+    public Date getValidationDate() {
+        return validationDate;
+    }
+
+    public void setValidationDate(Date validationDate) {
+        this.validationDate = validationDate;
+    }
 
     public String getPiority() {
         return piority;

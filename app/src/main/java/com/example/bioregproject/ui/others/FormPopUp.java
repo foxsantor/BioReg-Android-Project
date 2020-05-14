@@ -120,6 +120,7 @@ public class FormPopUp extends Fragment {
                          Glide.with(getActivity()).asBitmap().load(imageBytes).into(imagex);
                          MainActivity.dismissMessage();
                          Navigation.findNavController(v).navigate(R.id.action_formPopUp_to_listAccountPopUp);
+                         Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.mainMenu);
 
                      }else
                      {

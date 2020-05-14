@@ -61,7 +61,13 @@ public class MyTaskAdapter extends ListAdapter<PersoTask,MyTaskAdapter.PersoTask
 
         @Override
         public boolean areContentsTheSame(@NonNull PersoTask oldItem, @NonNull PersoTask newItem) {
-            return  oldItem.getCreation().equals(newItem.getCreation());
+            return  oldItem.getCreation().equals(newItem.getCreation())&&
+                    oldItem.getState().equals(newItem.getState())&&
+                    oldItem.getDue().equals(newItem.getDue())&&
+                    oldItem.getOwnerName().equals(newItem.getOwnerName())&&
+                    oldItem.getPiority().equals(newItem.getPiority())&&
+                    oldItem.getAssginedId()==oldItem.getAssginedId()&&
+                    oldItem.getAssignedName().equals(oldItem.getAssignedName());
         }
     };
 
@@ -86,15 +92,43 @@ public class MyTaskAdapter extends ListAdapter<PersoTask,MyTaskAdapter.PersoTask
         String owner = currentItem.getOwnerName();
         String stats = currentItem.getState();
         Date due = currentItem.getDue();
-        String formater;
+        String formater,dueString2;
         String priority = currentItem.getPiority();
+        holder.validation.setVisibility(View.GONE);
+        Date now = new Date();
         final String dueString = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(due);
-        if(mode == 2)
+        if (currentItem.getDue().compareTo(now) <= 0)
         {
-            formater = "<font color='#1877F2'><strong>"+title+"</strong></font>"+" due "+"<u>"+dueString+"</u>"+" assigned to "+"<strong>"+currentItem.getAssignedName()+"</strong>"+" Created:"+p.format(currentItem.getCreation()) ;
+            holder.body.setCardBackgroundColor(mContext.getResources().getColor(R.color.disabled));
+            dueString2 ="<font color='#fb4444'><u>"+dueString+"</u></font>";
+            if(mode != 2)
+            {
+                holder.checkBox.setClickable(false);
+                holder.checkBox.setEnabled(false);
+            }
         }else
         {
-            formater =  "<font color='#1877F2'><strong>"+title+"</strong></font>"+" due "+"<u>"+dueString+"</u>"+" Created: "+p.format(currentItem.getCreation()) ;
+            dueString2="<u>"+dueString+"</u>";
+        }
+
+        if(stats.equals("Done"))
+        {
+            final String validationDate = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(currentItem.getValidationDate());
+            holder.validation.setVisibility(View.VISIBLE);
+            formater =  "<font color='#00A86B'><strong>Done on: "+validationDate+"</strong></font>";
+            holder.validation.setText(Html.fromHtml(formater));
+            if(mode !=2)
+            {
+                holder.checkBox.setClickable(false);
+                holder.checkBox.setEnabled(false);
+            }
+        }
+        if(mode == 2)
+        {
+            formater = "<font color='#1877F2'><strong>"+title+"</strong></font>"+" due "+dueString2+" assigned to "+"<strong>"+currentItem.getAssignedName()+"</strong>"+" Created:"+p.format(currentItem.getCreation()) ;
+        }else
+        {
+            formater =  "<font color='#1877F2'><strong>"+title+"</strong></font>"+" due "+dueString2+" Created: "+p.format(currentItem.getCreation()) ;
         }
 
         holder.itemText.setText(Html.fromHtml(formater));
@@ -138,21 +172,24 @@ public class MyTaskAdapter extends ListAdapter<PersoTask,MyTaskAdapter.PersoTask
 
     class PersoTaskHolder extends RecyclerView.ViewHolder {
 
-        public CardView color;
-        public TextView itemText,priority;
+        public CardView color,body;
+        public TextView itemText,priority,validation;
         public CheckBox checkBox;
         public ImageButton mark;
         public ImageView prorityImage;
 
 
+
         public PersoTaskHolder(View itemView) {
             super(itemView);
             color = itemView.findViewById(R.id.color);
+            body = itemView.findViewById(R.id.body);
             itemText = itemView.findViewById(R.id.priority);
             checkBox = itemView.findViewById(R.id.check);
             priority = itemView.findViewById(R.id.itemText);
             mark = itemView.findViewById(R.id.mark);
             prorityImage = itemView.findViewById(R.id.imageView13);
+            validation =itemView.findViewById(R.id.validation);
 
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override

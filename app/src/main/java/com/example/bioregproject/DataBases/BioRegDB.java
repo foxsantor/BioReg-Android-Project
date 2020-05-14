@@ -25,7 +25,7 @@ import com.example.bioregproject.entities.Products;
 
 import java.util.Date;
 
-@Database(entities = {Account.class, Category.class, ProductLogs.class, Products.class, Notification.class, History.class, PersoTask.class},version = 8)
+@Database(entities = {Account.class, Category.class, ProductLogs.class, Products.class, Notification.class, History.class, PersoTask.class},version = 9)
 
 public abstract class BioRegDB  extends RoomDatabase {
 

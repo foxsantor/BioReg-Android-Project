@@ -65,6 +65,11 @@ public class PersoTaskRepository {
         return PersoTaskDAO.loadPersoTaskSpec(name,id);
     }
 
+    public LiveData<List<PersoTask>> loadPersoTaskOne(long id)
+    {
+        return PersoTaskDAO.loadPersoTasksOne(id);
+    }
+
 
     private static class InsertPersoTaskAsynTask extends AsyncTask<PersoTask,Void,Void>
     {

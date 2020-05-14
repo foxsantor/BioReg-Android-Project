@@ -53,6 +53,11 @@ public interface PersoTaskDAO {
     @Query("SELECT * FROM parsotask_table where state=:state or state=:stat2")
     DataSource.Factory<Integer, PersoTask> loadAllPersoTaskState2(String state,String stat2);
 
+    @Query("SELECT * FROM parsotask_table where state=:state and assginedId =:id")
+    DataSource.Factory<Integer, PersoTask> loadAllPersoTaskStateAdmin(String state,long id);
+    @Query("SELECT * FROM parsotask_table where state=:state or state=:stat2 and assginedId =:id")
+    DataSource.Factory<Integer, PersoTask> loadAllPersoTaskState2Admin(String state,String stat2,long id);
+
     @Query("SELECT * FROM parsotask_table where name LIKE  :name  or description LIKE :name or assignedName like :name" )
     DataSource.Factory<Integer, PersoTask> loadAllProductbyName(String name);
 

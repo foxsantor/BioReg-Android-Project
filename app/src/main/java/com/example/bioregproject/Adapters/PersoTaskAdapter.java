@@ -35,6 +35,7 @@ import com.example.bioregproject.entities.ExternalPersoTask;
 import com.example.bioregproject.entities.History;
 import com.example.bioregproject.entities.PersoTask;
 import com.example.bioregproject.ui.History.DeviceHistory;
+import com.example.bioregproject.ui.Planification.taskPlan;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -49,6 +50,7 @@ public class PersoTaskAdapter extends ListAdapter<ExternalPersoTask,PersoTaskAda
     private OnItemClickLisnter listener;
     private Context mContext;
     private Activity activity;
+    private com.example.bioregproject.ui.Planification.taskPlan taskPlan;
     private TextView itemSelected;
     private static int counter;
     private Button markDone;
@@ -110,24 +112,14 @@ public class PersoTaskAdapter extends ListAdapter<ExternalPersoTask,PersoTaskAda
             }
         });
 
-        clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                counter=0;
-                Navigation.findNavController(activity,R.id.fragmentHistory).navigate(R.id.deviceHistory);
-                itemSelected.setVisibility(View.GONE);
-                clear.setVisibility(View.GONE);
-
-            }
-        });
         PrettyTime p = new PrettyTime();
         Date creation = currentItem.getCreation();
         MyTaskAdapter innerExternalPersoTaskAdpater =new MyTaskAdapter(mContext,activity,1);
         String indicator;
-        final String creationString = new SimpleDateFormat("EEEE,MMMMM d, yyyy").format(creation);
-        if(DateUtils.isToday(creation.getTime() + DateUtils.DAY_IN_MILLIS))
+        final String creationString = new SimpleDateFormat(" EEEE, MMMMM d, yyyy").format(creation);
+        if(DateUtils.isToday(creation.getTime() - DateUtils.DAY_IN_MILLIS))
         {
-            indicator ="Yesterday - ";
+            indicator ="Tomorrow - ";
         }else if (DateUtils.isToday(creation.getTime()))
         {
             indicator ="Today - ";
@@ -138,6 +130,25 @@ public class PersoTaskAdapter extends ListAdapter<ExternalPersoTask,PersoTaskAda
         holder.dateExternalPersoTask.setText(indicator+creationString);
         holder.dateRecyle.setLayoutManager(new LinearLayoutManager(mContext));
         holder.dateRecyle.setAdapter(innerExternalPersoTaskAdpater);
+        markDone.setText("Mark as Done");
+        markDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    taskPlan.UpdateTask(listsOfDeletableItems);
+                    counter=0;
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Navigation.findNavController(v).navigate(R.id.taskPlan);
+                            itemSelected.setVisibility(View.INVISIBLE);
+                            markDone.setVisibility(View.INVISIBLE);
+                            clear.setVisibility(View.INVISIBLE);
+                            handler.removeCallbacksAndMessages(null);
+                        }
+                    }, 1000);
+            }
+        });
         innerExternalPersoTaskAdpater.submitList(currentItem.getList());
         innerExternalPersoTaskAdpater.setOnIteemClickListener(new MyTaskAdapter.OnItemClickLisnter() {
             @Override
@@ -153,27 +164,23 @@ public class PersoTaskAdapter extends ListAdapter<ExternalPersoTask,PersoTaskAda
                     listsOfDeletableItems.remove(id);
                     itemSelected.setText(""+counter+" Selected");
                     if(counter == 0){
-                        itemSelected.setVisibility(View.GONE);
-                        clear.setVisibility(View.GONE);
+                        itemSelected.setVisibility(View.INVISIBLE);
+                        clear.setVisibility(View.INVISIBLE);
+                        markDone.setVisibility(View.INVISIBLE);
                     }
-
                 }
                 else {
                     counter++;
                     listsOfDeletableItems.add(id);
                     itemSelected.setVisibility(View.VISIBLE);
+                    markDone.setVisibility(View.VISIBLE);
                     clear.setVisibility(View.VISIBLE);
-                    itemSelected.setText(""+counter+" Selected");}
+                    itemSelected.setText(""+counter+" Selected");
+                }
             }
-
-
         });
 
-
-
 }
-
-
     public ExternalPersoTask getExternalPersoTaskAt(int postion) {
         return getItem(postion);
     }

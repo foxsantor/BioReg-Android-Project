@@ -224,7 +224,7 @@ public class taskPlanManage extends Fragment {
             @Override
             public void onClick(View v) {
                 if(!StaticUse.validateEmpty(title,"Title") | !StaticUse.validateEmpty(due,"Due Date")
-                        |!StaticUse.validateSpinner(prioS,priority) | !StaticUse.validateSpinner(StatS,stats)
+                        |!StaticUse.validateSpinner(prioS,priority,"Priority") | !StaticUse.validateSpinner(StatS,stats,"Status")
                 ){return;}
                 else if(idChosen==0 || fullName.equals("")){
                     Toast.makeText(getActivity(), "Please assign a User", Toast.LENGTH_SHORT).show();
@@ -233,6 +233,7 @@ public class taskPlanManage extends Fragment {
                 else {
                     SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy HH:mm");
                     PersoTask persoTask = new PersoTask();
+                    persoTask.setValidationDate(new Date());
                     persoTask.setAssginedId(idChosen);
                     persoTask.setPiority(prioS);
                     persoTask.setCreation(new Date());

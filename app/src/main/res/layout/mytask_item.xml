@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -32,6 +33,19 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/validation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="16dp"
+                android:text="Done on 12/12/2020 at 22:pm"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageView13"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/itemText"
@@ -61,7 +75,7 @@
                 android:padding="16dp"
                 android:text="Cleanning bathroom assinged by adminstarotort"
                 android:textSize="15sp"
-                app:layout_constraintEnd_toStartOf="@+id/imageView13"
+                app:layout_constraintEnd_toStartOf="@+id/validation"
                 app:layout_constraintStart_toEndOf="@+id/check"
                 app:layout_constraintTop_toTopOf="parent" />
 
