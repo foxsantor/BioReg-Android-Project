@@ -41,10 +41,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.bioregproject.Adapters.CategoryAdapter;
+import com.example.bioregproject.Adapters.PostSettingAdapter;
 import com.example.bioregproject.Adapters.SurfaceforCategroryAdapter;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.CategorieTache;
+import com.example.bioregproject.entities.Post;
 import com.example.bioregproject.entities.Realtions.CategorywithSurfaces;
 import com.example.bioregproject.entities.Surface;
 import com.google.android.material.textfield.TextInputLayout;
@@ -52,6 +54,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
@@ -84,6 +87,16 @@ public class GeneralSettings extends Fragment {
     private CategoryAdapter adapter2;
     private ImageView imageCategoryDetail;
     private Button doneDetails,CancelDetails;
+    private RecyclerView postRecycleView ;
+    private PostSettingAdapter postAdapter;
+    private Button add,save,cancel,updateB,cancel1;
+    private ConstraintLayout ajout,updateConstraint;
+    private TextInputLayout namePost,namePost1;
+    private ImageButton exit,exit1;
+    private NestedScrollView nestes;
+    private Button indicateurPost1, indicateurPost2 ,indicateurPost3 ,indicateurPost4;
+    private ConstraintLayout veriffiltrage;
+
 
 
 
@@ -136,6 +149,25 @@ public class GeneralSettings extends Fragment {
         doneDetails=view.findViewById(R.id.doneDetails);
 
 
+        //oil
+        postRecycleView = view.findViewById(R.id.postRecy);
+        add = view.findViewById(R.id.addNewPost);
+        namePost = view.findViewById(R.id.namePost);
+        save = view.findViewById(R.id.save);
+        cancel = view.findViewById(R.id.cancel);
+        ajout = view.findViewById(R.id.ajout);
+        exit = view.findViewById(R.id.exit);
+        namePost1 = view.findViewById(R.id.namePost1);
+        updateB = view.findViewById(R.id.update);
+        updateConstraint=view.findViewById(R.id.updateConstraint);
+        cancel1 = view.findViewById(R.id.cancel1);
+        exit1 = view.findViewById(R.id.exit1);
+        nestes = view.findViewById(R.id.nestedPost);
+        indicateurPost1 = view.findViewById(R.id.indicateurPost);
+        indicateurPost2 = view.findViewById(R.id.indicateurPost2);
+        indicateurPost3 = view.findViewById(R.id.indicateurPost4);
+        indicateurPost4 = view.findViewById(R.id.indicateurPost5);
+        veriffiltrage=view.findViewById(R.id.verifFiltrage);
 
 
 
@@ -143,6 +175,164 @@ public class GeneralSettings extends Fragment {
 
 
 
+
+
+
+
+        //oil Settings
+
+
+        indicateurPost1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        indicateurPost2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        indicateurPost3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                indicateurPost3.setVisibility(View.GONE);
+                indicateurPost4.setVisibility(View.VISIBLE);
+                veriffiltrage.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        indicateurPost4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                indicateurPost3.setVisibility(View.VISIBLE);
+                indicateurPost4.setVisibility(View.GONE);
+                veriffiltrage.setVisibility(View.GONE);
+            }
+        });
+
+
+
+
+
+        postAdapter = new PostSettingAdapter(getActivity());
+        postRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
+        postRecycleView.setHasFixedSize(true);
+        postRecycleView.setAdapter(postAdapter);
+        mViewModel.getAllPost().observe(this, new Observer<List<Post>>() {
+            @Override
+            public void onChanged(List<Post> posts) {
+                if (posts.size()>0) {
+                    nestes.setVisibility(View.VISIBLE);
+                    postAdapter.submitList(posts);
+                    postAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+        postAdapter.setOnItemClickListener(new PostSettingAdapter.OnItemClickLisnter() {
+            @Override
+            public void onItemClick(Post Post) {
+
+            }
+
+            @Override
+            public void delete(Post Post) {
+                mViewModel.deleteOil(Post);
+            }
+
+            @Override
+            public void update(Post Post) {
+                updateConstraint.setVisibility(View.VISIBLE);
+                affichage.setVisibility(View.GONE);
+                namePost1.getEditText().setText(Post.getName());
+                updateB.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Post.setName(namePost1.getEditText().getText().toString());
+                        Post.setUpdatedAT(new Date());
+                        mViewModel.updateOil(Post);
+                        updateConstraint.setVisibility(View.GONE);
+                        affichage.setVisibility(View.VISIBLE);
+
+
+                    }
+                });
+
+
+            }
+        });
+
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ajout.setVisibility(View.VISIBLE);
+                affichage.setVisibility(View.GONE);
+
+            }
+        });
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Post post = new Post();
+                post.setName(namePost.getEditText().getText().toString());
+                post.setCreation(new Date());
+                post.setUpdatedAT(new Date());
+                mViewModel.insertOil(post);
+                ajout.setVisibility(View.GONE);
+                affichage.setVisibility(View.VISIBLE);
+
+
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ajout.setVisibility(View.GONE);
+                affichage.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ajout.setVisibility(View.GONE);
+                affichage.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        cancel1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateConstraint.setVisibility(View.GONE);
+                affichage.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+
+        exit1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateConstraint.setVisibility(View.GONE);
+                affichage.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+
+
+
+        //Setting Cleaning
 
 
         addNew.setOnClickListener(new View.OnClickListener() {

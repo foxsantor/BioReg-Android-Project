@@ -8,8 +8,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.bioregproject.Repositories.CategorieRepository;
+import com.example.bioregproject.Repositories.PostRepository;
 import com.example.bioregproject.Repositories.SurfaceRepository;
 import com.example.bioregproject.entities.CategorieTache;
+import com.example.bioregproject.entities.Post;
 import com.example.bioregproject.entities.Realtions.CategorywithSurfaces;
 import com.example.bioregproject.entities.Surface;
 
@@ -21,6 +23,8 @@ public class GeneralSettingsViewModel extends AndroidViewModel {
     private LiveData<List<CategorieTache>> allCategorie;
     private LiveData<List<CategorywithSurfaces>>allSurface;
     private LiveData<List<CategorywithSurfaces>>categories;
+    private PostRepository postRepository;
+    private LiveData<List<Post>> allPost;
 
     public GeneralSettingsViewModel(@NonNull Application application) {
         super(application);
@@ -29,6 +33,9 @@ public class GeneralSettingsViewModel extends AndroidViewModel {
         categories=repository.getCategoriesWithSurfaces();
         repositorySurface = new SurfaceRepository(application);
         allSurface=repository.getCategoriesWithSurfaces();
+        postRepository = new PostRepository(application);
+        allPost = postRepository.getAllPost();
+
     }
 
     public void insert(CategorieTache cat){repository.insertOne(cat);}
@@ -40,6 +47,15 @@ public class GeneralSettingsViewModel extends AndroidViewModel {
     public void delete(Surface surface){repositorySurface.delete(surface);}
     public LiveData<List<CategorywithSurfaces>>getAllSurface(){return allSurface;}
     public LiveData<List<CategorywithSurfaces>>getCategories(){return categories;}
+
+    public LiveData<List<Post>> getAllPost(){ return allPost; }
+    public void insertOil(Post post) {
+        postRepository.insert(post);
+    }
+    public void deleteOil(Post post) { postRepository.delete(post); }
+    public void updateOil(Post post) {
+        postRepository.update(post);
+    }
 
 
 
