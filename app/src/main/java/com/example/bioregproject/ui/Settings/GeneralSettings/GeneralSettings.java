@@ -185,6 +185,9 @@ public class GeneralSettings extends Fragment {
         indicateurPost1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                indicateurPost1.setVisibility(View.GONE);
+                indicateurPost2.setVisibility(View.VISIBLE);
+                add.setVisibility(View.VISIBLE);
 
             }
         });
@@ -192,6 +195,9 @@ public class GeneralSettings extends Fragment {
         indicateurPost2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                indicateurPost2.setVisibility(View.GONE);
+                indicateurPost1.setVisibility(View.VISIBLE);
+                add.setVisibility(View.GONE);
 
             }
         });
@@ -227,26 +233,29 @@ public class GeneralSettings extends Fragment {
             @Override
             public void onChanged(List<Post> posts) {
                 if (posts.size()>0) {
-                    nestes.setVisibility(View.VISIBLE);
+                    nestes.setVisibility(View.VISIBLE); }
                     postAdapter.submitList(posts);
                     postAdapter.notifyDataSetChanged();
-                }
+
             }
         });
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView postRecycleView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+               mViewModel.deleteOil(postAdapter.getPostAt(viewHolder.getAdapterPosition()));
+                Toast.makeText(getActivity(), "Post deleted", Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(postRecycleView);
 
         postAdapter.setOnItemClickListener(new PostSettingAdapter.OnItemClickLisnter() {
             @Override
             public void onItemClick(Post Post) {
-
-            }
-
-            @Override
-            public void delete(Post Post) {
-                mViewModel.deleteOil(Post);
-            }
-
-            @Override
-            public void update(Post Post) {
                 updateConstraint.setVisibility(View.VISIBLE);
                 affichage.setVisibility(View.GONE);
                 namePost1.getEditText().setText(Post.getName());
@@ -262,9 +271,9 @@ public class GeneralSettings extends Fragment {
 
                     }
                 });
-
-
             }
+
+
         });
 
 

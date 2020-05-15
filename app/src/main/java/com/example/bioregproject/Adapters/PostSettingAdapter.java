@@ -38,6 +38,9 @@ public class PostSettingAdapter extends ListAdapter <Post, PostSettingAdapter.Po
         }
     };
 
+    public Post getPostAt(int position) {
+        return getItem(position);
+    }
 
 
 
@@ -59,12 +62,10 @@ public class PostSettingAdapter extends ListAdapter <Post, PostSettingAdapter.Po
 
     class PostSettingHolder extends RecyclerView.ViewHolder{
        private TextView namePost;
-       private ImageButton supp,modif;
         public PostSettingHolder(@NonNull View itemView) {
             super(itemView);
             namePost=itemView.findViewById(R.id.textView32);
-            supp=itemView.findViewById(R.id.imageButton4);
-            modif=itemView.findViewById(R.id.imageButton5);
+
 
 
 
@@ -76,29 +77,13 @@ public class PostSettingAdapter extends ListAdapter <Post, PostSettingAdapter.Po
                         listener.onItemClick(getItem(position));
                 }
             });
-            supp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (listener != null && position != RecyclerView.NO_POSITION)
-                        listener.delete(getItem(position));
-                }
-            });
-            modif.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (listener != null && position != RecyclerView.NO_POSITION)
-                        listener.update(getItem(position));
-                }
-            });
+
         }
     }
 
     public interface OnItemClickLisnter {
         void onItemClick(Post Post);
-        void delete(Post Post);
-        void update(Post Post);
+
 
 
     }
