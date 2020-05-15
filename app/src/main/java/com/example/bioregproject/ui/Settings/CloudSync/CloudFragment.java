@@ -69,8 +69,8 @@ public class CloudFragment extends Fragment {
     private Button signOff;
     private ConstraintLayout loadingLayout;
     private TextView name,mail,profileT;
-    private Switch history,account;
-    private ImageView profile;
+    private Switch history,account,products,tasks;
+    private ImageView profile,coud;
     private ProgressBar progressBar;
 
 
@@ -100,7 +100,11 @@ public class CloudFragment extends Fragment {
         mail = view.findViewById(R.id.sync);
         history = view.findViewById(R.id.historysw);
         account= view.findViewById(R.id.accountSw);
+        products = view.findViewById(R.id.traceabilitySw);
+        tasks= view.findViewById(R.id.taskSw);
         profile= view.findViewById(R.id.portrait);
+        coud = view.findViewById(R.id.Coud);
+        Glide.with(getActivity()).load(R.drawable.google_drive_logo).into(coud);
         loadingLayout = view.findViewById(R.id.leoadding);
         progressBar = view.findViewById(R.id.progressBar);
 
@@ -126,7 +130,30 @@ public class CloudFragment extends Fragment {
                 }
             }
         });
-
+        products.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    SYNC_CODE = 2;
+                }else
+                {
+                    SYNC_CODE = 0;
+                }
+            }
+        });
+        tasks.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    SYNC_CODE = 2;
+                }else
+                {
+                    SYNC_CODE = 0;
+                }
+            }
+        });
         history.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -145,6 +172,11 @@ public class CloudFragment extends Fragment {
                 if(SYNC_CODE != 0)
                 {
                     requestSignIn();
+                    history.setChecked(false);
+                    tasks.setChecked(false);
+                    products.setChecked(false);
+                    account.setChecked(false);
+                    
                 }else {
                     Toast.makeText(getActivity(), "Nothing to Sync please check at least one table ", Toast.LENGTH_SHORT).show();
                 }
@@ -350,6 +382,14 @@ public class CloudFragment extends Fragment {
                     if(history.isChecked())
                     {
                         mDriveServiceHelper.saveFileDatabase("account_table","account_table","account_table",getActivity());
+                    }
+                    if(products.isChecked())
+                    {
+                        mDriveServiceHelper.saveFileDatabase("product_table","product_table","product_table",getActivity());
+                    }
+                    if(tasks.isChecked())
+                    {
+                        mDriveServiceHelper.saveFileDatabase("parsotask_table","parsotask_table","parsotask_table",getActivity());
                     }
 
 
