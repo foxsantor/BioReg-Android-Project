@@ -647,7 +647,7 @@
                                             <androidx.constraintlayout.widget.ConstraintLayout
                                                 android:id="@+id/verifFiltrage"
                                                 android:layout_width="0dp"
-                                                android:layout_height="35dp"
+                                                android:layout_height="wrap_content"
                                                 android:visibility="gone"
                                                 app:layout_constraintEnd_toEndOf="parent"
                                                 app:layout_constraintStart_toStartOf="parent"
@@ -656,11 +656,11 @@
                                                 <Switch
                                                     android:id="@+id/switch1"
                                                     android:layout_width="129dp"
-                                                    android:layout_height="29dp"
+                                                    android:layout_height="wrap_content"
                                                     android:layout_marginStart="20dp"
                                                     android:layout_marginLeft="20dp"
-                                                    android:layout_marginTop="10dp"
-                                                    android:layout_marginBottom="10dp"
+                                                    android:layout_marginTop="20dp"
+                                                    android:layout_marginBottom="20dp"
                                                     android:text="Switch"
                                                     app:layout_constraintBottom_toBottomOf="parent"
                                                     app:layout_constraintStart_toStartOf="parent"
@@ -847,7 +847,88 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/filtrageAjout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#19B4ACAC"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/button19"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Cancel"
+                        android:textColor="@color/colorPrimary"
+                        app:backgroundTint="@color/White"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/button18"
+                        app:layout_constraintTop_toBottomOf="@+id/comparator" />
+
+                    <Button
+                        android:id="@+id/button18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Save"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/comparator" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/comparator"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/White"
+                            android:hint="Filtrage" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.cardview.widget.CardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ajoutcategories"
         android:layout_width="0dp"

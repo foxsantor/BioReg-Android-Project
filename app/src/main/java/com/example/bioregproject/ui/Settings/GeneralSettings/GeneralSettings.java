@@ -36,6 +36,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.CategorieTache;
 import com.example.bioregproject.entities.Post;
 import com.example.bioregproject.entities.Realtions.CategorywithSurfaces;
+import com.example.bioregproject.entities.SettingOil;
 import com.example.bioregproject.entities.Surface;
 import com.google.android.material.textfield.TextInputLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -96,6 +98,9 @@ public class GeneralSettings extends Fragment {
     private NestedScrollView nestes;
     private Button indicateurPost1, indicateurPost2 ,indicateurPost3 ,indicateurPost4;
     private ConstraintLayout veriffiltrage;
+    private Switch switch1;
+    private SettingOil settingFiltrage;
+    private int pos;
 
 
 
@@ -168,6 +173,7 @@ public class GeneralSettings extends Fragment {
         indicateurPost3 = view.findViewById(R.id.indicateurPost4);
         indicateurPost4 = view.findViewById(R.id.indicateurPost5);
         veriffiltrage=view.findViewById(R.id.verifFiltrage);
+        switch1 = view.findViewById(R.id.switch1);
 
 
 
@@ -198,6 +204,7 @@ public class GeneralSettings extends Fragment {
                 indicateurPost2.setVisibility(View.GONE);
                 indicateurPost1.setVisibility(View.VISIBLE);
                 add.setVisibility(View.GONE);
+                nestes.setVisibility(View.GONE);
 
             }
         });
@@ -337,6 +344,40 @@ public class GeneralSettings extends Fragment {
 
             }
         });
+
+
+        //switch  affichage
+        mViewModel.getAllSetting().observe(this, new Observer<List<SettingOil>>() {
+            @Override
+            public void onChanged(List<SettingOil> settingOils) {
+
+                if (!settingOils.isEmpty()) {
+                    mViewModel.insertSetting(new SettingOil(false, 0));
+                }else {
+                    pos=settingOils.size();
+                    settingFiltrage = settingOils.get(pos);
+                    switch1.setChecked(settingFiltrage.getVerif());
+
+
+                }
+
+                switch1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (switch1.isChecked()){}
+                        mViewModel.updateSetting(settingFiltrage);
+                    }
+                });
+
+            }
+        });
+
+
+
+
+
+
 
 
 

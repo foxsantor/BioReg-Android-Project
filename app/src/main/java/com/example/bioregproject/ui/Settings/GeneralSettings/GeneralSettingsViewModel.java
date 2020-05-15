@@ -9,10 +9,12 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.bioregproject.Repositories.CategorieRepository;
 import com.example.bioregproject.Repositories.PostRepository;
+import com.example.bioregproject.Repositories.SettingOilRepository;
 import com.example.bioregproject.Repositories.SurfaceRepository;
 import com.example.bioregproject.entities.CategorieTache;
 import com.example.bioregproject.entities.Post;
 import com.example.bioregproject.entities.Realtions.CategorywithSurfaces;
+import com.example.bioregproject.entities.SettingOil;
 import com.example.bioregproject.entities.Surface;
 
 import java.util.List;
@@ -20,11 +22,14 @@ import java.util.List;
 public class GeneralSettingsViewModel extends AndroidViewModel {
     private CategorieRepository repository;
     private SurfaceRepository repositorySurface;
+    private PostRepository postRepository;
+    private SettingOilRepository settingOilRepository;
     private LiveData<List<CategorieTache>> allCategorie;
     private LiveData<List<CategorywithSurfaces>>allSurface;
     private LiveData<List<CategorywithSurfaces>>categories;
-    private PostRepository postRepository;
     private LiveData<List<Post>> allPost;
+    private LiveData<List<SettingOil>> allSetting;
+
 
     public GeneralSettingsViewModel(@NonNull Application application) {
         super(application);
@@ -35,6 +40,8 @@ public class GeneralSettingsViewModel extends AndroidViewModel {
         allSurface=repository.getCategoriesWithSurfaces();
         postRepository = new PostRepository(application);
         allPost = postRepository.getAllPost();
+        settingOilRepository = new SettingOilRepository(application);
+        allSetting=settingOilRepository.getallSettingOils();
 
     }
 
@@ -56,6 +63,18 @@ public class GeneralSettingsViewModel extends AndroidViewModel {
     public void updateOil(Post post) {
         postRepository.update(post);
     }
+
+
+    public LiveData<List<SettingOil>> getAllSetting(){ return allSetting; }
+    public void updateSetting(SettingOil settingOil) {
+        settingOilRepository.update(settingOil);
+    }
+    public void insertSetting(SettingOil settingOil) {
+        settingOilRepository.insert(settingOil);
+    }
+
+
+
 
 
 

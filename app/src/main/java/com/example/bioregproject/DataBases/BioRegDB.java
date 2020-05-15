@@ -20,6 +20,7 @@ import com.example.bioregproject.DAOs.PostDAO;
 import com.example.bioregproject.DAOs.ProductDAO;
 import com.example.bioregproject.DAOs.ProductLogsDAO;
 import com.example.bioregproject.DAOs.ProduitDAO;
+import com.example.bioregproject.DAOs.SettingOilDAO;
 import com.example.bioregproject.DAOs.StorageDAO;
 import com.example.bioregproject.DAOs.SurfaceDao;
 import com.example.bioregproject.DAOs.TacheDao;
@@ -35,13 +36,14 @@ import com.example.bioregproject.entities.Post;
 import com.example.bioregproject.entities.ProductLogs;
 import com.example.bioregproject.entities.Products;
 import com.example.bioregproject.entities.Produit;
+import com.example.bioregproject.entities.SettingOil;
 import com.example.bioregproject.entities.Storage;
 import com.example.bioregproject.entities.Surface;
 import com.example.bioregproject.entities.Tache;
 
 import java.util.Date;
 
-@Database(entities = {Account.class, Category.class, ProductLogs.class, Products.class, Notification.class, History.class, PersoTask.class, Oil.class, Post.class, Tache.class, Surface.class, CategorieTache.class, Fournisseur.class, Produit.class, Storage.class},version = 18)
+@Database(entities = {Account.class, Category.class, ProductLogs.class, Products.class, Notification.class, History.class, PersoTask.class, Oil.class, Post.class, Tache.class, Surface.class, CategorieTache.class, Fournisseur.class, Produit.class, Storage.class, SettingOil.class},version = 20)
 
 public abstract class BioRegDB  extends RoomDatabase {
 
@@ -61,6 +63,8 @@ public abstract class BioRegDB  extends RoomDatabase {
     public abstract FournisseurDAO FournisseurDAO();
     public abstract ProduitDAO ProduitDAO();
     public abstract StorageDAO StorageDAO();
+    public abstract SettingOilDAO SettingoilDAO();
+
 
 
     public static synchronized BioRegDB getInstance(Context context){
