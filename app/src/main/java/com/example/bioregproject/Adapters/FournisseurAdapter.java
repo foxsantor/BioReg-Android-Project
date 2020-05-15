@@ -94,8 +94,6 @@ cardchange=itemView.findViewById(R.id.cardchange);
                     if (listener != null && position != RecyclerView.NO_POSITION) {
                         listener.onItemClick(getItem(position));
 
-                        getItem(position).getName();
-
                     }
                 }
             });

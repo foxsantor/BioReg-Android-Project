@@ -51,7 +51,7 @@ public class StorageAdapter extends ListAdapter <Storage, StorageAdapter.Storage
     @Override
     public void onBindViewHolder(@NonNull StorageHolder holder, int position) {
         Storage currentStorage = getItem(position);
-        holder.categorieandProduit.setText(currentStorage.getCategorie()+","+currentStorage.getProduit());
+        holder.categorieandProduit.setText(currentStorage.getCategorie());
         holder.fournisseur.setText(currentStorage.getFournisseur());
         holder.date.setText(currentStorage.getDateReception().toString());
         holder.quantite.setText(String.valueOf(currentStorage.getQuantite()));
@@ -87,7 +87,7 @@ public class StorageAdapter extends ListAdapter <Storage, StorageAdapter.Storage
     }
 
     class StorageHolder extends RecyclerView.ViewHolder{
-       private TextView categorieandProduit ,date,time,nature,quantite,temperature,fournisseur,accepted,noaccepted;
+       private TextView categorieandProduit ,date,nature,quantite,temperature,fournisseur,accepted,noaccepted;
        private View view26 , viewnon;
        private Button supp , update;
        private ImageView acceptedImage,refusedImage;
@@ -95,7 +95,6 @@ public class StorageAdapter extends ListAdapter <Storage, StorageAdapter.Storage
             super(itemView);
             categorieandProduit=itemView.findViewById(R.id.categorieandnameProduit);
             date=itemView.findViewById(R.id.daterecep);
-            time=itemView.findViewById(R.id.textView49);
             nature=itemView.findViewById(R.id.textView44);
             quantite=itemView.findViewById(R.id.textView43);
             fournisseur=itemView.findViewById(R.id.frsName);
@@ -125,11 +124,34 @@ public class StorageAdapter extends ListAdapter <Storage, StorageAdapter.Storage
                 }
             });
 
+            supp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION)
+                        listener.ondeleteClick(getItem(position));
+
+                }
+            });
+            update.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION)
+                        listener.onUpdateClick(getItem(position));
+
+                }
+            });
+
         }
     }
 
     public interface OnItemClickLisnter {
         void onItemClick(Storage Storage);
+        void ondeleteClick(Storage Storage);
+        void onUpdateClick(Storage Storage);
+
+
     }
 
     public void setOnItemClickListener(OnItemClickLisnter listener) {

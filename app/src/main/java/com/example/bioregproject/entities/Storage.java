@@ -25,8 +25,18 @@ public class Storage {
     private Date dateReception;
     private String natureProduit;
     private Boolean status;
+    private String owner;
 
-    public Storage(String produit, String categorie, int quantite, Date creation, Date updatedAT, String fournisseur, float temperature, Date dateReception, String natureProduit, Boolean status) {
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public Storage(String owner ,String produit, String categorie, int quantite, Date creation, Date updatedAT, String fournisseur, float temperature, Date dateReception, String natureProduit, Boolean status) {
+       this.owner=owner;
         this.produit = produit;
         this.categorie = categorie;
         this.quantite = quantite;

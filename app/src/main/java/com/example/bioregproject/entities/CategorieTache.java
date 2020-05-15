@@ -9,10 +9,22 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "CategorieTache")
 public class CategorieTache {
-    @PrimaryKey(autoGenerate = true) private int idCat;
-    @ColumnInfo(name = "name") private String name;
+
+
+    @PrimaryKey(autoGenerate = true)
+    private int idCat;
+    @ColumnInfo(name = "name")
+    private String name;
     private byte[] categorieImage;
-    private Color couleur;
+
+
+
+    @Ignore
+    public CategorieTache(String name, byte[] categorieImage  ) {
+
+        this.name = name;
+        this.categorieImage = categorieImage;
+    }
 
     public byte[] getCategorieImage() {
         return categorieImage;
@@ -22,22 +34,7 @@ public class CategorieTache {
         this.categorieImage = categorieImage;
     }
 
-    @Ignore
-    public CategorieTache(String name,byte[] categorieImage ,Color couleur ) {
 
-        this.name = name;
-        this.categorieImage = categorieImage;
-        this.couleur = couleur;
-    }
-
-
-    public Color getCouleur() {
-        return couleur;
-    }
-
-    public void setCouleur(Color couleur) {
-        this.couleur = couleur;
-    }
 
     public CategorieTache() {super();
     }

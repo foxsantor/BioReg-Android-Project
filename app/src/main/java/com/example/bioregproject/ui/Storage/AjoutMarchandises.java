@@ -33,17 +33,17 @@ import com.example.bioregproject.Adapters.FournisseurAdapter;
 import com.example.bioregproject.Adapters.ProduitRecpAdapter;
 import com.example.bioregproject.Adapters.StorageAdapter;
 import com.example.bioregproject.R;
+import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.Fournisseur;
 import com.example.bioregproject.entities.Produit;
 import com.example.bioregproject.entities.Storage;
 import com.google.android.material.textfield.TextInputLayout;
-import com.stepstone.stepper.StepperLayout;
-import com.stepstone.stepper.VerificationError;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 
 public class AjoutMarchandises extends Fragment {
 
@@ -76,7 +76,10 @@ public class AjoutMarchandises extends Fragment {
         View view = inflater.inflate(R.layout.ajout_marchandises_fragment, container, false);
 
 
-
+namePrd="";
+nameFrsR="";
+naturePr="";
+categoriePr="";
 
 
         affichage = view.findViewById(R.id.affichageReception);
@@ -118,6 +121,25 @@ public class AjoutMarchandises extends Fragment {
             public void onChanged(List<Storage> storages) {
                 storageAdapter.submitList(storages);
                 storageAdapter.notifyDataSetChanged();
+            }
+        });
+
+        storageAdapter.setOnItemClickListener(new StorageAdapter.OnItemClickLisnter() {
+            @Override
+            public void onItemClick(Storage Storage) {
+
+            }
+
+            @Override
+            public void ondeleteClick(Storage Storage) {
+                  mViewModel.delete(Storage);
+                Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onUpdateClick(Storage Storage) {
+
             }
         });
 
@@ -172,6 +194,15 @@ public class AjoutMarchandises extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (nameFrsR.equals("")){
+                    Toast.makeText(getActivity(), "Please choose a supplier", Toast.LENGTH_SHORT).show();
+
+                }
+                else if (namePrd.equals("")){
+                    Toast.makeText(getActivity(), "Please choose a product", Toast.LENGTH_SHORT).show();
+
+                }
+                else {
 
                     input1.setVisibility(View.GONE);
                     input2.setVisibility(View.VISIBLE);
@@ -182,7 +213,7 @@ public class AjoutMarchandises extends Fragment {
                     step2Card.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
                     barstepper.setBackgroundColor(Color.parseColor("#FFFFFF"));
                     step2.setTextColor(Color.parseColor("#FFFFFF"));
-
+                }
             }
         });
         back.setOnClickListener(new View.OnClickListener() {
@@ -223,44 +254,60 @@ public class AjoutMarchandises extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-                Storage recp = new Storage();
-                try {
-                    recp.setDateReception(simpleDateFormat.parse(date.getText().toString()));
-                    recp.setUpdatedAT(new Date());
-                    recp.setCreation(new Date());
-                }catch (Exception e)
-                {
-                    e.printStackTrace();
+                if(!StaticUse.validateEmpty(quantites,"Quantity") | !StaticUse.validateEmpty(temperqture,"Temperature")
+
+                ){return;}
+                else if (date.getText().equals("Select Date")){
+                    Toast.makeText(getActivity(), "Please Choose Date", Toast.LENGTH_SHORT).show();
+
                 }
-                fournisseurAdapter.setOnItemClickListener(new FournisseurAdapter.OnItemClickLisnter() {
-                    @Override
-                    public void onItemClick(Fournisseur Fournisseur) {
-                        recp.setFournisseur(Fournisseur.getName());
+                else {
+
+
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+                    Storage recp = new Storage();
+                    try {
+                        recp.setDateReception(simpleDateFormat.parse(date.getText().toString()));
+                        recp.setUpdatedAT(new Date());
+                        recp.setCreation(new Date());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                });
-                produitRecpAdapter.setOnItemClickListener(new ProduitRecpAdapter.OnItemClickLisnter() {
-                    @Override
-                    public void onItemClick(Produit Produit) {
+
+                    fournisseurAdapter.setOnItemClickListener(new FournisseurAdapter.OnItemClickLisnter() {
+                        @Override
+                        public void onItemClick(Fournisseur Fournisseur) {
+                            nameFrsR = Fournisseur.getName();
+
+                        }
+                    });
+
+                    produitRecpAdapter.setOnItemClickListener(new ProduitRecpAdapter.OnItemClickLisnter() {
+                        @Override
+                        public void onItemClick(Produit Produits) {
+                            namePrd = Produits.getName();
+                            categoriePr = Produits.getCategorie();
+                            naturePr = Produits.getNature();
 
 
-                        recp.setCategorie(Produit.getName());
-                        recp.setCategorie(Produit.getCategorie());
-                        recp.setProduit(Produit.getNature());
-
-                    }
-                });
-
-                recp.setNatureProduit(naturePr);
-                recp.setQuantite(Integer.parseInt(quantites.getEditText().getText().toString()));
-                recp.setTemperature(Float.parseFloat(temperqture.getEditText().getText().toString()));
-                recp.setStatus(true);
-                mViewModel.insert(recp);
-                Toast.makeText(getActivity(), " Successfully", Toast.LENGTH_SHORT).show();
-ajout.setVisibility(View.GONE);
-affichage.setVisibility(View.VISIBLE);
-
+                        }
+                    });
+                  //  recp.setOwner(StaticUse.loadSession(getActivity()).getFirstName());
+recp.setOwner("chaima");
+                    recp.setCategorie(categoriePr);
+                    recp.setProduit(namePrd);
+                    recp.setFournisseur(nameFrsR);
+                    recp.setNatureProduit(naturePr);
+                    recp.setQuantite(Integer.parseInt(quantites.getEditText().getText().toString()));
+                    recp.setTemperature(Float.parseFloat(temperqture.getEditText().getText().toString()));
+                    recp.setStatus(true);
+                    mViewModel.insert(recp);
+                    Toast.makeText(getActivity(), " Successfully", Toast.LENGTH_SHORT).show();
+                    ajout.setVisibility(View.GONE);
+                    affichage.setVisibility(View.VISIBLE);
+                }
 
 
             }
