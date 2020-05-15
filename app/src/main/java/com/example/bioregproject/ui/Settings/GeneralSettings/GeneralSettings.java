@@ -106,6 +106,7 @@ public class GeneralSettings extends Fragment {
 
 
 
+
     public static GeneralSettings newInstance() {
         return new GeneralSettings();
     }
@@ -154,6 +155,7 @@ public class GeneralSettings extends Fragment {
         doneDetails=view.findViewById(R.id.doneDetails);
 
 
+
         //oil
         postRecycleView = view.findViewById(R.id.postRecy);
         add = view.findViewById(R.id.addNewPost);
@@ -174,6 +176,11 @@ public class GeneralSettings extends Fragment {
         indicateurPost4 = view.findViewById(R.id.indicateurPost5);
         veriffiltrage=view.findViewById(R.id.verifFiltrage);
         switch1 = view.findViewById(R.id.switch1);
+
+
+
+
+
 
 
 
@@ -351,27 +358,37 @@ public class GeneralSettings extends Fragment {
             @Override
             public void onChanged(List<SettingOil> settingOils) {
 
-                if (!settingOils.isEmpty()) {
-                    mViewModel.insertSetting(new SettingOil(false, 0));
-                }else {
-                    pos=settingOils.size();
-                    settingFiltrage = settingOils.get(pos);
+                if (settingOils.isEmpty()) {
+                    mViewModel.insertSetting(new SettingOil(false));}
+
+                    settingFiltrage = settingOils.get(0);
                     switch1.setChecked(settingFiltrage.getVerif());
 
-
-                }
 
                 switch1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        if (switch1.isChecked()){}
-                        mViewModel.updateSetting(settingFiltrage);
+                        if (switch1.isChecked()){
+
+                                        settingFiltrage.setVerif(true);
+                                        mViewModel.updateSetting(settingFiltrage);
+                                        switch1.setChecked(true);
+
+                        }
+                        else{
+                            settingFiltrage.setVerif(false);
+                            mViewModel.updateSetting(settingFiltrage);
+                            switch1.setChecked(false);
+
+                        }
                     }
                 });
 
             }
         });
+
+
 
 
 

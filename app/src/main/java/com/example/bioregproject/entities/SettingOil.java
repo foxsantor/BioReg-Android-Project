@@ -14,7 +14,6 @@ public class SettingOil {
     @PrimaryKey(autoGenerate = true)
     private long id;
     private Boolean verif ;
-    private float filtrageValeur;
 
     public long getId() {
         return id;
@@ -32,18 +31,11 @@ public class SettingOil {
         this.verif = verif;
     }
 
-    public float getFiltrageValeur() {
-        return filtrageValeur;
-    }
-
-    public void setFiltrageValeur(float filtrageValeur) {
-        this.filtrageValeur = filtrageValeur;
-    }
 
 
-    public SettingOil(Boolean verif, float filtrageValeur) {
+
+    public SettingOil(Boolean verif) {
         this.verif = verif;
-        this.filtrageValeur = filtrageValeur;
     }
 
     public SettingOil() {
