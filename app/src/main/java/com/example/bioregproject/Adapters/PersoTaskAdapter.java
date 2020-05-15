@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DiffUtil;
@@ -57,12 +58,22 @@ public class PersoTaskAdapter extends ListAdapter<ExternalPersoTask,PersoTaskAda
     private ImageButton clear;
     private List<Long> listsOfDeletableItems ;
     private View currentView;
+    private taskPlan fragmentActivity;
 
     public PersoTaskAdapter(Context context,Activity activity,View currentView) {
         super(DIFF_CALLBACK);
         this.mContext = context;
         this.activity = activity;
         this.currentView =currentView;
+
+
+    }
+    public PersoTaskAdapter(Context context,Activity activity,View currentView,taskPlan fragmentActivity) {
+        super(DIFF_CALLBACK);
+        this.mContext = context;
+        this.activity = activity;
+        this.currentView =currentView;
+        this.fragmentActivity = fragmentActivity;
 
 
     }
@@ -105,7 +116,7 @@ public class PersoTaskAdapter extends ListAdapter<ExternalPersoTask,PersoTaskAda
             @Override
             public void onClick(View v) {
                 counter=0;
-                Navigation.findNavController(activity,R.id.fragmentHistory).navigate(R.id.deviceHistory);
+                Navigation.findNavController(activity,R.id.nav_host_fragment).navigate(R.id.taskPlan);
                 itemSelected.setVisibility(View.GONE);
                 clear.setVisibility(View.GONE);
 
@@ -114,7 +125,7 @@ public class PersoTaskAdapter extends ListAdapter<ExternalPersoTask,PersoTaskAda
 
         PrettyTime p = new PrettyTime();
         Date creation = currentItem.getCreation();
-        MyTaskAdapter innerExternalPersoTaskAdpater =new MyTaskAdapter(mContext,activity,1);
+        MyTaskAdapter innerExternalPersoTaskAdpater =new MyTaskAdapter(mContext,activity,1,fragmentActivity);
         String indicator;
         final String creationString = new SimpleDateFormat(" EEEE, MMMMM d, yyyy").format(creation);
         if(DateUtils.isToday(creation.getTime() - DateUtils.DAY_IN_MILLIS))

@@ -72,10 +72,12 @@
                 android:id="@+id/priority"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
                 android:padding="16dp"
                 android:text="Cleanning bathroom assinged by adminstarotort"
                 android:textSize="15sp"
-                app:layout_constraintEnd_toStartOf="@+id/validation"
+                app:layout_constraintEnd_toStartOf="@+id/joined"
                 app:layout_constraintStart_toEndOf="@+id/check"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -102,6 +104,18 @@
                 app:layout_constraintEnd_toStartOf="@+id/mark"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_error_outline_red_24dp" />
+
+            <ImageView
+                android:id="@+id/joined"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/validation"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_attachment_black_24dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
