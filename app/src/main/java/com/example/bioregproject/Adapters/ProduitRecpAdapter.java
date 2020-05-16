@@ -20,7 +20,6 @@ import com.example.bioregproject.entities.Produit;
 public class ProduitRecpAdapter extends ListAdapter <Produit, ProduitRecpAdapter.ProduitHolder> {
     private OnItemClickLisnter listener;
     private Context mContext;
-    int index_row= -1;
 
 
 
@@ -56,27 +55,6 @@ public class ProduitRecpAdapter extends ListAdapter <Produit, ProduitRecpAdapter
         holder.nameProduit.setText(currentProduit.getName());
 
 
-
-        holder.cardchange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                index_row=position;
-                notifyDataSetChanged(); }
-        });
-        if (index_row==position){
-
-            holder.cardchange.setBackgroundColor(Color.parseColor("#3797DD"));
-            holder.nameProduit.setTextColor(Color.parseColor("#3797DD"));
-
-        }else{
-
-            holder.cardchange.setBackgroundColor(Color.parseColor("#65696D72"));
-            holder.nameProduit.setTextColor(Color.parseColor("#65696D72"));
-
-        }
-
-
-
     }
 
     class ProduitHolder extends RecyclerView.ViewHolder{
@@ -95,10 +73,9 @@ public class ProduitRecpAdapter extends ListAdapter <Produit, ProduitRecpAdapter
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION){
                         listener.onItemClick(getItem(position));
-                        getItem(position).getName();
-                        getItem(position).getCategorie();
-                        getItem(position).getNature();
-                }}
+                        itemView.setBackgroundColor(Color.parseColor("#3797DD"));
+
+                    }}
             });
 
         }

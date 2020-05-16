@@ -53,23 +53,8 @@ public class PostAdapter extends ListAdapter <Post,PostAdapter.PostHolder> {
         Post currentPost = getItem(position);
         holder.namePost.setText(currentPost.getName());
 
-        holder.caradone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                index_row=position;
-                notifyDataSetChanged(); }
-        });
-        if (index_row==position){
 
-            holder.caradone.setBackgroundColor(Color.parseColor("#3797DD"));
-            holder.namePost.setTextColor(Color.parseColor("#3797DD"));
 
-        }else{
-
-            holder.caradone.setBackgroundColor(Color.parseColor("#65696D72"));
-            holder.namePost.setTextColor(Color.parseColor("#65696D72"));
-
-        }
 
 
 
@@ -88,8 +73,10 @@ public class PostAdapter extends ListAdapter <Post,PostAdapter.PostHolder> {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
-                    if (listener != null && position != RecyclerView.NO_POSITION)
+                    if (listener != null && position != RecyclerView.NO_POSITION){
                     listener.onItemClick(getItem(position));
+                    itemView.setBackgroundColor(Color.parseColor("#3797DD"));
+               }
                 }
             });
 

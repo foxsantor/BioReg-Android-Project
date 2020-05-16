@@ -60,7 +60,7 @@ public class OliControl extends Fragment {
     private ConstraintLayout ajout,affichage;
     private Button all,filtrageB,changenement,miseaniveau;
     private OilAdapter oilAdapter;
-    private String namePost="null";
+    private String namePost;
     private MainActivityViewModel mainActivityViewModel;
     private DeviceHistoryViewModel deviceHistoryViewModel;
 
@@ -140,8 +140,9 @@ public class OliControl extends Fragment {
             }
         });
 //afichage Post
+        //get Post
         postAdapter = new PostAdapter(getActivity());
-        post1.setLayoutManager(new GridLayoutManager(getContext(),3));
+        post1.setLayoutManager(new GridLayoutManager(getContext(),8));
         post1.setHasFixedSize(true);
         post1.setAdapter(postAdapter);
         mViewModel.getAllPost().observe(this, new Observer<List<Post>>() {
@@ -194,11 +195,7 @@ public class OliControl extends Fragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-
-
                     oil.setPost(namePost);
-
                     oil.setFiltrage(Float.parseFloat(textInputLayout4.getEditText().getText().toString()));
                     oil.setAction(valeur);
                     ajout.setVisibility(View.GONE);

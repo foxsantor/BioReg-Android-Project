@@ -111,17 +111,6 @@ public class FournisseurFragment extends Fragment {
         frsAdapter.setOnItemClickListener(new FrsAdapter.OnItemClickLisnter() {
             @Override
             public void onItemClick(Fournisseur fournisseur) {
-
-            }
-
-            @Override
-            public void delete(Fournisseur fournisseur) {
-                mViewModel.delete(fournisseur);
-            }
-
-            @Override
-            public void update(Fournisseur fournisseur) {
-                update.setVisibility(View.VISIBLE);
                 affichage.setVisibility(View.GONE);
 
                 nameU.getEditText().setText(fournisseur.getName());
@@ -144,8 +133,8 @@ public class FournisseurFragment extends Fragment {
                         update.setVisibility(View.GONE);
                         affichage.setVisibility(View.VISIBLE);
 
+            }
 
-                    }
                 });
 
             }

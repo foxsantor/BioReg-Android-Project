@@ -71,7 +71,6 @@ public class FrsAdapter extends ListAdapter <Fournisseur, FrsAdapter.frsHolder> 
 
     class frsHolder extends RecyclerView.ViewHolder{
        private TextView name,email,numero,adresse,categorie,textView38;
-       private ImageButton supp,edit;
 
         public frsHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,8 +79,6 @@ public class FrsAdapter extends ListAdapter <Fournisseur, FrsAdapter.frsHolder> 
             email=itemView.findViewById(R.id.email);
             adresse=itemView.findViewById(R.id.adresse);
             numero=itemView.findViewById(R.id.numero);
-            edit=itemView.findViewById(R.id.edit);
-            supp=itemView.findViewById(R.id.sup);
             textView38 = itemView.findViewById(R.id.textView38);
 
 
@@ -94,30 +91,14 @@ public class FrsAdapter extends ListAdapter <Fournisseur, FrsAdapter.frsHolder> 
 
                 }
             });
-            supp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (listener != null && position != RecyclerView.NO_POSITION)
-                        listener.delete(getItem(position));
-                }
-            });
-            edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (listener != null && position != RecyclerView.NO_POSITION)
-                        listener.update(getItem(position));
-                }
-            });
+
 
         }
     }
 
     public interface OnItemClickLisnter {
         void onItemClick(Fournisseur fournisseur);
-        void delete(Fournisseur fournisseur);
-        void update(Fournisseur fournisseur);
+
 
     }
 

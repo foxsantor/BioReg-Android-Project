@@ -59,23 +59,6 @@ public class FournisseurAdapter extends ListAdapter <Fournisseur, FournisseurAda
 
 
 
-        holder.cardchange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                index_row=position;
-                notifyDataSetChanged(); }
-        });
-        if (index_row==position){
-
-            holder.cardchange.setBackgroundColor(Color.parseColor("#3797DD"));
-            holder.nameFournisseur.setTextColor(Color.parseColor("#3797DD"));
-
-        }else{
-
-            holder.cardchange.setBackgroundColor(Color.parseColor("#65696D72"));
-            holder.nameFournisseur.setTextColor(Color.parseColor("#65696D72"));
-
-        }
 
 
     }
@@ -86,13 +69,15 @@ public class FournisseurAdapter extends ListAdapter <Fournisseur, FournisseurAda
         public FournisseurHolder(@NonNull View itemView) {
             super(itemView);
             nameFournisseur=itemView.findViewById(R.id.textView41);
-cardchange=itemView.findViewById(R.id.cardchange);
+         cardchange=itemView.findViewById(R.id.cardchange);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION) {
                         listener.onItemClick(getItem(position));
+                        itemView.setBackgroundColor(Color.parseColor("#3797DD"));
+
 
                     }
                 }
