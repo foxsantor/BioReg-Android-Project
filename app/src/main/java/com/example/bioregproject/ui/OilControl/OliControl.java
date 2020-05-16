@@ -11,9 +11,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +25,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -30,9 +32,12 @@ import android.widget.Toast;
 import com.example.bioregproject.Adapters.OilAdapter;
 import com.example.bioregproject.Adapters.PostAdapter;
 import com.example.bioregproject.Adapters.SpinnerCatAdapter;
+import com.example.bioregproject.MainActivityViewModel;
 import com.example.bioregproject.R;
+import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.Oil;
 import com.example.bioregproject.entities.Post;
+import com.example.bioregproject.ui.History.DeviceHistoryViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
@@ -47,7 +52,7 @@ public class OliControl extends Fragment {
     private Spinner spinner;
     private TextInputLayout textInputLayout ,textInputLayout4;
     private Button save,cancel,addOil;
-    private ImageButton calender;
+    private Button calender;
     private EditText date;
     private RecyclerView post1,OilRecycleView;
     private PostAdapter postAdapter;
@@ -55,6 +60,9 @@ public class OliControl extends Fragment {
     private ConstraintLayout ajout,affichage;
     private Button all,filtrageB,changenement,miseaniveau;
     private OilAdapter oilAdapter;
+    private String namePost="null";
+    private MainActivityViewModel mainActivityViewModel;
+    private DeviceHistoryViewModel deviceHistoryViewModel;
 
 
     public static OliControl newInstance() {
@@ -76,7 +84,6 @@ public class OliControl extends Fragment {
         save = view.findViewById(R.id.save);
         cancel=view.findViewById(R.id.cancel);
         calender = view.findViewById(R.id.calender);
-        date = view.findViewById(R.id.dateedit);
         post1 = view.findViewById(R.id.post);
         ajout = view.findViewById(R.id.ajout);
         affichage=view.findViewById(R.id.affichage);
@@ -86,6 +93,10 @@ public class OliControl extends Fragment {
         changenement =view.findViewById(R.id.Changement);
         filtrageB =view.findViewById(R.id.filtrageB);
         OilRecycleView =view.findViewById(R.id.OilRecycleView);
+        mainActivityViewModel  = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        deviceHistoryViewModel = ViewModelProviders.of(this).get(DeviceHistoryViewModel.class);
+
+
 
 
 
@@ -105,7 +116,7 @@ public class OliControl extends Fragment {
         calender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDateTimeDialog(date);
+                showDateTimeDialog(calender);
             }
         });
 
@@ -119,10 +130,7 @@ public class OliControl extends Fragment {
                 if(position>0)
                 {
                     valeur = (String) parent.getItemAtPosition(position);
-                    if (valeur.equals("mise à niveau")||valeur.equals("filtrage")) {
-                        textInputLayout4.setVisibility(View.VISIBLE);
 
-                    }
                 }
             }
 
@@ -133,18 +141,32 @@ public class OliControl extends Fragment {
         });
 //afichage Post
         postAdapter = new PostAdapter(getActivity());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        post1.setLayoutManager(layoutManager);
+        post1.setLayoutManager(new GridLayoutManager(getContext(),3));
         post1.setHasFixedSize(true);
         post1.setAdapter(postAdapter);
-        //mViewModel.insert(new  Post("friteuse",new Date()));
         mViewModel.getAllPost().observe(this, new Observer<List<Post>>() {
             @Override
             public void onChanged(List<Post> posts) {
                 postAdapter.submitList(posts);
-                postAdapter.notifyDataSetChanged();
             }
         });
+
+
+        postAdapter.setOnItemClickListener(new PostAdapter.OnItemClickLisnter() {
+            @Override
+            public void onItemClick(Post Post) {
+                mViewModel.getPostById(Post.getId()).observe(getActivity(), new Observer<List<Post>>() {
+                    @Override
+                    public void onChanged(List<Post> posts) {
+                        namePost=posts.get(0).getName();
+
+                    }
+                });
+
+            }
+        });
+
+
 
 
 
@@ -161,33 +183,60 @@ public class OliControl extends Fragment {
             @Override
             public void onClick(View v) {
 
-                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                if(!StaticUse.validateEmpty(textInputLayout4,"Filtrage")
+                ){return;}else {
+
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                     Oil oil = new Oil();
                     try {
-                        oil.setDateUtilisation(simpleDateFormat.parse(date.getText().toString()));
+                        oil.setDateUtilisation(simpleDateFormat.parse(calender.getText().toString()));
                         oil.setCreationDate(new Date());
-                    }catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    oil.setPost("friteuse");
+
+
+
+                    oil.setPost(namePost);
+
+                    oil.setFiltrage(Float.parseFloat(textInputLayout4.getEditText().getText().toString()));
                     oil.setAction(valeur);
-                    if (valeur.equals("changement")){
-                        oil.setFiltrage(0);
-
-                    }else{
-                        //oil.setFiltrage(textInputLayout4.getEditText().getText());
-                        oil.setFiltrage(1);
+                    ajout.setVisibility(View.GONE);
+                    affichage.setVisibility(View.VISIBLE);
 
 
+                    mViewModel.insert(oil);
+                    Toast.makeText(getActivity(), "oil Added Successfully", Toast.LENGTH_SHORT).show();
+
+
+
+                    StaticUse.SaveNotification(getActivity(),mainActivityViewModel,getActivity(),"Oil Control"
+                            ,"has added a new "+valeur+" for "
+                            ,namePost,null,null,R.drawable.ic_add_circle_blue_24dp);
+
+
+
+                }
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                     mViewModel.getOilById(0).observe(getActivity(), new Observer<List<Oil>>() {
+                         @Override
+                         public void onChanged(List<Oil> oils) {
+                             StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Oil Control",
+                                     "has added a new action for ",namePost,0,valeur);
+
+                         }
+                     });
+
+                        handler.removeCallbacksAndMessages(null);
                     }
-
-                        mViewModel.insert(oil);
-                        Toast.makeText(getActivity(), "oil Added Successfully", Toast.LENGTH_SHORT).show();
+                }, 500);
 
 
 
-                
             }
         });
 
@@ -195,7 +244,7 @@ public class OliControl extends Fragment {
 // affichage Oil
 //mViewModel.insert(new Oil("nejma",1,new Date(),new Date(),"changement","friteuse"));
 
-        oilAdapter = new OilAdapter(getActivity());
+        oilAdapter = new OilAdapter(getActivity(),this);
         OilRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
         OilRecycleView.setHasFixedSize(true);
         OilRecycleView.setAdapter(oilAdapter);
@@ -273,20 +322,8 @@ public class OliControl extends Fragment {
         oilAdapter.setOnItemClickListener(new OilAdapter.OnItemClickLisnter() {
             @Override
             public void onItemClick(Oil oil) {
-
-            }
-
-            @Override
-            public void delete(Oil oil) {
-             mViewModel.delete(oil);
-
-            }
-
-            @Override
-            public void update(Oil oil) {
                 ajout.setVisibility(View.VISIBLE);
                 affichage.setVisibility(View.INVISIBLE);
-                date.setText(oil.getDateUtilisation().toString());
                 spinner.setSelection(getIndex(spinner, oil.getAction().toString()));
                 save.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -294,23 +331,16 @@ public class OliControl extends Fragment {
 
                         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy HH:mm");
                         try {
-                            oil.setDateUtilisation(simpleDateFormat.parse(date.getText().toString()));
+                            oil.setDateUtilisation(simpleDateFormat.parse(calender.getText().toString()));
                             oil.setCreationDate(new Date());
                         }catch (Exception e)
                         {
                             e.printStackTrace();
                         }
-                        oil.setPost("friteuse");
+                        oil.setPost(namePost);
                         oil.setAction(valeur);
-                        if (valeur.equals("changement")){
-                            oil.setFiltrage(0);
+                        oil.setFiltrage(Float.parseFloat(textInputLayout4.getEditText().getText().toString()));
 
-                        }else{
-                            //oil.setFiltrage(textInputLayout4.getEditText().getText());
-                            oil.setFiltrage(1);
-
-
-                        }
 
                         mViewModel.update(oil);
                         Toast.makeText(getActivity(), "oil updated Successfully", Toast.LENGTH_SHORT).show();
@@ -321,7 +351,26 @@ public class OliControl extends Fragment {
                     }
                 });
             }
+
+
         });
+
+        //delete
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView OilRecycleView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                mViewModel.delete(oilAdapter.getOiltAt(viewHolder.getAdapterPosition()));
+                Toast.makeText(getActivity(), "Oil control deleted", Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(OilRecycleView);
+
+
+
 
 
         return view;
@@ -359,7 +408,7 @@ public class OliControl extends Fragment {
     }
 
 
-    private void showDateTimeDialog (EditText date_time_in) {
+    private void showDateTimeDialog (Button date_time_in) {
         final Calendar calendar=Calendar.getInstance();
 
         DatePickerDialog.OnDateSetListener dateSetListener=new DatePickerDialog.OnDateSetListener() {

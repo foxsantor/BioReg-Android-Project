@@ -9,22 +9,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ajout"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:visibility="visible"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="120dp"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="80dp"
-            android:layout_marginEnd="120dp"
-            android:layout_marginRight="120dp"
-            android:layout_marginBottom="80dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginRight="100dp"
             app:cardBackgroundColor="#4D000000"
             app:cardCornerRadius="8dp"
             app:cardElevation="0dp"
@@ -36,8 +34,9 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="0.5dp"
+                app:cardCornerRadius="1dp"
                 app:cardElevation="0dp"
                 app:cardMaxElevation="0dp"
                 app:cardPreventCornerOverlap="false">
@@ -45,7 +44,9 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    app:cardBackgroundColor="@color/colorPrimary">
+                    app:cardBackgroundColor="@color/colorPrimary"
+
+                    app:cardCornerRadius="1dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -53,9 +54,10 @@
 
                         <TextView
                             android:id="@+id/textView28"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
+                            android:gravity="center"
                             android:text=" Oil Control"
                             android:textColor="@color/White"
                             android:textSize="20sp"
@@ -69,7 +71,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="40dp"
                     android:layout_marginTop="60dp"
                     android:layout_marginRight="40dp"
@@ -77,15 +79,30 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textInputLayout"
-                            android:layout_width="match_parent"
+                        <Button
+                            android:id="@+id/calender"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="10dp"
+                            android:text="Select Date"
+                            app:icon="@drawable/ic_date_range_blue_24dp"
+                            app:iconGravity="end"
+                            app:iconPadding="15dp"
+                            app:iconSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/Post" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="20dp"
                             android:layout_marginEnd="20dp"
                             android:layout_marginRight="20dp"
                             android:background="@null"
@@ -100,13 +117,14 @@
                                 android:layout_weight="1" />
                         </com.google.android.material.textfield.TextInputLayout>
 
+
                         <TextView
                             android:id="@+id/textView29"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="20dp"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="20dp"
                             android:layout_marginEnd="20dp"
                             android:layout_marginRight="20dp"
                             android:text="Choose a post :"
@@ -114,19 +132,19 @@
                             android:textStyle="bold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+                            app:layout_constraintTop_toBottomOf="@+id/textInputLayout4" />
 
                         <androidx.core.widget.NestedScrollView
                             android:id="@+id/Post"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="20dp"
                             android:layout_marginRight="20dp"
-                            android:fadingEdge="horizontal"
                             android:fillViewport="true"
+                            android:visibility="visible"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView29">
@@ -139,7 +157,7 @@
                                 <androidx.recyclerview.widget.RecyclerView
                                     android:id="@+id/post"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:orientation="horizontal"
                                     android:visibility="visible"
                                     tools:listitem="@layout/item_post">
@@ -149,40 +167,24 @@
                         </androidx.core.widget.NestedScrollView>
 
 
-                        <EditText
-                            android:id="@+id/dateedit"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:clickable="false"
-                            android:ems="10"
-                            android:enabled="false"
-                            android:inputType="datetime"
-                            android:visibility="visible"
-                            app:layout_constraintEnd_toStartOf="@+id/calender"
-                            app:layout_constraintHorizontal_bias="1.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textInputLayout4" />
-
                         <Button
                             android:id="@+id/save"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:layout_marginEnd="20dp"
                             android:layout_marginRight="20dp"
                             android:layout_marginBottom="10dp"
                             android:text="Save"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/calender" />
 
                         <Button
                             android:id="@+id/cancel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:layout_marginEnd="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginBottom="10dp"
@@ -190,27 +192,28 @@
                             android:textColor="@color/colorPrimary"
                             app:backgroundTint="@color/White"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/save" />
+                            app:layout_constraintEnd_toStartOf="@+id/save"
+                            app:layout_constraintTop_toBottomOf="@+id/calender" />
 
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/textInputLayout4"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                            android:layout_width="match_parent"
-                            android:layout_height="70dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="20dp"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="20dp"
                             android:layout_marginEnd="20dp"
                             android:layout_marginRight="20dp"
                             android:background="@null"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             app:errorEnabled="false"
                             app:hintEnabled="true"
                             app:hintTextColor="#803B3F42"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/Post">
+                            app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/filtrage1"
@@ -220,18 +223,6 @@
                                 android:hint="Filtrage"
                                 android:textCursorDrawable="@null" />
                         </com.google.android.material.textfield.TextInputLayout>
-
-                        <ImageButton
-                            android:id="@+id/calender"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginRight="20dp"
-                            android:background="#FFFFFF"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textInputLayout4"
-                            app:srcCompat="@drawable/ic_date_range_blue_24dp" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
@@ -244,11 +235,99 @@
         android:id="@+id/affichage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView15"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:cardCornerRadius="1dp"
+            app:cardPreventCornerOverlap="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView11">
+
+            <LinearLayout
+                android:id="@+id/tableau"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:text="Date"
+                    android:textColor="@color/officialBlue"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/action"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/action" />
+
+                <TextView
+                    android:id="@+id/action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="Action"
+                    android:textColor="@color/officialBlue"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/post1tab"
+                    app:layout_constraintStart_toEndOf="@+id/time"
+                    app:layout_constraintTop_toTopOf="@+id/post1tab" />
+
+                <TextView
+                    android:id="@+id/post1tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="post "
+                    android:textColor="@color/officialBlue"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/action"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/filtrage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="Filtrage"
+                    android:textColor="@color/officialBlue"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/post"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="Test results"
+                    android:textColor="@color/officialBlue"
+
+
+                    android:textSize="18sp"></TextView>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView11"
@@ -261,6 +340,15 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/view32"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:background="@color/selectedGoogle"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <Button
                     android:id="@+id/addOil"
@@ -372,18 +460,15 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
+            android:id="@+id/nestedScrollView8"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginRight="30dp"
+            android:background="#1DCFC9C9"
             android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView11">
+            app:layout_constraintTop_toBottomOf="@+id/cardView15">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -393,7 +478,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/OilRecycleView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     tools:listitem="@layout/item_oil" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

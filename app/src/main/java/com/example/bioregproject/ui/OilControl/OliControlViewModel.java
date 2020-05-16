@@ -32,11 +32,18 @@ public class OliControlViewModel extends AndroidViewModel {
     public LiveData<List<Post>> getAllPost() {
         return allPost;
     }
+    public LiveData<List<Post>> getPostById(long id) {
+        return postRepository.getPostById(id);
+    }
+
     public LiveData<List<Oil>> getAllOil() {
         return allOil;
     }
     public LiveData<List<Oil>> getOilByAction(String action) {
         return oilRepository.getOilsByAction(action);
+    }
+    public LiveData<List<Oil>> getOilById(long id) {
+        return oilRepository.getOilsById(id);
     }
 
     public void insert(Post post) {

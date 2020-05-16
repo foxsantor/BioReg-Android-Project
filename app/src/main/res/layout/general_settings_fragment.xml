@@ -117,6 +117,8 @@
                                     android:id="@+id/textInputaddSurface"
                                     android:layout_width="220dp"
                                     android:layout_height="wrap_content"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+
                                     android:layout_marginStart="10dp"
                                     android:layout_marginLeft="10dp"
                                     android:layout_marginTop="10dp"
@@ -367,7 +369,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="30dp"
                     android:layout_marginRight="30dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView49">
@@ -659,9 +661,10 @@
                                                     android:layout_height="wrap_content"
                                                     android:layout_marginStart="20dp"
                                                     android:layout_marginLeft="20dp"
-                                                    android:layout_marginTop="20dp"
+                                                    android:layout_marginTop="40dp"
                                                     android:shadowColor="@color/colorPrimary"
                                                     android:text="Quality control of oils "
+                                                    android:textColor="@color/TextNotSelected"
                                                     app:layout_constraintStart_toStartOf="parent"
                                                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -949,6 +952,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/editTextcat"
                             android:layout_width="250dp"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginLeft="20dp"
@@ -1330,6 +1334,8 @@
                             android:id="@+id/namePost1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="10dp"
@@ -1469,6 +1475,8 @@
                             android:id="@+id/namePost"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="10dp"

@@ -14,6 +14,8 @@ import java.util.List;
 public class PostRepository {
     private PostDAO PostDAO;
     private LiveData<List<Post>> allPost;
+    private LiveData<List<Post>> postById;
+
 
     public PostRepository(Application application)
     {
@@ -43,7 +45,11 @@ public class PostRepository {
 
         return allPost;
     }
+    public LiveData<List<Post>> getPostById(long id){
 
+        return   postById = PostDAO.loadPostById(id);
+
+    }
 
 
     private static class InsertPostAsynTask extends AsyncTask<Post,Void,Void>

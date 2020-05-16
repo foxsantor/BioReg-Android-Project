@@ -358,8 +358,8 @@ public class GeneralSettings extends Fragment {
             @Override
             public void onChanged(List<SettingOil> settingOils) {
 
-                if (settingOils.isEmpty()) {
-                    mViewModel.insertSetting(new SettingOil(false));}
+
+                    mViewModel.insertSetting(new SettingOil(false));
 
                     settingFiltrage = settingOils.get(0);
                     switch1.setChecked(settingFiltrage.getVerif());
@@ -560,7 +560,11 @@ public class GeneralSettings extends Fragment {
                         indicateur1.setVisibility(View.GONE);
                         adapter2.submitList(categorywithSurfaces);
 
-                            if (categorywithSurfaces.size()!=0) {
+                            if (categorywithSurfaces.isEmpty()) {
+
+                                nestedCate.setVisibility(View.GONE);
+
+                            }else {
                                 nestedCate.setVisibility(View.VISIBLE);
 
                             }

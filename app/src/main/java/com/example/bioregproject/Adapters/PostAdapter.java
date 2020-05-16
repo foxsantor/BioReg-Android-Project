@@ -1,11 +1,13 @@
 package com.example.bioregproject.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +18,8 @@ import com.example.bioregproject.entities.Post;
 public class PostAdapter extends ListAdapter <Post,PostAdapter.PostHolder> {
     private OnItemClickLisnter listener;
     private Context mContext;
+    int index_row= -1;
+
 
 
     public PostAdapter(Context context) {
@@ -49,6 +53,24 @@ public class PostAdapter extends ListAdapter <Post,PostAdapter.PostHolder> {
         Post currentPost = getItem(position);
         holder.namePost.setText(currentPost.getName());
 
+        holder.caradone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                index_row=position;
+                notifyDataSetChanged(); }
+        });
+        if (index_row==position){
+
+            holder.caradone.setBackgroundColor(Color.parseColor("#3797DD"));
+            holder.namePost.setTextColor(Color.parseColor("#3797DD"));
+
+        }else{
+
+            holder.caradone.setBackgroundColor(Color.parseColor("#65696D72"));
+            holder.namePost.setTextColor(Color.parseColor("#65696D72"));
+
+        }
+
 
 
 
@@ -56,16 +78,18 @@ public class PostAdapter extends ListAdapter <Post,PostAdapter.PostHolder> {
 
     class PostHolder extends RecyclerView.ViewHolder{
        private TextView namePost;
+       private CardView caradone;
         public PostHolder(@NonNull View itemView) {
             super(itemView);
             namePost=itemView.findViewById(R.id.textView30);
+            caradone=itemView.findViewById(R.id.caardone);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION)
-                        listener.onItemClick(getItem(position));
+                    listener.onItemClick(getItem(position));
                 }
             });
 
@@ -73,7 +97,7 @@ public class PostAdapter extends ListAdapter <Post,PostAdapter.PostHolder> {
     }
 
     public interface OnItemClickLisnter {
-        void onItemClick(Post Post);
+        void onItemClick(Post post);
     }
 
     public void setOnItemClickListener(OnItemClickLisnter listener) {

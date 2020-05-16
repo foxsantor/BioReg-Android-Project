@@ -27,6 +27,9 @@ public interface PostDAO {
     @Query("SELECT * FROM post_table ORDER BY creation")
     LiveData<List<Post>> getAllPost();
 
+    @Query("SELECT * from post_table where id = :id LIMIT 1")
+    LiveData<List<Post>> loadPostById(long id);
+
 
 
 

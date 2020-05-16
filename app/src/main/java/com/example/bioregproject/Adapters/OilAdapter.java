@@ -76,25 +76,36 @@ mViewModel.getAllSetting().observe(fragment, new Observer<List<SettingOil>>() {
        if (settingOils.get(0).getVerif())
        {
 
-           holder.err.setVisibility(View.VISIBLE);
-           holder.message.setVisibility(View.GONE);
+           holder.message.setVisibility(View.VISIBLE);
            if (currentOil.getFiltrage()<20){
                holder.message.setText("Everything is in order");
                holder.message.setTextColor(Color.parseColor("#28a745"));
-               holder.suu.setVisibility(View.VISIBLE);           }
+               holder.suu.setVisibility(View.VISIBLE);
+               holder.wa.setVisibility(View.GONE);
+           holder.err.setVisibility(View.GONE);
+
+       }
            else if((currentOil.getFiltrage()<24) && (currentOil.getFiltrage()>24)){
                holder.message.setText("We will have to think about replace oil");
                holder.message.setTextColor(Color.parseColor("#ffc107"));
                holder.wa.setVisibility(View.VISIBLE);
+               holder.err.setVisibility(View.GONE);
+               holder.suu.setVisibility(View.GONE);
 
-       }
+
+
+           }
            else{
-               holder.message.setText("L’huile doit être remplacée");
+               holder.message.setText("The oil must be replaced");
                holder.message.setTextColor(Color.parseColor("#dc3545"));
            holder.err.setVisibility(View.VISIBLE);
+               holder.suu.setVisibility(View.GONE);
+               holder.wa.setVisibility(View.GONE);
 
 
-    }
+
+
+           }
 
        }
        else{
@@ -110,6 +121,10 @@ mViewModel.getAllSetting().observe(fragment, new Observer<List<SettingOil>>() {
 });
 
     }
+    public Oil getOiltAt(int position) {
+        return getItem(position);
+    }
+
 
     class OilHolder extends RecyclerView.ViewHolder{
        private TextView post,time,filtrage,message,action;

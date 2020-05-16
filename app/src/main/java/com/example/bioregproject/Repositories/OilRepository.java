@@ -15,6 +15,8 @@ public class OilRepository {
     private OilDAO OilDAO;
     private LiveData<List<Oil>> allOils;
     private LiveData<List<Oil>> oilsByAction;
+    private LiveData<List<Oil>> oilsById;
+
 
 
     public OilRepository (Application application)
@@ -49,6 +51,12 @@ public class OilRepository {
     public LiveData<List<Oil>> getOilsByAction(String action){
 
         return oilsByAction = OilDAO.loadOilByAction(action);
+    }
+
+
+    public LiveData<List<Oil>> getOilsById(long id){
+
+        return oilsById = OilDAO.loadOilById(id);
     }
 
 
