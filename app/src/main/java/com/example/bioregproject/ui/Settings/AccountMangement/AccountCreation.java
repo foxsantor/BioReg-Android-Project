@@ -105,7 +105,7 @@ public class AccountCreation extends Fragment {
         loading = view.findViewById(R.id.loading_1);
         buttons = view.findViewById(R.id.buttons);
         imageHinter = view.findViewById(R.id.buttontext);
-        imageViews = view.findViewById(R.id.imageViews);
+        imageViews = view.findViewById(R.id.imageViewsC);
         create = view.findViewById(R.id.button5);
         cancel = view.findViewById(R.id.button6);
         button7= view.findViewById(R.id.button7);

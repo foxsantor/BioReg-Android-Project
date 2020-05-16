@@ -33,6 +33,7 @@ public class SettingsViewModel extends ViewModel {
         Settings account_management = new Settings(R.drawable.ic_supervisor_account_seetings_50dp,"Account Management",false,R.id.accountMangmentFragment,R.drawable.ic_accountmangment_selected);
         Settings general_settings= new Settings(R.drawable.ic_settings_gray_24dp,"General Settings",true,R.id.generalSettings,R.drawable.notselectedgeneral);
         Settings cloud_settings= new Settings(R.drawable.ic_cloud_unselected_24dp,"Cloud Synchronisation",false,R.id.cloudFragment,R.drawable.ic_cloud_selected_24dp);
+
         settingsArrayList = new ArrayList<>();
         settingsArrayList.add(general_settings);
         settingsArrayList.add(account_management);

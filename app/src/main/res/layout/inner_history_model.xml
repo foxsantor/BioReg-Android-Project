@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/owner2"
+        android:id="@+id/action"
         android:layout_width="wrap_content"
         android:layout_height="37dp"
         android:layout_marginStart="12dp"
@@ -20,19 +20,19 @@
         android:textStyle="bold"
         app:backgroundTint="@android:color/transparent"
         app:elevation="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/action"
+        app:layout_constraintBottom_toBottomOf="@+id/post"
         app:layout_constraintStart_toEndOf="@+id/time"
-        app:layout_constraintTop_toTopOf="@+id/action" />
+        app:layout_constraintTop_toTopOf="@+id/post" />
 
     <TextView
-        android:id="@+id/action"
+        android:id="@+id/post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:layout_marginLeft="2dp"
         android:text="has created "
         app:layout_constraintBottom_toBottomOf="@+id/category"
-        app:layout_constraintStart_toEndOf="@+id/owner2"
+        app:layout_constraintStart_toEndOf="@+id/action"
         app:layout_constraintTop_toTopOf="@+id/category" />
 
     <CheckBox
@@ -48,9 +48,9 @@
         android:layout_width="67dp"
         android:layout_height="19dp"
         android:text="12:00 AM"
-        app:layout_constraintBottom_toBottomOf="@+id/owner2"
+        app:layout_constraintBottom_toBottomOf="@+id/action"
         app:layout_constraintStart_toEndOf="@+id/checkBox"
-        app:layout_constraintTop_toTopOf="@+id/owner2" />
+        app:layout_constraintTop_toTopOf="@+id/action" />
 
     <ImageButton
         android:id="@+id/menu"
@@ -66,7 +66,7 @@
         app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 
     <Button
-        android:id="@+id/name"
+        android:id="@+id/filtrage1"
         android:layout_width="wrap_content"
         android:layout_height="37dp"
         android:layout_marginStart="2dp"
@@ -79,7 +79,7 @@
         app:backgroundTint="@android:color/transparent"
         app:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/action"
+        app:layout_constraintStart_toEndOf="@+id/post"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -95,5 +95,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/menu"
         app:layout_constraintHorizontal_bias="0.443"
-        app:layout_constraintStart_toEndOf="@+id/name" />
+        app:layout_constraintStart_toEndOf="@+id/filtrage1" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
     <color name="colorPrimary">#3797DD</color>
     <color name="shadePrimary">#3187c6</color>
     <color name="colorPrimaryDark">#00574B</color>
@@ -23,4 +23,25 @@
     <color name="loading">#FFF5F5F5</color>
     <color name="disabled">#d3d3d3</color>
     <color name="backgroundNotSelected">#EDF2FA</color>
+    <color name="gray">#808080	</color>
+    <color name="pink">#C08485</color>
+    <color name="pink2">#B46D75</color>
+    <color name="yelloww">#F1D19B</color>
+    <color name="yelloww2">#D9A380</color>
+
+
+    <array name="demo_color">
+
+        <item>@color/White</item>
+        <item>@color/yelloww</item>
+        <item>@color/yelloww2</item>
+        <item>@color/pink</item>
+        <item>@color/pink2</item>
+        <item>@color/gray</item>
+        <item>@color/colorPrimary</item>
+        <item>@color/blueDeep</item>
+        <item>@color/greenJade</item>
+        <item>@color/colorPrimaryDark</item>
+    </array>
+
 </resources>
