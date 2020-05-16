@@ -499,23 +499,38 @@ public class StaticUse extends AppCompatActivity {
     public static void createNotificationChannaelV2(Activity activity,Notification notification)
     {
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "BioReg";
+            String description = "channel description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(AppApplication.CAHNNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = activity.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(activity);
         android.app.Notification notification1= new NotificationCompat.Builder(activity,AppApplication.CAHNNEL_ID)
         .setSmallIcon(R.drawable.ic_notifications_white_24dp)
         .setContentText(notification.getOwnerFirstName()+" "+notification.getOwnerFirstName()+" "+notification.getDescription()+" "+notification.getName())
         .setContentTitle(notification.getCategoryName())
         .setPriority(NotificationCompat.PRIORITY_DEFAULT).build();
-        notificationManagerCompat.notify((int)notification.getId(),notification1);
+        notificationManagerCompat.notify((int)notification.getId(),notification1);}
     }
     public static boolean validCellPhone(String type ,TextInputLayout textInputLayout)
     {
         String textToCheck = textInputLayout.getEditText().getText().toString().trim();
-        if(!android.util.Patterns.PHONE.matcher(textToCheck).matches()){
+        if(!textToCheck.isEmpty())
+        {
+        if(android.util.Patterns.PHONE.matcher(textToCheck).matches()){
             textInputLayout.setError(""+ type +" must be a number");
             return false;}
         else
         {
             textInputLayout.setError(null);
+            return true;
+        }}else
+        {
             return true;
         }
 

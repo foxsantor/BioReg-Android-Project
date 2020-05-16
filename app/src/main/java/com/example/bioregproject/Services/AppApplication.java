@@ -14,7 +14,9 @@ public class AppApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         createNotificationChannel();
+        }
     }
 
     private void createNotificationChannel() {
