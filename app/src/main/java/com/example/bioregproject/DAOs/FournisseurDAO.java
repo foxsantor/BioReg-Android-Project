@@ -30,6 +30,10 @@ public interface FournisseurDAO {
     LiveData<List<Fournisseur>> getAllFournisseur();
 
 
+    @Query("SELECT * from fournisseur_table where id = :id LIMIT 1")
+    LiveData<List<Fournisseur>> loadFrsById(long id);
+
+
 
 
 

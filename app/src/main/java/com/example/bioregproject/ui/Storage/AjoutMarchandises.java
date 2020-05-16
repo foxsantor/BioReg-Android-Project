@@ -61,7 +61,14 @@ public class AjoutMarchandises extends Fragment {
     private View barstepper;
     private TextView step2,num2;
     private String nameFrsR,namePrd,naturePr,categoriePr;
-    private TextInputLayout temperqture , quantites;
+    private CardView acceptCard ,refusedCard;
+    private Boolean state;
+    private Button plusT,moinsT,plusDT,moinsDT;
+    private TextView nbrTextViw;
+    private float nbrT;
+    private TextView information;
+    private CardView frozen , ambient ,chilled;
+
 
     public static AjoutMarchandises newInstance() {
         return new AjoutMarchandises();
@@ -76,10 +83,6 @@ public class AjoutMarchandises extends Fragment {
         View view = inflater.inflate(R.layout.ajout_marchandises_fragment, container, false);
 
 
-namePrd="";
-nameFrsR="";
-naturePr="";
-categoriePr="";
 
 
         affichage = view.findViewById(R.id.affichageReception);
@@ -100,9 +103,107 @@ categoriePr="";
         step2Card = view.findViewById(R.id.step2Card);
         ajoutB=view.findViewById(R.id.button14);
         date=view.findViewById(R.id.selectDate);
-        quantites=view.findViewById(R.id.quantity);
-        temperqture=view.findViewById(R.id.temperature);
+        acceptCard=view.findViewById(R.id.acceptCard);
+        refusedCard=view.findViewById(R.id.refusedCard);
 
+        plusT=view.findViewById(R.id.plusT);
+        moinsT=view.findViewById(R.id.moinsT);
+        plusDT=view.findViewById(R.id.plusDT);
+        moinsDT=view.findViewById(R.id.moinsDT);
+        nbrTextViw=view.findViewById(R.id.nbrT);
+
+        frozen=view.findViewById(R.id.frozen);
+        chilled=view.findViewById(R.id.chilled);
+        ambient=view.findViewById(R.id.ambient);
+        information=view.findViewById(R.id.information);
+
+
+
+
+
+
+
+//temperature
+        information.setText("");
+
+            frozen.setCardBackgroundColor(Color.parseColor("#2E86C1"));
+
+
+            ambient.setCardBackgroundColor(Color.parseColor("#F8C471"));
+
+            chilled.setCardBackgroundColor(Color.parseColor("#D6EAF8"));
+
+
+
+
+
+        frozen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                information.setText("Note: Temperature should be -18°C");
+
+                frozen.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
+
+            }
+        });
+
+
+        ambient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                information.setText("Note: Temperature should be around +14°C to +21");
+                ambient.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
+
+
+            }
+        });
+
+
+        chilled.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                information.setText("Note: Temperature should be around +4°C to 7°C");
+
+                chilled.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
+
+
+            }
+        });
+
+
+
+
+        plusT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               nbrT=nbrT+1;
+                nbrTextViw.setText(String.valueOf(nbrT));
+            }
+        });
+        moinsT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nbrT=nbrT-1;
+                nbrTextViw.setText(String.valueOf(nbrT));
+
+            }
+        });
+
+        plusDT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nbrT = (float) (nbrT + 0.1);
+                nbrTextViw.setText(String.valueOf(nbrT));
+            }
+        });
+        moinsDT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nbrT= (float) (nbrT-0.1);
+                nbrTextViw.setText(String.valueOf(nbrT));
+
+            }
+        });
 
 
 
@@ -175,6 +276,19 @@ categoriePr="";
             }
         });
 
+        fournisseurAdapter.setOnItemClickListener(new FournisseurAdapter.OnItemClickLisnter() {
+            @Override
+            public void onItemClick(Fournisseur Fournisseur) {
+                mViewModel.getFrsById(Fournisseur.getId()).observe(getActivity(), new Observer<List<Fournisseur>>() {
+                    @Override
+                    public void onChanged(List<Fournisseur> fournisseurs) {
+                        nameFrsR=fournisseurs.get(0).getName();
+                    }
+                });
+            }
+        });
+
+
 
         produitRecpAdapter = new ProduitRecpAdapter(getActivity());
         RecycleProduitRecp.setLayoutManager(new GridLayoutManager(getContext(),3));
@@ -183,10 +297,43 @@ categoriePr="";
             @Override
             public void onChanged(List<Produit> produits) {
                 produitRecpAdapter.submitList(produits);
-                produitRecpAdapter.notifyDataSetChanged();
             }
         });
 
+
+        produitRecpAdapter.setOnItemClickListener(new ProduitRecpAdapter.OnItemClickLisnter() {
+            @Override
+            public void onItemClick(Produit Produit) {
+
+                mViewModel.getProduitById(Produit.getId()).observe(getActivity(), new Observer<List<Produit>>() {
+                    @Override
+                    public void onChanged(List<Produit> produits) {
+                        namePrd=produits.get(0).getName();
+                        naturePr=produits.get(0).getNature();
+                        categoriePr=produits.get(0).getCategorie();
+                    }
+                });
+            }
+        });
+acceptCard.setCardBackgroundColor(Color.parseColor("#00A86B"));
+        refusedCard.setCardBackgroundColor(Color.parseColor("#fdc7c7"));
+
+
+        refusedCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                refusedCard.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
+                state=false;
+            }
+        });
+        acceptCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                acceptCard.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
+                state=true;
+            }
+        });
 
 
         //Steppers
@@ -255,10 +402,8 @@ categoriePr="";
             @Override
             public void onClick(View v) {
 
-                if(!StaticUse.validateEmpty(quantites,"Quantity") | !StaticUse.validateEmpty(temperqture,"Temperature")
 
-                ){return;}
-                else if (date.getText().equals("Select Date")){
+                 if (date.getText().equals("Select Date")){
                     Toast.makeText(getActivity(), "Please Choose Date", Toast.LENGTH_SHORT).show();
 
                 }
@@ -276,33 +421,16 @@ categoriePr="";
                         e.printStackTrace();
                     }
 
-                    fournisseurAdapter.setOnItemClickListener(new FournisseurAdapter.OnItemClickLisnter() {
-                        @Override
-                        public void onItemClick(Fournisseur Fournisseur) {
-                            nameFrsR = Fournisseur.getName();
-
-                        }
-                    });
-
-                    produitRecpAdapter.setOnItemClickListener(new ProduitRecpAdapter.OnItemClickLisnter() {
-                        @Override
-                        public void onItemClick(Produit Produits) {
-                            namePrd = Produits.getName();
-                            categoriePr = Produits.getCategorie();
-                            naturePr = Produits.getNature();
 
 
-                        }
-                    });
-                  //  recp.setOwner(StaticUse.loadSession(getActivity()).getFirstName());
-recp.setOwner("chaima");
+                    recp.setOwner(StaticUse.loadSession(getActivity()).getFirstName());
                     recp.setCategorie(categoriePr);
                     recp.setProduit(namePrd);
                     recp.setFournisseur(nameFrsR);
                     recp.setNatureProduit(naturePr);
-                    recp.setQuantite(Integer.parseInt(quantites.getEditText().getText().toString()));
-                    recp.setTemperature(Float.parseFloat(temperqture.getEditText().getText().toString()));
-                    recp.setStatus(true);
+                    recp.setQuantite(0);
+                    recp.setTemperature(nbrT);
+                    recp.setStatus(state);
                     mViewModel.insert(recp);
                     Toast.makeText(getActivity(), " Successfully", Toast.LENGTH_SHORT).show();
                     ajout.setVisibility(View.GONE);

@@ -45,6 +45,11 @@ public class FournisseurRepository {
         return allFrs;
     }
 
+    public LiveData<List<Fournisseur>> getFrsById(long id){
+
+        return    FournisseurDAO.loadFrsById(id);
+
+    }
 
 
     private static class InsertFournisseurAsynTask extends AsyncTask<Fournisseur,Void,Void>

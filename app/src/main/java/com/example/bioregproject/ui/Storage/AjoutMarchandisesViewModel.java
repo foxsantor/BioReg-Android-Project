@@ -50,5 +50,14 @@ public class AjoutMarchandisesViewModel extends AndroidViewModel {
     public void delete(Storage Storage) {
         RecpRepository.delete(Storage);
     }
+    public LiveData<List<Produit>> getProduitById(long id) {
+        return produitRepository.getPostById(id);
+    }
+
+    public LiveData<List<Fournisseur>> getFrsById(long id) {
+        return frsRepository.getFrsById(id);
+    }
+
+
 
 }

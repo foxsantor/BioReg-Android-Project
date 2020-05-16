@@ -31,6 +31,9 @@ public interface ProduitDAO {
     @Query("SELECT * FROM produit_table where categorie =:categorie ")
     LiveData<List<Produit>> getProduitByCategorie(String categorie);
 
+    @Query("SELECT * from produit_table where id = :id LIMIT 1")
+    LiveData<List<Produit>> loadProduitById(long id);
+
 
 
 

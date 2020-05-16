@@ -51,13 +51,17 @@ public class StorageAdapter extends ListAdapter <Storage, StorageAdapter.Storage
     @Override
     public void onBindViewHolder(@NonNull StorageHolder holder, int position) {
         Storage currentStorage = getItem(position);
-        holder.categorieandProduit.setText(currentStorage.getCategorie());
+        holder.categorieandProduit.setText(currentStorage.getCategorie()+" , "+currentStorage.getProduit());
         holder.fournisseur.setText(currentStorage.getFournisseur());
         holder.date.setText(currentStorage.getDateReception().toString());
         holder.quantite.setText(String.valueOf(currentStorage.getQuantite()));
         holder.temperature.setText(String.valueOf(currentStorage.getTemperature()));
+        if (currentStorage.getNatureProduit().equals("Solid")){
+            holder.nature.setText("Kg");}
+        else{
+            holder.nature.setText("L");
+        }
 
-            holder.nature.setText("Kg");
 
 
         if (currentStorage.getStatus()){

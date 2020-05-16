@@ -45,6 +45,11 @@ public class ProduitRepository {
 
         return allProduit;
     }
+    public LiveData<List<Produit>> getPostById(long id){
+
+        return ProduitDAO.loadProduitById(id);
+
+    }
 
     public LiveData<List<Produit>> getProduitByCategorie(String categorie){
         getProduitByCategorie = ProduitDAO.getProduitByCategorie(categorie);
