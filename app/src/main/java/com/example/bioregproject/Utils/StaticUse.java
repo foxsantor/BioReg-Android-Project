@@ -58,6 +58,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.MainActivityViewModel;
 import com.example.bioregproject.R;
+import com.example.bioregproject.Services.AppApplication;
 import com.example.bioregproject.entities.Account;
 import com.example.bioregproject.entities.History;
 import com.example.bioregproject.entities.Notification;
@@ -486,13 +487,38 @@ public class StaticUse extends AppCompatActivity {
             CharSequence name = notification.getCategoryName();
             String description = notification.getOwnerFirstName()+" "+notification.getOwnerFirstName()+" "+notification.getDescription()+" "+notification.getName();
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("123", name, importance);
+            NotificationChannel channel = new NotificationChannel(AppApplication.CAHNNEL_ID, name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = activity.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    public static void createNotificationChannaelV2(Activity activity,Notification notification)
+    {
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(activity);
+        android.app.Notification notification1= new NotificationCompat.Builder(activity,AppApplication.CAHNNEL_ID)
+        .setSmallIcon(R.drawable.ic_notifications_white_24dp)
+        .setContentText(notification.getOwnerFirstName()+" "+notification.getOwnerFirstName()+" "+notification.getDescription()+" "+notification.getName())
+        .setContentTitle(notification.getCategoryName())
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT).build();
+        notificationManagerCompat.notify((int)notification.getId(),notification1);
+    }
+    public static boolean validCellPhone(String type ,TextInputLayout textInputLayout)
+    {
+        String textToCheck = textInputLayout.getEditText().getText().toString().trim();
+        if(!android.util.Patterns.PHONE.matcher(textToCheck).matches()){
+            textInputLayout.setError(""+ type +" must be a number");
+            return false;}
+        else
+        {
+            textInputLayout.setError(null);
+            return true;
+        }
+
     }
 
     public static void displayNotification (Activity activity,int icon,Notification notification)
@@ -659,8 +685,10 @@ public class StaticUse extends AppCompatActivity {
                 notification.setObjectImageBase64(StaticUse.transformerImageBase64(container));
                 notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
                 viewModel.insert(notification);
-                StaticUse.createNotificationChannel(notification,activity);
-                StaticUse.displayNotification(activity,img,notification);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                StaticUse.createNotificationChannaelV2(activity,notification);}else {
+                    StaticUse.displayNotification(activity, img, notification);
+                }
                 viewModel.getAccount(StaticUse.loadSession(activity).getId()).removeObservers(lifecycleOwner);
             }
         });

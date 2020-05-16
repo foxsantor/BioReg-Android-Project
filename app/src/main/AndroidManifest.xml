@@ -21,6 +21,7 @@
     <dist:module dist:instant="true" />
 
     <application
+        android:name="com.example.bioregproject.Services.AppApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"

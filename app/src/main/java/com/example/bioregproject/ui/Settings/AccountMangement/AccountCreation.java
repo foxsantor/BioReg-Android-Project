@@ -12,7 +12,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -28,7 +27,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -40,7 +38,6 @@ import com.example.bioregproject.MainActivityViewModel;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.Account;
-import com.example.bioregproject.entities.Products;
 import com.example.bioregproject.ui.History.DeviceHistoryViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -67,7 +64,7 @@ public class AccountCreation extends Fragment {
     private Button create,cancel,button7,button9;
     private ImageButton close,profileAdd,addImage,seeAlone;
     private TextInputLayout firstName,lastName,email,password,confirm,phone;
-    private ImageView profile,imageView10;
+    private ImageView profile,imageView10,replica;
     private RoundedImageView imageContainer;
     private static final Pattern PASSWORD_CHECHER =  Pattern.compile("^" +
             //"(?=.*[0-9])" +         //at least 1 digit
@@ -116,7 +113,7 @@ public class AccountCreation extends Fragment {
         close = view.findViewById(R.id.closeimage);
         confirm= view.findViewById(R.id.confirm);
         imageContainer = view.findViewById(R.id.image_container);
-        profile= view.findViewById(R.id.imageView4);
+        profile= view.findViewById(R.id.replica);
         imageView10= view.findViewById(R.id.imageView10);
         firstName= view.findViewById(R.id.fname);
         lastName= view.findViewById(R.id.lname);
@@ -127,6 +124,7 @@ public class AccountCreation extends Fragment {
         addImage= view.findViewById(R.id.addImage);
         seeAlone= view.findViewById(R.id.seealone);
         imagenote = view.findViewById(R.id.imagenote);
+        Glide.with(getActivity()).load(R.drawable.avatar).into(profile);
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,7 +161,7 @@ public class AccountCreation extends Fragment {
             public void onClick(final View v) {
 
                 if(!StaticUse.validateEmpty(firstName,"First name") | !StaticUse.validateEmpty(lastName,"Last name")
-                | !Password(password,"Password") |!passwordChecker(password,confirm)
+                | !Password(password,"Password") |!passwordChecker(password,confirm)|!StaticUse.validCellPhone("Phone number",phone)
                 |!StaticUse.validateEmpty(email,"Email")   | !StaticUse.validateEmail(email)
                 ){return;}
                 else {
@@ -308,14 +306,13 @@ public class AccountCreation extends Fragment {
         account.setPhoneNumber(phoneNumber);
         account.setProfileImage(StaticUse.imageGetter(profile));
         mViewModel.insert(account);
-
-        StaticUse.SaveNotification(getActivity(),mainActivityViewModel,getActivity(),"Administration Module"
-                ,"has added a new User by the name of "+account.getFirstName()+" "+account.getLastName()+" from "
-                ,"Account Management",account.getProfileImage(),null,R.drawable.ic_add_circle_blue_24dp);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                StaticUse.SaveNotification(getActivity(),mainActivityViewModel,getActivity(),"Administration Module"
+                        ,"has added a new User by the name of "+account.getFirstName()+" "+account.getLastName()+" from "
+                        ,"Account Management",account.getProfileImage(),null,R.drawable.ic_add_circle_blue_24dp);
                 mainActivityViewModel.getAccountByEmail(account.getEmail()).observe(getActivity(), new Observer<List<Account>>() {
                     @Override
                     public void onChanged(List<Account> account) {
@@ -324,6 +321,7 @@ public class AccountCreation extends Fragment {
                                 account.get(0).getFirstName()+" "+account.get(0).getLastName(),account.get(0).getId(),"Account Management");
                     }
                 });
+                mainActivityViewModel.getAccountByEmail(account.getEmail()).removeObservers(getActivity());
                 handler.removeCallbacksAndMessages(null);
             }
 
