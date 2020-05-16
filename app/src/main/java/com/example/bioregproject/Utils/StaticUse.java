@@ -58,9 +58,11 @@ import com.android.volley.toolbox.Volley;
 import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.MainActivityViewModel;
 import com.example.bioregproject.R;
+import com.example.bioregproject.Services.AppApplication;
 import com.example.bioregproject.entities.Account;
 import com.example.bioregproject.entities.History;
 import com.example.bioregproject.entities.Notification;
+import com.example.bioregproject.entities.PersoTask;
 import com.example.bioregproject.ui.History.DeviceHistory;
 import com.example.bioregproject.ui.History.DeviceHistoryViewModel;
 import com.google.android.material.textfield.TextInputLayout;
@@ -364,9 +366,9 @@ public class StaticUse extends AppCompatActivity {
 
     }
 
-    public static boolean validateSpinner(String spinner,TextInputLayout container) {
+    public static boolean validateSpinner(String spinner,TextInputLayout container,String Indicator) {
         if ((spinner == null || spinner.equals("") || spinner.isEmpty())) {
-            container.setError("Must Choose a Category !");
+            container.setError("Must Choose a !"+Indicator);
             return false;
         } else {
             container.setError(null);
@@ -485,13 +487,53 @@ public class StaticUse extends AppCompatActivity {
             CharSequence name = notification.getCategoryName();
             String description = notification.getOwnerFirstName()+" "+notification.getOwnerFirstName()+" "+notification.getDescription()+" "+notification.getName();
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("123", name, importance);
+            NotificationChannel channel = new NotificationChannel(AppApplication.CAHNNEL_ID, name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = activity.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    public static void createNotificationChannaelV2(Activity activity,Notification notification)
+    {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "BioReg";
+            String description = "channel description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(AppApplication.CAHNNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = activity.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(activity);
+        android.app.Notification notification1= new NotificationCompat.Builder(activity,AppApplication.CAHNNEL_ID)
+        .setSmallIcon(R.drawable.ic_notifications_white_24dp)
+        .setContentText(notification.getOwnerFirstName()+" "+notification.getOwnerFirstName()+" "+notification.getDescription()+" "+notification.getName())
+        .setContentTitle(notification.getCategoryName())
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT).build();
+        notificationManagerCompat.notify((int)notification.getId(),notification1);}
+    }
+    public static boolean validCellPhone(String type ,TextInputLayout textInputLayout)
+    {
+        String textToCheck = textInputLayout.getEditText().getText().toString().trim();
+        if(!textToCheck.isEmpty())
+        {
+        if(android.util.Patterns.PHONE.matcher(textToCheck).matches()){
+            textInputLayout.setError(""+ type +" must be a number");
+            return false;}
+        else
+        {
+            textInputLayout.setError(null);
+            return true;
+        }}else
+        {
+            return true;
+        }
+
     }
 
     public static void displayNotification (Activity activity,int icon,Notification notification)
@@ -530,6 +572,41 @@ public class StaticUse extends AppCompatActivity {
             Intent fileIntent = new Intent(Intent.ACTION_SEND);
             fileIntent.setType("text/csv");
             fileIntent.putExtra(Intent.EXTRA_SUBJECT,"History_DATA");
+            fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            fileIntent.putExtra(Intent.EXTRA_STREAM,path);
+            activity.startActivity(Intent.createChooser(fileIntent,"0DATA"));
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void exportCsvFilesTasks(List<PersoTask> list, Activity activity)
+    {
+        StringBuilder data = new StringBuilder();
+        data.append("Title,Assignee_Name,Creation_Date,Due_Date,Description,Priority,State,OwnerName,Assignee_ID");
+        for (PersoTask n :list
+        ) {
+            data.append("\n"+n.getName()+","+n.getAssignedName()+","
+                    + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(n.getCreation())
+                    +","+ new SimpleDateFormat("dd/MM/yyyy HH:mm").format(n.getDue())+","
+                    +n.getDescription()+","+n.getPiority()+","+n.getState()
+                    +","+n.getOwnerName()+","+n.getAssginedId()+",");
+        }
+        try {
+            /*FileOutputStream out = activity.openFileOutput(StaticUse.loadEmail(activity)+"_Notification_BioReg.csv",MODE_PRIVATE);
+            out.write(data.toString().getBytes());
+            out.close();*/
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(activity.openFileOutput(StaticUse.loadEmail(activity)+"_Tasks_BioReg.csv", Context.MODE_PRIVATE));
+            outputStreamWriter.write(data.toString());
+            outputStreamWriter.close();
+            File fileLocation = new File(activity.getFilesDir(),StaticUse.loadEmail(activity)+"_Tasks_BioReg.csv");
+            Uri path = FileProvider.getUriForFile(activity,"com.example.bioregproject.fileprovider",fileLocation);
+            Intent fileIntent = new Intent(Intent.ACTION_SEND);
+            fileIntent.setType("text/csv");
+            fileIntent.putExtra(Intent.EXTRA_SUBJECT,"Tasks_DATA");
             fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             fileIntent.putExtra(Intent.EXTRA_STREAM,path);
             activity.startActivity(Intent.createChooser(fileIntent,"0DATA"));
@@ -599,6 +676,7 @@ public class StaticUse extends AppCompatActivity {
                 history.setSubCategoryName(subCategory);
                 history.setSubjectLinking(objectLinking);
                 viewModel.insert(history);
+                viewModel.getAccount(StaticUse.loadSession(activity).getId()).removeObservers(lifecycleOwner);
             }
         });
     }
@@ -610,8 +688,8 @@ public class StaticUse extends AppCompatActivity {
                 final Account user = accounts.get(0);
                 Notification notification = new Notification();
                 notification.setCreation(new Date());
-                notification.setOwnerFirstName(user.getFirstName());
-                notification.setOwnerLastName(user.getLastName());
+                notification.setOwnerFirstName(user.getFirstName().trim());
+                notification.setOwnerLastName(user.getLastName().trim());
                 notification.setCategoryName(catName);
                 notification.setName(objectName);
                 notification.setDescription(description);
@@ -620,11 +698,13 @@ public class StaticUse extends AppCompatActivity {
                 notification.setObjectImageBase64(StaticUse.transformerImageBase64frombytes(imageHolder));
                 if(container!=null)
                 notification.setObjectImageBase64(StaticUse.transformerImageBase64(container));
-
                 notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
                 viewModel.insert(notification);
-                StaticUse.createNotificationChannel(notification,activity);
-                StaticUse.displayNotification(activity,img,notification);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                StaticUse.createNotificationChannaelV2(activity,notification);}else {
+                    StaticUse.displayNotification(activity, img, notification);
+                }
+                viewModel.getAccount(StaticUse.loadSession(activity).getId()).removeObservers(lifecycleOwner);
             }
         });
     }

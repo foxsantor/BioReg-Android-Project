@@ -64,13 +64,14 @@ public class taskPlanManage extends Fragment {
     private TextInputLayout stats,due,priority,title,description;
     private Button back,save;
     private Spinner prio,status;
-    private TextView indi;
+    private TextView indi,textView31;
     private UsersAdapter2 usersAdapter2;
     private List<Account> newList;
     private LifecycleOwner lifecycleOwner;
     private Boolean fired;
     private String prioS,StatS,fullName;
     private static long idChosen  ;
+    private static int mode =0;
 
     public static taskPlanManage newInstance() {
         return new taskPlanManage();
@@ -104,7 +105,14 @@ public class taskPlanManage extends Fragment {
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
-
+        Bundle bundle = getArguments();
+        if(bundle == null)
+        {
+            mode =0;
+        }else
+        {
+            mode =1;
+        }
         users = view.findViewById(R.id.users);
         calender = view.findViewById(R.id.calender);
         background = view.findViewById(R.id.backround);
@@ -119,7 +127,9 @@ public class taskPlanManage extends Fragment {
         prio = view.findViewById(R.id.spinner);
         container = view.findViewById(R.id.imageView12);
         status= view.findViewById(R.id.spinnerState);
+        textView31 = view.findViewById(R.id.textView31);
         SpinnerLoader(status,prio);
+
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,6 +139,21 @@ public class taskPlanManage extends Fragment {
         });
         StaticUse.backgroundAnimator(background);
 
+        if(mode == 1)
+        {
+            indi.setText("Update Task N°"+bundle.getLong("id"));
+            title.getEditText().setText(bundle.getString("title"));
+            description.getEditText().setText(bundle.getString("description",""));
+            idChosen = bundle.getLong("assgineId");
+            save.setText("Update");
+            due.getEditText().setText( bundle.getString("due"));
+            prioS = bundle.getString("priority");
+            StatS =  bundle.getString("status");
+            prio.setSelection(getIndex(prio,prioS));
+            status.setSelection(getIndex(status,StatS));
+            fullName =bundle.getString("AssgineName");
+            textView31.setText("Assigned To: "+bundle.getString("AssgineName"));
+        }
         users.setLayoutManager(new GridLayoutManager(getActivity(),3));
         usersAdapter2 = new UsersAdapter2(getActivity(),getActivity());
         users.setAdapter(usersAdapter2);
@@ -154,6 +179,7 @@ public class taskPlanManage extends Fragment {
                 idChosen = account.getId();
                 Glide.with(getActivity()).load(account.getProfileImage()).into(container);
                 fullName = account.getFirstName()+" "+account.getLastName();
+                textView31.setText("Assigned To: "+fullName);
                 mainActivityViewModel.getAllAccounts().observe(lifecycleOwner, new Observer<List<Account>>() {
                     @Override
                     public void onChanged(List<Account> accounts) {
@@ -224,15 +250,18 @@ public class taskPlanManage extends Fragment {
             @Override
             public void onClick(View v) {
                 if(!StaticUse.validateEmpty(title,"Title") | !StaticUse.validateEmpty(due,"Due Date")
-                        |!StaticUse.validateSpinner(prioS,priority) | !StaticUse.validateSpinner(StatS,stats)
+                        |!StaticUse.validateSpinner(prioS,priority,"Priority") | !StaticUse.validateSpinner(StatS,stats,"Status")
                 ){return;}
                 else if(idChosen==0 || fullName.equals("")){
                     Toast.makeText(getActivity(), "Please assign a User", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else {
+                    if(mode ==0)
+                    {
                     SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy HH:mm");
                     PersoTask persoTask = new PersoTask();
+                    persoTask.setValidationDate(new Date());
                     persoTask.setAssginedId(idChosen);
                     persoTask.setPiority(prioS);
                     persoTask.setCreation(new Date());
@@ -274,6 +303,58 @@ public class taskPlanManage extends Fragment {
                         }
                     }, 500);
                     getActivity().onBackPressed();
+                    }else
+                    {
+
+                        mViewModel.loadPersoTaskOne(bundle.getLong("id")).observe(lifecycleOwner, new Observer<List<PersoTask>>() {
+                            @Override
+                            public void onChanged(List<PersoTask> persoTasks) {
+
+                                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                                PersoTask persoTask = persoTasks.get(0);
+                                persoTask.setAssginedId(idChosen);
+                                persoTask.setPiority(prioS);
+                                persoTask.setName(title.getEditText().getText().toString());
+                                if(description.getEditText().getText().toString()!=null)
+                                    persoTask.setDescription(description.getEditText().getText().toString());
+                                else
+                                    persoTask.setDescription("");
+                                persoTask.setAssignedName(fullName);
+                                persoTask.setOwnerName(StaticUse.loadSession(getActivity()).getFirstName());
+                                try {
+                                    persoTask.setDue(simpleDateFormat.parse(due.getEditText().getText().toString()));
+                                }catch (Exception e)
+                                {
+                                    e.printStackTrace();
+                                }
+                                persoTask.setState(StatS);
+                                mViewModel.update(persoTask);
+                                StaticUse.SaveNotification(getActivity(),mainActivityViewModel,getActivity(),"Task Planification Module"
+                                        ,"has Updated a Task by the name of "+title.getEditText().getText().toString()+" assigned to "+fullName+" from "
+                                        ,"Task Management",null,null,R.drawable.ic_add_circle_blue_24dp);
+                                final Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mViewModel.getAssgineTAskSpec(persoTask.getAssginedId(),persoTask.getName()).observe(lifecycleOwner, new Observer<List<PersoTask>>() {
+                                            @Override
+                                            public void onChanged(List<PersoTask> persoTasks) {
+                                                StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Task Planification Module",
+                                                        "has Updated a Task  by the name of ",
+                                                        title.getEditText().getText().toString()+" assigned to "+fullName,persoTasks.get(0).getId(),"Task Management");
+                                                return;
+                                            }
+                                        });
+                                        handler.removeCallbacksAndMessages(null);
+                                    }
+                                }, 500);
+                                mViewModel.loadPersoTaskOne(bundle.getLong("id")).removeObservers(lifecycleOwner);
+                                getActivity().onBackPressed();
+                            }
+                        });
+
+
+                    }
                 }
             }
         });
@@ -340,6 +421,15 @@ public class taskPlanManage extends Fragment {
         datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
         datePickerDialog.show();
 
+    }
+    private int getIndex(Spinner spinner, String myString){
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+
+        return 0;
     }
 
 

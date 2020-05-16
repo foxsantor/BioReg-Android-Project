@@ -4,6 +4,7 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -101,6 +102,7 @@ public class GeneralSettings extends Fragment {
     private Switch switch1;
     private SettingOil settingFiltrage;
     private int pos;
+    private LifecycleOwner lifecycleOwner;
 
 
 
@@ -153,6 +155,7 @@ public class GeneralSettings extends Fragment {
         imageCategoryDetail=view.findViewById(R.id.imageCategorieDetail);
         CancelDetails=view.findViewById(R.id.cancelDetails);
         doneDetails=view.findViewById(R.id.doneDetails);
+        lifecycleOwner = this;
 
 
 
@@ -358,7 +361,7 @@ public class GeneralSettings extends Fragment {
             @Override
             public void onChanged(List<SettingOil> settingOils) {
 
-
+    if(!settingOils.isEmpty()){
                     mViewModel.insertSetting(new SettingOil(false));
 
                     settingFiltrage = settingOils.get(0);
@@ -385,6 +388,11 @@ public class GeneralSettings extends Fragment {
                     }
                 });
 
+            }else
+    {
+        return;
+    }
+            mViewModel.getAllSetting().removeObservers(lifecycleOwner);
             }
         });
 

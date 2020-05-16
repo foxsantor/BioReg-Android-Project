@@ -189,7 +189,6 @@ public class MainActivity extends AppCompatActivity  {
                     public void onChanged(List<Notification> list) {
                         if(list.isEmpty())
                         {
-
                             return;
                         }else
                         {
@@ -198,9 +197,30 @@ public class MainActivity extends AppCompatActivity  {
                                 mViewModel.update(n);
 
                             }
+                            numberOfNotificationUnseen =0;
+                            num.setText(""+numberOfNotificationUnseen);
                             adapter.notifyDataSetChanged();
-                        }
 
+                        }
+                        mViewModel.getAllNotifications().removeObservers(MainActivity.this);
+                        mViewModel.getAllNotifications().observe(MainActivity.this, new Observer<List<Notification>>() {
+                            @Override
+                            public void onChanged(List<Notification> notifications) {
+                                numberOfNotificationUnseen = 0;
+                                for (Notification n:notifications) {
+                                    if(n.isSeen() == false){
+                                        numberOfNotificationUnseen++;}
+                                }
+                                num.setVisibility(View.VISIBLE);
+                                num.setText(""+numberOfNotificationUnseen);
+                                if(numberOfNotificationUnseen == 0)
+                                {
+                                    num.setVisibility(View.GONE);
+                                }
+                                adapter.submitList(notifications);
+
+                            }
+                        });
 
                     }
                 });
@@ -374,6 +394,7 @@ public class MainActivity extends AppCompatActivity  {
                 public void onChanged(List<Account> accounts) {
                     name.setText(accounts.get(0).getFirstName());
                     Glide.with(conx).asBitmap().load(accounts.get(0).getProfileImage()).into(image);
+                    mViewModel.getAccount(currentAccount.getId()).removeObservers(MainActivity.this);
                 }
             });
 

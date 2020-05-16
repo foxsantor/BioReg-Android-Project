@@ -53,7 +53,7 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/confirm"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView4"
+                    app:layout_constraintStart_toEndOf="@+id/replica"
                     app:layout_constraintTop_toBottomOf="@+id/lname" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -103,7 +103,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:hint="Phone number"
-                        android:inputType="textPersonName"
+                        android:inputType="phone"
                         android:maxLength="23"
                         android:textCursorDrawable="@null" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -124,7 +124,7 @@
                     app:hintEnabled="true"
                     app:hintTextColor="#803B3F42"
                     app:layout_constraintBottom_toTopOf="@+id/password"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView4"
+                    app:layout_constraintEnd_toStartOf="@+id/replica"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/fname">
 
@@ -172,15 +172,14 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView
-                    android:id="@+id/imageView4"
+                    android:id="@+id/replica"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="48dp"
                     android:layout_marginBottom="22dp"
                     app:layout_constraintBottom_toTopOf="@+id/confirm"
                     app:layout_constraintStart_toStartOf="@+id/lname"
-                    app:layout_constraintTop_toBottomOf="@+id/lname"
-                    app:srcCompat="@drawable/avatar" />
+                    app:layout_constraintTop_toBottomOf="@+id/lname" />
 
                 <ImageButton
                     android:id="@+id/imageButton"
@@ -191,7 +190,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/confirm"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.114"
-                    app:layout_constraintStart_toStartOf="@+id/imageView4"
+                    app:layout_constraintStart_toStartOf="@+id/replica"
                     app:srcCompat="@drawable/ic_add_circle_blue_24dp" />
 
                 <com.google.android.material.textfield.TextInputLayout

@@ -34,6 +34,7 @@ public class TaskPlanViewModel extends AndroidViewModel {
     {
         repository.insert(product);
     }
+    public LiveData<List<PersoTask>> loadPersoTaskOne(Long id) {return repository.loadPersoTaskOne(id);}
     public LiveData<List<PersoTask>> getAssgineTAsks(Long id) {return repository.getPersoTaskAssgine(id);}
     public LiveData<List<PersoTask>> getAssgineTAskSpec(Long id, String name) {return repository.getPersoTaskSpec(id,name);}
     public LiveData<List<PersoTask>> getAssgineTAsksSatte(Long id,Boolean state) {return repository.getPersoTaskByNameAndBrand(id,state);}
@@ -71,40 +72,28 @@ public class TaskPlanViewModel extends AndroidViewModel {
         teamAllList = Transformations.switchMap(filterTextAll, new Function<String, LiveData<PagedList<PersoTask>>>() {
             @Override
             public LiveData<PagedList<PersoTask>> apply(String input) {
-
-                if (!state.equals("")) {
-
-                    if (!state2.equals("")) {
-                        return new LivePagedListBuilder<>(
-                                teamDao.loadAllPersoTaskState2(state, state2), config)
-                                .build();
-                    } else {
-                        return new LivePagedListBuilder<>(
-                                teamDao.loadAllPersoTaskState(state), config)
-                                .build();
-                    }
-                }
-
                 if (input == null || input.equals("") || input.equals("%%")) {
+
                     return new LivePagedListBuilder<>(
                             teamDao.loadAllTaskByAssgnie(id), config)
                             .build();
-                } else if (input.equals("R-+-")) {
-                    return new LivePagedListBuilder<>(
-                            teamDao.loadAllPersoTask(), config)
-                            .build();
-                }    else if (input.contains("Admin")) {
-                    input.replace("Admin", "");
-                    Log.d("CURRENTINPUT: ", input);
-                    return new LivePagedListBuilder<>(
-                            teamDao.loadAllProductbyNameAdmin(input, id), config)
-                            .build();
-
                 } else  {
-                    return new LivePagedListBuilder<>(
-                            teamDao.loadAllProductbyName(input), config)
-                            .build();
-                }
+                    if(input.equals("Open,Invalid"))
+                    {
+                        return new LivePagedListBuilder<>(
+                                teamDao.loadAllPersoTaskState2Admin("Open","Invalid",id), config)
+                                .build();
+                    }else if(input.equals("Done,"))
+                    {
+                        return new LivePagedListBuilder<>(
+                                teamDao.loadAllPersoTaskStateAdmin("Done",id), config)
+                                .build();
+                    }else
+                    {
+                        return new LivePagedListBuilder<>(
+                                teamDao.loadAllProductbyNameAdmin(input,id), config)
+                                .build();
+                    }}
 
             }
         });
