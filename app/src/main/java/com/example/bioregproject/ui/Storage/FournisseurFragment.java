@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bioregproject.Adapters.FrsAdapter;
 import com.example.bioregproject.R;
@@ -170,7 +172,19 @@ public class FournisseurFragment extends Fragment {
 
             }
         });
+        //delete
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView frsliste, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
 
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                mViewModel.delete(frsAdapter.getFrsAt(viewHolder.getAdapterPosition()));
+                Toast.makeText(getActivity(), "Contact deleted", Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(frsliste);
 
 
 

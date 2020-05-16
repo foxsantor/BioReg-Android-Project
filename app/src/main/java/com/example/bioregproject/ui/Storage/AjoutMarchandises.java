@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +33,13 @@ import android.widget.Toast;
 import com.example.bioregproject.Adapters.FournisseurAdapter;
 import com.example.bioregproject.Adapters.ProduitRecpAdapter;
 import com.example.bioregproject.Adapters.StorageAdapter;
+import com.example.bioregproject.MainActivityViewModel;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.Fournisseur;
 import com.example.bioregproject.entities.Produit;
 import com.example.bioregproject.entities.Storage;
+import com.example.bioregproject.ui.History.DeviceHistoryViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
@@ -63,11 +66,16 @@ public class AjoutMarchandises extends Fragment {
     private String nameFrsR,namePrd,naturePr,categoriePr;
     private CardView acceptCard ,refusedCard;
     private Boolean state;
-    private Button plusT,moinsT,plusDT,moinsDT;
-    private TextView nbrTextViw;
+    private Button plusT,moinsT,plusDT,moinsDT,plusQ,moinsQ;
+    private TextView nbrTextViw,nbrQuantity;
     private float nbrT;
     private TextView information;
     private CardView frozen , ambient ,chilled;
+    private int nbrQ,quantitynbr;
+    private MainActivityViewModel mainActivityViewModel;
+    private DeviceHistoryViewModel deviceHistoryViewModel;
+    private String description;
+
 
 
     public static AjoutMarchandises newInstance() {
@@ -79,6 +87,9 @@ public class AjoutMarchandises extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         mViewModel = ViewModelProviders.of(this).get(AjoutMarchandisesViewModel.class);
+
+        mainActivityViewModel  = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        deviceHistoryViewModel = ViewModelProviders.of(this).get(DeviceHistoryViewModel.class);
 
         View view = inflater.inflate(R.layout.ajout_marchandises_fragment, container, false);
 
@@ -116,6 +127,12 @@ public class AjoutMarchandises extends Fragment {
         chilled=view.findViewById(R.id.chilled);
         ambient=view.findViewById(R.id.ambient);
         information=view.findViewById(R.id.information);
+
+
+        plusQ=view.findViewById(R.id.plusQ);
+        moinsQ=view.findViewById(R.id.moinsQ);
+        nbrQuantity=view.findViewById(R.id.nbrQuantity);
+
 
 
 
@@ -170,6 +187,26 @@ public class AjoutMarchandises extends Fragment {
             }
         });
 
+
+
+nbrT=0;
+nbrQ=0;
+
+        plusQ.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nbrQ=nbrQ+1;
+                nbrQuantity.setText(String.valueOf(nbrQ));
+            }
+        });
+        moinsQ.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nbrQ=nbrQ-1;
+                nbrQuantity.setText(String.valueOf(nbrQ));
+
+            }
+        });
 
 
 
@@ -301,20 +338,6 @@ public class AjoutMarchandises extends Fragment {
         });
 
 
-        produitRecpAdapter.setOnItemClickListener(new ProduitRecpAdapter.OnItemClickLisnter() {
-            @Override
-            public void onItemClick(Produit Produit) {
-
-                mViewModel.getProduitById(Produit.getId()).observe(getActivity(), new Observer<List<Produit>>() {
-                    @Override
-                    public void onChanged(List<Produit> produits) {
-                        namePrd=produits.get(0).getName();
-                        naturePr=produits.get(0).getNature();
-                        categoriePr=produits.get(0).getCategorie();
-                    }
-                });
-            }
-        });
 acceptCard.setCardBackgroundColor(Color.parseColor("#00A86B"));
         refusedCard.setCardBackgroundColor(Color.parseColor("#fdc7c7"));
 
@@ -410,39 +433,72 @@ acceptCard.setCardBackgroundColor(Color.parseColor("#00A86B"));
                 else {
 
 
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-                    Storage recp = new Storage();
-                    try {
-                        recp.setDateReception(simpleDateFormat.parse(date.getText().toString()));
-                        recp.setUpdatedAT(new Date());
-                        recp.setCreation(new Date());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                     Storage recp = new Storage();
+                     try {
+                         recp.setDateReception(simpleDateFormat.parse(date.getText().toString()));
+                         recp.setUpdatedAT(new Date());
+                         recp.setCreation(new Date());
+                     } catch (Exception e) {
+                         e.printStackTrace();
+                     }
 
+                     produitRecpAdapter.setOnItemClickListener(new ProduitRecpAdapter.OnItemClickLisnter() {
+                         @Override
+                         public void onItemClick(Produit Produit) {
 
-
-                    recp.setOwner(StaticUse.loadSession(getActivity()).getFirstName());
-                    recp.setCategorie(categoriePr);
-                    recp.setProduit(namePrd);
-                    recp.setFournisseur(nameFrsR);
-                    recp.setNatureProduit(naturePr);
-                    recp.setQuantite(0);
-                    recp.setTemperature(nbrT);
-                    recp.setStatus(state);
-                    mViewModel.insert(recp);
-                    Toast.makeText(getActivity(), " Successfully", Toast.LENGTH_SHORT).show();
-                    ajout.setVisibility(View.GONE);
-                    affichage.setVisibility(View.VISIBLE);
-                }
-
-
-            }
-        });
+                             mViewModel.getProduitById(Produit.getId()).observe(getActivity(), new Observer<List<Produit>>() {
+                                 @Override
+                                 public void onChanged(List<Produit> produits) {
+                                     namePrd = produits.get(0).getName();
+                                     naturePr = produits.get(0).getNature();
+                                     categoriePr = produits.get(0).getCategorie();
+                                     quantitynbr = produits.get(0).getQuantite();
+                                     quantitynbr = quantitynbr + nbrQ;
+                                     produits.get(0).setQuantite(quantitynbr);
+                                 }
+                             });
+                         }
+                     });
 
 
+                     recp.setOwner(StaticUse.loadSession(getActivity()).getFirstName());
+                     recp.setCategorie(categoriePr);
+                     recp.setProduit(namePrd);
+                     recp.setFournisseur(nameFrsR);
+                     recp.setNatureProduit(naturePr);
+                     recp.setQuantite(nbrQ);
+                     recp.setTemperature(nbrT);
+                     recp.setStatus(state);
+                     mViewModel.insert(recp);
+                     Toast.makeText(getActivity(), " Successfully", Toast.LENGTH_SHORT).show();
+                     ajout.setVisibility(View.GONE);
+                     affichage.setVisibility(View.VISIBLE);
 
+                     if (state) {
+                         description = "accepted";
+                     } else {
+                         description = "refused";
+                     }
+
+
+                     final Handler handler = new Handler();
+                     handler.postDelayed(new Runnable() {
+                         @Override
+                         public void run() {
+
+                             StaticUse.SaveHistory(getActivity(), deviceHistoryViewModel, getActivity(), "Storage",
+                                     "has " + description + "a new delevery from", nameFrsR, 0, "Storage");
+
+
+                             handler.removeCallbacksAndMessages(null);
+                         }
+                     }, 500);
+
+
+                 }}
+            });
 
 
 

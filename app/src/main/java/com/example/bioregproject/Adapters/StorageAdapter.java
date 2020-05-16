@@ -56,6 +56,7 @@ public class StorageAdapter extends ListAdapter <Storage, StorageAdapter.Storage
         holder.date.setText(currentStorage.getDateReception().toString());
         holder.quantite.setText(String.valueOf(currentStorage.getQuantite()));
         holder.temperature.setText(String.valueOf(currentStorage.getTemperature()));
+        holder.owner.setText(currentStorage.getOwner());
         if (currentStorage.getNatureProduit().equals("Solid")){
             holder.nature.setText("Kg");}
         else{
@@ -91,7 +92,7 @@ public class StorageAdapter extends ListAdapter <Storage, StorageAdapter.Storage
     }
 
     class StorageHolder extends RecyclerView.ViewHolder{
-       private TextView categorieandProduit ,date,nature,quantite,temperature,fournisseur,accepted,noaccepted;
+       private TextView categorieandProduit ,date,nature,quantite,temperature,fournisseur,accepted,noaccepted,owner;
        private View view26 , viewnon;
        private Button supp , update;
        private ImageView acceptedImage,refusedImage;
@@ -111,6 +112,7 @@ public class StorageAdapter extends ListAdapter <Storage, StorageAdapter.Storage
             noaccepted = itemView.findViewById(R.id.refuser);
             acceptedImage = itemView.findViewById(R.id.imageAccepted);
             refusedImage = itemView.findViewById(R.id.imageNonAccepted);
+            owner =itemView.findViewById(R.id.owner);
 
 
 

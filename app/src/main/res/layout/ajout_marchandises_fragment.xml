@@ -10,7 +10,7 @@
         android:id="@+id/affichageReception"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,10 +73,9 @@
         android:layout_marginEnd="100dp"
         android:layout_marginRight="100dp"
         android:layout_marginBottom="80dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -334,7 +333,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
-                            android:weightSum="2"
+                            android:weightSum="3"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -357,8 +356,8 @@
                                         android:id="@+id/information"
                                         android:layout_width="60dp"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginStart="30dp"
-                                        android:layout_marginLeft="30dp"
+                                        android:layout_marginStart="20dp"
+                                        android:layout_marginLeft="20dp"
                                         android:layout_marginTop="30dp"
                                         android:text="TextView"
                                         app:layout_constraintStart_toEndOf="@+id/linearLayout3"
@@ -368,8 +367,8 @@
                                         android:id="@+id/linearLayout3"
                                         android:layout_width="140dp"
                                         android:layout_height="80dp"
-                                        android:layout_marginStart="40dp"
-                                        android:layout_marginLeft="40dp"
+                                        android:layout_marginStart="30dp"
+                                        android:layout_marginLeft="30dp"
                                         android:orientation="horizontal"
                                         android:weightSum="3"
                                         app:layout_constraintBottom_toBottomOf="parent"
@@ -495,11 +494,11 @@
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="80dp"
-                                        android:layout_marginStart="40dp"
-                                        android:layout_marginLeft="40dp"
+                                        android:layout_marginStart="30dp"
+                                        android:layout_marginLeft="30dp"
                                         android:layout_marginTop="10dp"
-                                        android:layout_marginEnd="40dp"
-                                        android:layout_marginRight="40dp"
+                                        android:layout_marginEnd="30dp"
+                                        android:layout_marginRight="30dp"
                                         android:orientation="horizontal"
                                         android:weightSum="3"
                                         app:layout_constraintBottom_toBottomOf="parent"
@@ -661,13 +660,110 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1">
 
+                                <TextView
+                                    android:id="@+id/textView79"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="20dp"
+                                    android:text="Tracibility :"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+
+                                <TextView
+                                    android:id="@+id/textView77"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20dp"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="20dp"
+                                    android:text="Quantity :"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <LinearLayout
+                                    android:id="@+id/linearLayout4"
+                                    android:layout_width="140dp"
+                                    android:layout_height="40dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="3"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/textView77">
+
+                                    <androidx.constraintlayout.widget.ConstraintLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1">
+
+                                        <Button
+                                            android:id="@+id/plusQ"
+                                            android:layout_width="0dp"
+                                            android:layout_height="0dp"
+                                            android:text="+"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent" />
+                                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                    <androidx.constraintlayout.widget.ConstraintLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1">
+
+                                        <TextView
+                                            android:id="@+id/nbrQuantity"
+                                            android:layout_width="0dp"
+                                            android:layout_height="0dp"
+                                            android:gravity="center"
+                                            android:text="0"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent" />
+                                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                    <androidx.constraintlayout.widget.ConstraintLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1">
+
+                                        <Button
+                                            android:id="@+id/moinsQ"
+                                            android:layout_width="0dp"
+                                            android:layout_height="0dp"
+                                            android:text="-"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent" />
+                                    </androidx.constraintlayout.widget.ConstraintLayout>
+                                </LinearLayout>
+
+                                <ImageButton
+                                    android:id="@+id/imageButton13"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="30dp"
+                                    android:layout_marginLeft="30dp"
+                                    android:layout_marginTop="15dp"
+                                    android:background="@android:color/transparent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/textView79"
+                                    tools:src="@drawable/qrcode" />
 
                                 <Button
                                     android:id="@+id/selectDate"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="20dp"
-                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginStart="30dp"
+                                    android:layout_marginLeft="30dp"
                                     android:layout_marginTop="20dp"
                                     android:text="Select Date"
                                     android:textSize="16sp"
@@ -676,15 +772,22 @@
                                     app:iconGravity="end"
                                     app:iconPadding="30dp"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    app:layout_constraintTop_toBottomOf="@+id/imageButton13" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
 
                                 <androidx.constraintlayout.widget.ConstraintLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="0dp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/selectDate">
+                                    app:layout_constraintTop_toTopOf="parent">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"

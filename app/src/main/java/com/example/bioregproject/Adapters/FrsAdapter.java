@@ -56,6 +56,10 @@ public class FrsAdapter extends ListAdapter <Fournisseur, FrsAdapter.frsHolder> 
         return new frsHolder(itemView);
     }
 
+    public Fournisseur getFrsAt(int position) {
+        return getItem(position);
+    }
+
     @Override
     public void onBindViewHolder(@NonNull frsHolder holder, int position) {
         Fournisseur currentFournisseur = getItem(position);
