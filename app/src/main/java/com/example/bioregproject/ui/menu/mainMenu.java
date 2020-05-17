@@ -128,7 +128,7 @@ public class mainMenu extends Fragment {
     private ArrayList<MenuItems> Populater()
     {
         ArrayList<MenuItems> categoryItems = new ArrayList<>();
-        categoryItems.add(new MenuItems("cleaning and disinfection",R.drawable.cleanning,R.id.listPlanningClean));
+        categoryItems.add(new MenuItems("cleaning and disinfection",R.drawable.cleanning,R.id.cleaning));
         categoryItems.add(new MenuItems("Oil Control",R.drawable.oilcontrol,R.id.oliControl));
         categoryItems.add(new MenuItems("Product Traceability",R.drawable.trac,R.id.products));
         categoryItems.add(new MenuItems("Task Planification ",R.drawable.task,R.id.taskPlan));

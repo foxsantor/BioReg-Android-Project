@@ -149,10 +149,5 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
-    <fragment
-        android:id="@+id/listPlanningClean"
-        android:name="com.example.bioregproject.ui.Cleaning.listPlanningClean"
-        android:label="ajout_task"
-        tools:layout="@layout/ajout_task" />
 
 </navigation>

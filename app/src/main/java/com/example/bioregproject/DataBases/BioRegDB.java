@@ -43,8 +43,7 @@ import com.example.bioregproject.entities.Tache;
 
 import java.util.Date;
 
-@Database(entities = {Account.class, Category.class, ProductLogs.class, Products.class, Notification.class, History.class, PersoTask.class, Oil.class, Post.class, Tache.class, Surface
-        .class, CategorieTache.class, Fournisseur.class, Produit.class, Storage.class, SettingOil.class},version = 22)
+@Database(entities = {Account.class, Category.class, ProductLogs.class, Products.class, Notification.class, History.class, PersoTask.class, Oil.class, Post.class, Tache.class, Surface.class, CategorieTache.class, Fournisseur.class, Produit.class, Storage.class, SettingOil.class},version = 26)
 
 public abstract class BioRegDB  extends RoomDatabase {
 
@@ -65,6 +64,8 @@ public abstract class BioRegDB  extends RoomDatabase {
     public abstract ProduitDAO ProduitDAO();
     public abstract StorageDAO StorageDAO();
     public abstract SettingOilDAO SettingoilDAO();
+
+
 
     public static synchronized BioRegDB getInstance(Context context){
         if(instance == null)

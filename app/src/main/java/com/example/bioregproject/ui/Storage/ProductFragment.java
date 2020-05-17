@@ -153,7 +153,7 @@ mViewModel.getAllproduit().observe(this, new Observer<List<Produit>>() {
                         Produit.setQuantite(nbrQ);
                         mViewModel.update(Produit);
                         Toast.makeText(getActivity(), " Quntity Product updated Successfully", Toast.LENGTH_SHORT).show();
-                        affichage.setVisibility(View.VISIBLE);
+                        affichage.setClickable(false);
                         quantite.setVisibility(View.GONE);
 
                     }
@@ -171,7 +171,7 @@ mViewModel.getAllproduit().observe(this, new Observer<List<Produit>>() {
             @Override
             public void update(Produit Produit) {
                 update.setVisibility(View.VISIBLE);
-                affichage.setVisibility(View.GONE);
+                affichage.setClickable(false);
                 nameU.getEditText().setText(Produit.getName());
                 spinner2.setSelection(getIndex(spinner2, Produit.getCategorie().toString()));
                 natureSpiner2.setSelection(getIndex(natureSpiner2, Produit.getNature().toString()));
@@ -185,7 +185,7 @@ mViewModel.getAllproduit().observe(this, new Observer<List<Produit>>() {
                         Produit.setUpdatedAT(new Date());
                         mViewModel.update(Produit);
                         Toast.makeText(getActivity(), "Product updated Successfully", Toast.LENGTH_SHORT).show();
-                        affichage.setVisibility(View.VISIBLE);
+                        affichage.setClickable(true);
                         update.setVisibility(View.GONE);
                     }
                 });
@@ -201,7 +201,7 @@ mViewModel.getAllproduit().observe(this, new Observer<List<Produit>>() {
             @Override
             public void onClick(View v) {
                 ajout.setVisibility(View.VISIBLE);
-                affichage.setVisibility(View.GONE);
+                affichage.setClickable(true);
             }
         });
 
@@ -218,7 +218,7 @@ mViewModel.getAllproduit().observe(this, new Observer<List<Produit>>() {
                 produit.setUpdatedAT(new Date());
                 mViewModel.insert(produit);
                 ajout.setVisibility(View.GONE);
-                affichage.setVisibility(View.VISIBLE);
+                affichage.setClickable(true);
             }
         });
 
@@ -229,7 +229,7 @@ mViewModel.getAllproduit().observe(this, new Observer<List<Produit>>() {
             @Override
             public void onClick(View v) {
                 update.setVisibility(View.GONE);
-                affichage.setVisibility(View.VISIBLE);
+                affichage.setClickable(true);
 
 
 
@@ -241,7 +241,7 @@ mViewModel.getAllproduit().observe(this, new Observer<List<Produit>>() {
             @Override
             public void onClick(View v) {
                 ajout.setVisibility(View.GONE);
-                affichage.setVisibility(View.VISIBLE);
+                affichage.setClickable(true);
 
 
             }
@@ -250,7 +250,7 @@ mViewModel.getAllproduit().observe(this, new Observer<List<Produit>>() {
         exitQ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                affichage.setVisibility(View.VISIBLE);
+                affichage.setClickable(true);
                 quantite.setVisibility(View.GONE);
             }
         });
@@ -259,7 +259,7 @@ mViewModel.getAllproduit().observe(this, new Observer<List<Produit>>() {
             @Override
             public void onClick(View v) {
                 ajout.setVisibility(View.GONE);
-                affichage.setVisibility(View.VISIBLE);
+                affichage.setClickable(true);
 
 
             }
@@ -269,7 +269,7 @@ mViewModel.getAllproduit().observe(this, new Observer<List<Produit>>() {
             @Override
             public void onClick(View v) {
                 update.setVisibility(View.GONE);
-                affichage.setVisibility(View.VISIBLE);
+                affichage.setClickable(true);
 
 
             }

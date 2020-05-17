@@ -25,7 +25,16 @@ public class CategorieRepository {
         allCategorie = categorieDao.getAllCategories();
         allcategorieSurfaces = categorieDao.getCategorieWithSurfaces();
     }
+    public LiveData<List<CategorieTache>> getAllCategorieById(long id){
 
+        return  categorieDao.loadCategorieById(id);
+
+    }
+    public LiveData<List<CategorieTache>> getAllCategorieByName(String name){
+
+        return  categorieDao.loadCategorieByName(name);
+
+    }
 
     public void insertOne (CategorieTache categorie_tache){
         new InsertCategorieAsyncTask(categorieDao).execute(categorie_tache);

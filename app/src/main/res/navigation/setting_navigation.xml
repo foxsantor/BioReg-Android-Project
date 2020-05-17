@@ -30,7 +30,11 @@
         android:id="@+id/generalSettings"
         android:name="com.example.bioregproject.ui.Settings.GeneralSettings.GeneralSettings"
         android:label="general_settings_fragment"
-        tools:layout="@layout/general_settings_fragment" />
+        tools:layout="@layout/general_settings_fragment" >
+        <action
+            android:id="@+id/action_generalSettings_to_staticOilTest"
+            app:destination="@id/staticOilTest" />
+    </fragment>
     <fragment
         android:id="@+id/mangeAccount"
         android:name="com.example.bioregproject.ui.Settings.AccountMangement.MangeAccount"
@@ -52,4 +56,9 @@
         android:name="com.example.bioregproject.ui.Settings.CloudSync.CloudFragment"
         android:label="cloud_fragment"
         tools:layout="@layout/cloud_fragment" />
+    <fragment
+        android:id="@+id/staticOilTest"
+        android:name="com.example.bioregproject.ui.Settings.GeneralSettings.StaticOilTest"
+        android:label="static_oil_test_fragment"
+        tools:layout="@layout/static_oil_test_fragment" />
 </navigation>

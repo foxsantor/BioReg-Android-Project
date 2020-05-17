@@ -24,10 +24,10 @@ public class ListPlanningCleanViewModel extends AndroidViewModel {
     private TacheRepository repositorytache;
     private SurfaceRepository surfaceRepository;
     private LiveData<List<CategorieTache>> allCategorie;
-    private LiveData<List<TacheWithSurfaceAndCategoryTache>> allTaches;
+    private LiveData<List<Tache>> allTaches;
     private LiveData<List<Surface>> allSurface;
-    private  LiveData<List<TacheWithSurfaceAndCategoryTache>>tacheById;
-    private  LiveData<List<TacheWithSurfaceAndCategoryTache>>tacheByStatut;
+    private  LiveData<List<Tache>>tacheById;
+    private  LiveData<List<Tache>>tacheByStatut;
     private LiveData<List<CategorywithSurfaces>>categories;
 
 
@@ -48,15 +48,29 @@ public class ListPlanningCleanViewModel extends AndroidViewModel {
     public LiveData<List<CategorieTache>> getAllCategories() {
         return allCategorie;
     }
-    public  LiveData<List<TacheWithSurfaceAndCategoryTache>>getTacheById(int id){
+    public  LiveData<List<Tache>>getTacheById(String id){
         return  tacheById=repositorytache.getTacheByCateg(id); }
-    public  LiveData<List<TacheWithSurfaceAndCategoryTache>>getTacheByStatut(Boolean statut){
+    public  LiveData<List<Tache>>getTacheByStatut(Boolean statut){
         return  tacheById=repositorytache.getTacheByStatut(statut);
 
     }
+    public LiveData<List<CategorieTache>> getCategorieById(long id) {
+        return repository.getAllCategorieById(id);
+    }
+    public LiveData<List<CategorieTache>> getCategorieByName(String name) {
+        return repository.getAllCategorieByName(name);
+    }
+
+
+    public LiveData<List<Surface>> getSurfaceById(long id) {
+        return surfaceRepository.getSurfaceById(id);
+    }
+
+
+
     public LiveData<List<CategorywithSurfaces>>getCategories(){return categories;}
 
-    public LiveData<List<TacheWithSurfaceAndCategoryTache>> getAllTache() {
+    public LiveData<List<Tache>> getAllTache() {
         return allTaches;
     }
 

@@ -21,20 +21,49 @@ public class Tache {
     @ColumnInfo(name = "statut")
     private boolean status;
     @ColumnInfo(name = "idCategorie")
-    private int idCategorie;
+    private String idCategorie;
     @ColumnInfo(name = "idSurface")
-    private int idSurface;
+    private String idSurface;
+    private String user;
+private Date createdAt;
+    private byte[] imageCateg;
 
     public Tache() {
         super();
     }
 
     @Ignore
-    public Tache(Date date, boolean status, int idCategorie, int idSurface) {
+    public Tache(Date date, boolean status, String idCategorie, String idSurface,String user,Date createdAt) {
         this.date = date;
         this.status = status;
         this.idCategorie = idCategorie;
         this.idSurface = idSurface;
+        this.user=user;
+        this.createdAt=createdAt;
+    }
+
+    public byte[] getImageCateg() {
+        return imageCateg;
+    }
+
+    public void setImageCateg(byte[] imageCateg) {
+        this.imageCateg = imageCateg;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Date getDate() {
@@ -45,11 +74,11 @@ public class Tache {
         this.date = date;
     }
 
-    public int getIdCategorie() {
+    public String getIdCategorie() {
         return idCategorie;
     }
 
-    public void setIdCategorie(int idCategorie) {
+    public void setIdCategorie(String idCategorie) {
         this.idCategorie = idCategorie;
     }
 
@@ -69,11 +98,11 @@ public class Tache {
         this.status = status;
     }
 
-    public int getIdSurface() {
+    public String getIdSurface() {
         return idSurface;
     }
 
-    public void setIdSurface(int idSurface) {
+    public void setIdSurface(String idSurface) {
         this.idSurface = idSurface;
     }
 }

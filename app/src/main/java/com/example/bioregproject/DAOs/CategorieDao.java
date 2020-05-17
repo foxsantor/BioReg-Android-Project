@@ -36,4 +36,11 @@ public interface CategorieDao {
     @Transaction
     @Query("select * from categorietache")
     public LiveData<List<CategorywithSurfaces>> getCategorieWithSurfaces();
+
+    @Query("SELECT * from CategorieTache where idCat = :id LIMIT 1")
+    LiveData<List<CategorieTache>> loadCategorieById(long id);
+
+    @Query("SELECT * from CategorieTache where name = :name LIMIT 1")
+    LiveData<List<CategorieTache>> loadCategorieByName(String name);
+
 }

@@ -16,9 +16,9 @@ import java.util.List;
 public class TacheRepository {
 
     private TacheDao tacheDao;
-    private LiveData<List<TacheWithSurfaceAndCategoryTache>> allTache;
-    private LiveData<List<TacheWithSurfaceAndCategoryTache>> tacheByCateg;
-    private LiveData<List<TacheWithSurfaceAndCategoryTache>> tacheStatut;
+    private LiveData<List<Tache>> allTache;
+    private LiveData<List<Tache>> tacheByCateg;
+    private LiveData<List<Tache>> tacheStatut;
 
     public TacheRepository (Application application){
         BioRegDB dataBase = BioRegDB.getInstance(application);
@@ -48,16 +48,16 @@ public class TacheRepository {
         new DeleteAllTacheAsyncTask(tacheDao).execute();
     }
 
-    public LiveData<List<TacheWithSurfaceAndCategoryTache>> getAllTache (){
+    public LiveData<List<Tache>> getAllTache (){
         return allTache;
     }
 
 
-    public LiveData<List<TacheWithSurfaceAndCategoryTache>> getTacheByCateg (int id) {
+    public LiveData<List<Tache>> getTacheByCateg (String id) {
         return tacheByCateg = tacheDao.getTacheByCategorie(id);
     }
 
-        public LiveData<List<TacheWithSurfaceAndCategoryTache>> getTacheByStatut (Boolean statut){
+        public LiveData<List<Tache>> getTacheByStatut (Boolean statut){
             return tacheStatut=tacheDao.getTacheByStatus(statut);
     }
 

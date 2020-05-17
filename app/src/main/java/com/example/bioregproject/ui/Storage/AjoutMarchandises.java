@@ -287,8 +287,6 @@ nbrQ=0;
             @Override
             public void onClick(View v) {
                 ajout.setVisibility(View.VISIBLE);
-                affichage.setVisibility(View.INVISIBLE);
-                affichage.isEnabled();
                 affichage.setClickable(false);
             }
         });
@@ -357,6 +355,23 @@ acceptCard.setCardBackgroundColor(Color.parseColor("#00A86B"));
                 state=true;
             }
         });
+        produitRecpAdapter.setOnItemClickListener(new ProduitRecpAdapter.OnItemClickLisnter() {
+            @Override
+            public void onItemClick(Produit Produit) {
+
+                mViewModel.getProduitById(Produit.getId()).observe(getActivity(), new Observer<List<Produit>>() {
+                    @Override
+                    public void onChanged(List<Produit> produits) {
+                        namePrd = produits.get(0).getName();
+                        naturePr = produits.get(0).getNature();
+                        categoriePr = produits.get(0).getCategorie();
+                        quantitynbr = produits.get(0).getQuantite();
+                        quantitynbr = quantitynbr + nbrQ;
+                        produits.get(0).setQuantite(quantitynbr);
+                    }
+                });
+            }
+        });
 
 
         //Steppers
@@ -407,7 +422,7 @@ acceptCard.setCardBackgroundColor(Color.parseColor("#00A86B"));
             @Override
             public void onClick(View v) {
                 ajout.setVisibility(View.GONE);
-                affichage.setVisibility(View.VISIBLE);
+                affichage.setClickable(true);
             }
         });
 
@@ -415,7 +430,7 @@ acceptCard.setCardBackgroundColor(Color.parseColor("#00A86B"));
             @Override
             public void onClick(View v) {
                 ajout.setVisibility(View.GONE);
-                affichage.setVisibility(View.VISIBLE);
+                affichage.setClickable(true);
 
             }
         });
@@ -444,23 +459,6 @@ acceptCard.setCardBackgroundColor(Color.parseColor("#00A86B"));
                          e.printStackTrace();
                      }
 
-                     produitRecpAdapter.setOnItemClickListener(new ProduitRecpAdapter.OnItemClickLisnter() {
-                         @Override
-                         public void onItemClick(Produit Produit) {
-
-                             mViewModel.getProduitById(Produit.getId()).observe(getActivity(), new Observer<List<Produit>>() {
-                                 @Override
-                                 public void onChanged(List<Produit> produits) {
-                                     namePrd = produits.get(0).getName();
-                                     naturePr = produits.get(0).getNature();
-                                     categoriePr = produits.get(0).getCategorie();
-                                     quantitynbr = produits.get(0).getQuantite();
-                                     quantitynbr = quantitynbr + nbrQ;
-                                     produits.get(0).setQuantite(quantitynbr);
-                                 }
-                             });
-                         }
-                     });
 
 
                      recp.setOwner(StaticUse.loadSession(getActivity()).getFirstName());
@@ -474,7 +472,7 @@ acceptCard.setCardBackgroundColor(Color.parseColor("#00A86B"));
                      mViewModel.insert(recp);
                      Toast.makeText(getActivity(), " Successfully", Toast.LENGTH_SHORT).show();
                      ajout.setVisibility(View.GONE);
-                     affichage.setVisibility(View.VISIBLE);
+                     affichage.setClickable(true);
 
                      if (state) {
                          description = "accepted";

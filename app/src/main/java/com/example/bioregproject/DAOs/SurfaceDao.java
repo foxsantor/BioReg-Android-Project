@@ -29,5 +29,7 @@ public interface SurfaceDao {
 
     @Query("DELETE FROM Surface")
     void deleteAllSurface();
+    @Query("SELECT * from surface where idSurface = :id LIMIT 1")
+    LiveData<List<Surface>> loadSurfaceById(long id);
 
 }

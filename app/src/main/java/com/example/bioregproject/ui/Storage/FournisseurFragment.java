@@ -147,7 +147,7 @@ public class FournisseurFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ajout.setVisibility(View.VISIBLE);
-                affichage.setVisibility(View.GONE);
+                affichage.setClickable(false);
 
             }
         });
@@ -166,7 +166,7 @@ public class FournisseurFragment extends Fragment {
                 fournisseur.setCreation(new Date());
                 mViewModel.insert(fournisseur);
                 ajout.setVisibility(View.GONE);
-                affichage.setVisibility(View.VISIBLE);
+                affichage.setClickable(true);
 
 
 
@@ -192,7 +192,7 @@ public class FournisseurFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 update.setVisibility(View.GONE);
-                affichage.setVisibility(View.VISIBLE);
+                affichage.setClickable(false);
 
 
 
@@ -204,7 +204,7 @@ public class FournisseurFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ajout.setVisibility(View.GONE);
-                affichage.setVisibility(View.VISIBLE);
+                affichage.setClickable(true);
 
 
             }
@@ -214,7 +214,7 @@ public class FournisseurFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ajout.setVisibility(View.GONE);
-                affichage.setVisibility(View.VISIBLE);
+                affichage.setClickable(true);
 
 
             }
@@ -224,7 +224,7 @@ public class FournisseurFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 update.setVisibility(View.GONE);
-                affichage.setVisibility(View.VISIBLE);
+                affichage.setClickable(true);
 
 
             }

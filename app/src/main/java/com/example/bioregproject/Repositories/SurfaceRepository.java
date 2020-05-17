@@ -23,7 +23,11 @@ public class SurfaceRepository {
     }
 
 
+    public LiveData<List<Surface>> getSurfaceById(long id){
 
+        return  surfaceDao.loadSurfaceById(id);
+
+    }
 
     public void insertOne (Surface surface){
         new SurfaceRepository.InsertSurfaceAsyncTask(surfaceDao).execute(surface);

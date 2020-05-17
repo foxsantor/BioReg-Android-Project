@@ -21,7 +21,6 @@ public class SurfaceforCategrory2Adapter extends ListAdapter<Surface, Surfacefor
 
     private Context mContext;
     private OnItemClickLisnter listener;
-    int index_row= -1;
 
 
     public SurfaceforCategrory2Adapter(Context context) {
@@ -52,19 +51,7 @@ public class SurfaceforCategrory2Adapter extends ListAdapter<Surface, Surfacefor
     public void onBindViewHolder(@NonNull SurfaceforCategory2Holder holder, int position) {
         Surface currentSurface = getItem(position);
         holder.textnameSurface.setText(currentSurface.getNameSurface());
-        holder.cardViewZone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                index_row=position;
-                notifyDataSetChanged(); }
-        });
-        if (index_row==position){
 
-            holder.cardViewZone.setBackgroundColor(Color.parseColor("#F0F8FF"));
-        }else{
-
-            holder.cardViewZone.setBackgroundColor(Color.parseColor("#ffffff"));
-        }
 
 
     }

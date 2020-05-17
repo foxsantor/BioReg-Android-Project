@@ -7,6 +7,561 @@
     tools:context=".ui.Settings.GeneralSettings.GeneralSettings">
 
 
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/NestedAffichage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:fillViewport="true"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView49"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Cleaning Setting"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/parametreCleaning"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginRight="30dp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView49">
+
+
+                    <androidx.core.widget.NestedScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fillViewport="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:layout_editor_absoluteY="167dp">
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/cardView4"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_marginRight="10dp"
+                                    app:cardBackgroundColor="@color/selectedGoogle"
+                                    app:cardCornerRadius="16dp"
+                                    app:cardElevation="2dp"
+                                    app:cardMaxElevation="2dp"
+                                    app:cardPreventCornerOverlap="false"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_margin="1dp"
+                                        android:visibility="visible"
+                                        app:cardCornerRadius="16dp"
+                                        app:cardElevation="1dp"
+                                        app:cardMaxElevation="1dp">
+
+                                        <androidx.constraintlayout.widget.ConstraintLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content">
+
+                                            <TextView
+                                                android:id="@+id/textView4"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="16dp"
+                                                android:layout_marginLeft="16dp"
+                                                android:layout_marginTop="15dp"
+                                                android:text="Workplan Creation"
+                                                android:textSize="20sp"
+                                                android:textStyle="bold"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toTopOf="parent" />
+
+                                            <View
+                                                android:id="@+id/view3"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="1dp"
+                                                android:layout_marginTop="15dp"
+                                                android:background="@color/selectedGoogle"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/textView12s" />
+
+                                            <Button
+                                                android:id="@+id/indicateurCat"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:clickable="false"
+                                                android:gravity="left"
+                                                android:text="Manage workplan"
+                                                android:textColor="@color/officialBlue"
+                                                android:textSize="16sp"
+                                                app:backgroundTint="@android:color/transparent"
+                                                app:elevation="0dp"
+                                                app:icon="@drawable/ic_arrow_back_black_24dp"
+                                                app:iconGravity="end"
+                                                app:iconTint="@color/TextNotSelected"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+                                            <Button
+                                                android:id="@+id/indicateurCat2"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:clickable="false"
+                                                android:gravity="left"
+                                                android:text="Manage workplan"
+                                                android:textColor="@color/officialBlue"
+                                                android:visibility="gone"
+                                                app:backgroundTint="@android:color/transparent"
+                                                app:elevation="0dp"
+                                                app:icon="@drawable/ic_arrow_back_black_24dp"
+                                                app:iconGravity="start"
+                                                app:iconTint="@color/TextNotSelected"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+                                            <TextView
+                                                android:id="@+id/textView25"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="16dp"
+                                                android:layout_marginLeft="16dp"
+                                                android:layout_marginTop="17dp"
+                                                android:text="Add a new workplan for cleaning."
+                                                android:textSize="18sp"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+                                            <TextView
+                                                android:id="@+id/textView12s"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="16dp"
+                                                android:layout_marginLeft="16dp"
+                                                android:layout_marginTop="15dp"
+                                                android:text="Note : May request administrative access."
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
+                                            <androidx.core.widget.NestedScrollView
+                                                android:id="@+id/nestedCate"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="300dp"
+                                                android:layout_marginStart="10dp"
+                                                android:layout_marginLeft="10dp"
+                                                android:layout_marginEnd="10dp"
+                                                android:layout_marginRight="10dp"
+                                                android:fillViewport="true"
+                                                android:visibility="gone"
+                                                app:layout_constraintBottom_toBottomOf="parent"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/addNew">
+
+                                                <LinearLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:orientation="vertical">
+
+                                                    <androidx.recyclerview.widget.RecyclerView
+                                                        android:id="@+id/categ"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent" />
+                                                </LinearLayout>
+                                            </androidx.core.widget.NestedScrollView>
+
+                                            <Button
+                                                android:id="@+id/addNew"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="10dp"
+                                                android:layout_marginEnd="10dp"
+                                                android:layout_marginRight="10dp"
+                                                android:text="AddNew Workplan"
+                                                android:visibility="gone"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/indicateurCat" />
+
+                                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </LinearLayout>
+                    </androidx.core.widget.NestedScrollView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/textView64"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="30dp"
+                    android:text="Oil Setting"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/parametreCleaning" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/information"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginRight="30dp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView64">
+
+
+                    <androidx.core.widget.NestedScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fillViewport="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:layout_editor_absoluteY="167dp">
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/cardView4O"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_marginRight="10dp"
+                                    app:cardBackgroundColor="@color/selectedGoogle"
+                                    app:cardCornerRadius="16dp"
+                                    app:cardElevation="2dp"
+                                    app:cardMaxElevation="2dp"
+                                    app:cardPreventCornerOverlap="false"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="1dp"
+                                        android:visibility="visible"
+                                        app:cardCornerRadius="16dp"
+                                        app:cardElevation="1dp"
+                                        app:cardMaxElevation="1dp">
+
+                                        <androidx.constraintlayout.widget.ConstraintLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content">
+
+                                            <androidx.constraintlayout.widget.ConstraintLayout
+                                                android:id="@+id/verifFiltrage"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:visibility="gone"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/indicateurPost4">
+
+                                                <Switch
+                                                    android:id="@+id/switch1"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginStart="20dp"
+                                                    android:layout_marginLeft="20dp"
+                                                    android:layout_marginTop="40dp"
+                                                    android:shadowColor="@color/colorPrimary"
+                                                    android:text="Quality control of oils "
+                                                    android:textColor="@color/TextNotSelected"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                                <TextView
+                                                    android:id="@+id/textView66"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginStart="20dp"
+                                                    android:layout_marginLeft="20dp"
+                                                    android:layout_marginTop="10dp"
+                                                    android:layout_marginBottom="30dp"
+                                                    android:text=" TEST POLAR COMPOUNDS - ELECTRONIC TESTER"
+                                                    app:layout_constraintBottom_toBottomOf="parent"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toBottomOf="@id/switch1" />
+
+                                                <ImageButton
+                                                    android:id="@+id/info"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginEnd="40dp"
+                                                    android:layout_marginRight="40dp"
+                                                    app:layout_constraintBottom_toBottomOf="parent"
+                                                    app:layout_constraintEnd_toEndOf="parent"
+                                                    app:layout_constraintTop_toTopOf="parent"
+                                                    tools:srcCompact="@drawable/ic_info_black_24dp"
+                                                    />
+                                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                            <Button
+                                                android:id="@+id/indicateurPost5"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:clickable="false"
+                                                android:gravity="left"
+                                                android:text="Manage workplan"
+                                                android:textColor="@color/officialBlue"
+                                                android:visibility="gone"
+                                                app:backgroundTint="@android:color/transparent"
+                                                app:elevation="0dp"
+                                                app:icon="@drawable/ic_arrow_back_black_24dp"
+                                                app:iconGravity="start"
+                                                app:iconTint="@color/TextNotSelected"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/view3O2" />
+
+                                            <Button
+                                                android:id="@+id/indicateurPost4"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:clickable="false"
+                                                android:gravity="left"
+                                                android:text="For oil control "
+                                                android:textColor="@color/officialBlue"
+                                                android:textSize="16sp"
+                                                app:backgroundTint="@android:color/transparent"
+                                                app:elevation="0dp"
+                                                app:icon="@drawable/ic_arrow_back_black_24dp"
+                                                app:iconGravity="end"
+                                                app:iconTint="@color/TextNotSelected"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/view3O2" />
+
+                                            <View
+                                                android:id="@+id/view3O2"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="1dp"
+                                                android:layout_marginTop="15dp"
+                                                android:background="@color/selectedGoogle"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/textView12sO" />
+
+                                            <TextView
+                                                android:id="@+id/textView4O"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="16dp"
+                                                android:layout_marginLeft="16dp"
+                                                android:layout_marginTop="15dp"
+                                                android:text="Oil Control"
+                                                android:textSize="20sp"
+                                                android:textStyle="bold"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toTopOf="parent" />
+
+                                            <View
+                                                android:id="@+id/view3O"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="1dp"
+                                                android:background="@color/selectedGoogle"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/verifFiltrage" />
+
+                                            <Button
+                                                android:id="@+id/indicateurPost"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:clickable="false"
+                                                android:gravity="left"
+                                                android:text="Manage Post Oil"
+                                                android:textColor="@color/officialBlue"
+                                                android:textSize="16sp"
+                                                app:backgroundTint="@android:color/transparent"
+                                                app:elevation="0dp"
+                                                app:icon="@drawable/ic_arrow_back_black_24dp"
+                                                app:iconGravity="end"
+                                                app:iconTint="@color/TextNotSelected"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/view3O" />
+
+                                            <Button
+                                                android:id="@+id/indicateurPost2"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:clickable="false"
+                                                android:gravity="left"
+                                                android:text="Manage workplan"
+                                                android:textColor="@color/officialBlue"
+                                                android:visibility="gone"
+                                                app:backgroundTint="@android:color/transparent"
+                                                app:elevation="0dp"
+                                                app:icon="@drawable/ic_arrow_back_black_24dp"
+                                                app:iconGravity="start"
+                                                app:iconTint="@color/TextNotSelected"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/view3O" />
+
+                                            <TextView
+                                                android:id="@+id/textView25O"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="16dp"
+                                                android:layout_marginLeft="16dp"
+                                                android:layout_marginTop="17dp"
+                                                android:text="Add a new post to be able to oil control."
+                                                android:textSize="18sp"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/textView4O" />
+
+                                            <TextView
+                                                android:id="@+id/textView12sO"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="16dp"
+                                                android:layout_marginLeft="16dp"
+                                                android:layout_marginTop="15dp"
+                                                android:text="Note : May request administrative access."
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/textView25O" />
+
+                                            <androidx.core.widget.NestedScrollView
+                                                android:id="@+id/nestedPost"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="300dp"
+                                                android:layout_marginStart="10dp"
+                                                android:layout_marginLeft="10dp"
+                                                android:layout_marginEnd="10dp"
+                                                android:layout_marginRight="10dp"
+                                                android:fillViewport="true"
+                                                android:visibility="gone"
+                                                app:layout_constraintBottom_toBottomOf="parent"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintStart_toStartOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/addNewPost">
+
+                                                <LinearLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:orientation="vertical">
+
+                                                    <androidx.recyclerview.widget.RecyclerView
+                                                        android:id="@+id/postRecy"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent" />
+                                                </LinearLayout>
+                                            </androidx.core.widget.NestedScrollView>
+
+                                            <Button
+                                                android:id="@+id/addNewPost"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="10dp"
+                                                android:layout_marginEnd="10dp"
+                                                android:layout_marginRight="10dp"
+                                                android:text="Add New Post"
+                                                android:visibility="gone"
+                                                app:layout_constraintEnd_toEndOf="parent"
+                                                app:layout_constraintTop_toBottomOf="@+id/indicateurPost" />
+
+                                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </LinearLayout>
+                    </androidx.core.widget.NestedScrollView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/Details"
         android:layout_width="0dp"
@@ -115,9 +670,9 @@
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:id="@+id/textInputaddSurface"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                                     android:layout_width="220dp"
                                     android:layout_height="wrap_content"
-                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
 
                                     android:layout_marginStart="10dp"
                                     android:layout_marginLeft="10dp"
@@ -321,546 +876,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/NestedAffichage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:fillViewport="true"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/textView49"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="20dp"
-                    android:text="Cleaning Setting"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/parametreCleaning"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginRight="30dp"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView49">
-
-
-                    <androidx.core.widget.NestedScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fillViewport="true"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:layout_editor_absoluteY="167dp">
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/cardView4"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_marginRight="10dp"
-                                    app:cardBackgroundColor="@color/selectedGoogle"
-                                    app:cardCornerRadius="16dp"
-                                    app:cardElevation="2dp"
-                                    app:cardMaxElevation="2dp"
-                                    app:cardPreventCornerOverlap="false"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_margin="1dp"
-                                        android:visibility="visible"
-                                        app:cardCornerRadius="16dp"
-                                        app:cardElevation="1dp"
-                                        app:cardMaxElevation="1dp">
-
-                                        <androidx.constraintlayout.widget.ConstraintLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content">
-
-                                            <TextView
-                                                android:id="@+id/textView4"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="16dp"
-                                                android:layout_marginLeft="16dp"
-                                                android:layout_marginTop="15dp"
-                                                android:text="Workplan Creation"
-                                                android:textSize="20sp"
-                                                android:textStyle="bold"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toTopOf="parent" />
-
-                                            <View
-                                                android:id="@+id/view3"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="1dp"
-                                                android:layout_marginTop="15dp"
-                                                android:background="@color/selectedGoogle"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/textView12s" />
-
-                                            <Button
-                                                android:id="@+id/indicateurCat"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:clickable="false"
-                                                android:gravity="left"
-                                                android:text="Manage workplan"
-                                                android:textColor="@color/officialBlue"
-                                                app:backgroundTint="@android:color/transparent"
-                                                app:elevation="0dp"
-                                                app:icon="@drawable/ic_arrow_back_black_24dp"
-                                                app:iconGravity="end"
-                                                app:iconTint="@color/TextNotSelected"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/view3" />
-
-                                            <Button
-                                                android:id="@+id/indicateurCat2"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:clickable="false"
-                                                android:gravity="left"
-                                                android:text="Manage workplan"
-                                                android:textColor="@color/officialBlue"
-                                                android:visibility="gone"
-                                                app:backgroundTint="@android:color/transparent"
-                                                app:elevation="0dp"
-                                                app:icon="@drawable/ic_arrow_back_black_24dp"
-                                                app:iconGravity="end"
-                                                app:iconTint="@color/TextNotSelected"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/view3" />
-
-                                            <TextView
-                                                android:id="@+id/textView25"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="16dp"
-                                                android:layout_marginLeft="16dp"
-                                                android:layout_marginTop="17dp"
-                                                android:text="Add a new workplan for cleaning."
-                                                android:textSize="18sp"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-                                            <TextView
-                                                android:id="@+id/textView12s"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="16dp"
-                                                android:layout_marginLeft="16dp"
-                                                android:layout_marginTop="15dp"
-                                                android:text="Note : May request administrative access."
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/textView25" />
-
-                                            <androidx.core.widget.NestedScrollView
-                                                android:id="@+id/nestedCate"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="300dp"
-                                                android:layout_marginStart="10dp"
-                                                android:layout_marginLeft="10dp"
-                                                android:layout_marginEnd="10dp"
-                                                android:layout_marginRight="10dp"
-                                                android:fillViewport="true"
-                                                android:visibility="gone"
-                                                app:layout_constraintBottom_toBottomOf="parent"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/addNew">
-
-                                                <LinearLayout
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="wrap_content"
-                                                    android:orientation="vertical">
-
-                                                    <androidx.recyclerview.widget.RecyclerView
-                                                        android:id="@+id/categ"
-                                                        android:layout_width="match_parent"
-                                                        android:layout_height="match_parent" />
-                                                </LinearLayout>
-                                            </androidx.core.widget.NestedScrollView>
-
-                                            <Button
-                                                android:id="@+id/addNew"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginTop="10dp"
-                                                android:layout_marginEnd="10dp"
-                                                android:layout_marginRight="10dp"
-                                                android:text="AddNew Workplan"
-                                                android:visibility="gone"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/indicateurCat" />
-
-                                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                                    </androidx.cardview.widget.CardView>
-                                </androidx.cardview.widget.CardView>
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-                        </LinearLayout>
-                    </androidx.core.widget.NestedScrollView>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/textView64"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="30dp"
-                    android:text="Oil Setting"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/parametreCleaning" />
-
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/parametreOil"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginRight="30dp"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView64">
-
-
-                    <androidx.core.widget.NestedScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fillViewport="true"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:layout_editor_absoluteY="167dp">
-
-                                <androidx.cardview.widget.CardView
-                                    android:id="@+id/cardView4O"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_marginEnd="10dp"
-                                    android:layout_marginRight="10dp"
-                                    app:cardBackgroundColor="@color/selectedGoogle"
-                                    app:cardCornerRadius="16dp"
-                                    app:cardElevation="2dp"
-                                    app:cardMaxElevation="2dp"
-                                    app:cardPreventCornerOverlap="false"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_margin="1dp"
-                                        android:visibility="visible"
-                                        app:cardCornerRadius="16dp"
-                                        app:cardElevation="1dp"
-                                        app:cardMaxElevation="1dp">
-
-                                        <androidx.constraintlayout.widget.ConstraintLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content">
-
-                                            <androidx.constraintlayout.widget.ConstraintLayout
-                                                android:id="@+id/verifFiltrage"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:visibility="gone"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/indicateurPost4">
-
-                                                <Switch
-                                                    android:id="@+id/switch1"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_marginStart="20dp"
-                                                    android:layout_marginLeft="20dp"
-                                                    android:layout_marginTop="40dp"
-                                                    android:shadowColor="@color/colorPrimary"
-                                                    android:text="Quality control of oils "
-                                                    android:textColor="@color/TextNotSelected"
-                                                    app:layout_constraintStart_toStartOf="parent"
-                                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                                <TextView
-                                                    android:id="@+id/textView66"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_marginStart="20dp"
-                                                    android:layout_marginLeft="20dp"
-                                                    android:layout_marginTop="10dp"
-                                                    android:layout_marginBottom="30dp"
-                                                    android:text=" TEST POLAR COMPOUNDS - ELECTRONIC TESTER"
-                                                    app:layout_constraintBottom_toBottomOf="parent"
-                                                    app:layout_constraintStart_toStartOf="parent"
-                                                    app:layout_constraintTop_toBottomOf="@id/switch1" />
-                                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                                            <Button
-                                                android:id="@+id/indicateurPost5"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:clickable="false"
-                                                android:gravity="left"
-                                                android:text="Manage workplan"
-                                                android:textColor="@color/officialBlue"
-                                                android:visibility="gone"
-                                                app:backgroundTint="@android:color/transparent"
-                                                app:elevation="0dp"
-                                                app:icon="@drawable/ic_arrow_back_black_24dp"
-                                                app:iconGravity="end"
-                                                app:iconTint="@color/TextNotSelected"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/view3O2" />
-
-                                            <Button
-                                                android:id="@+id/indicateurPost4"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:clickable="false"
-                                                android:gravity="left"
-                                                android:text="For oil control "
-                                                android:textColor="@color/officialBlue"
-                                                app:backgroundTint="@android:color/transparent"
-                                                app:elevation="0dp"
-                                                app:icon="@drawable/ic_arrow_back_black_24dp"
-                                                app:iconGravity="end"
-                                                app:iconTint="@color/TextNotSelected"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/view3O2" />
-
-                                            <View
-                                                android:id="@+id/view3O2"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="1dp"
-                                                android:layout_marginTop="15dp"
-                                                android:background="@color/selectedGoogle"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/textView12sO" />
-
-                                            <TextView
-                                                android:id="@+id/textView4O"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="16dp"
-                                                android:layout_marginLeft="16dp"
-                                                android:layout_marginTop="15dp"
-                                                android:text="Oil Control"
-                                                android:textSize="20sp"
-                                                android:textStyle="bold"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toTopOf="parent" />
-
-                                            <View
-                                                android:id="@+id/view3O"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="1dp"
-                                                android:background="@color/selectedGoogle"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/verifFiltrage" />
-
-                                            <Button
-                                                android:id="@+id/indicateurPost"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:clickable="false"
-                                                android:gravity="left"
-                                                android:text="Manage Post Oil"
-                                                android:textColor="@color/officialBlue"
-                                                app:backgroundTint="@android:color/transparent"
-                                                app:elevation="0dp"
-                                                app:icon="@drawable/ic_arrow_back_black_24dp"
-                                                app:iconGravity="end"
-                                                app:iconTint="@color/TextNotSelected"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/view3O" />
-
-                                            <Button
-                                                android:id="@+id/indicateurPost2"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:clickable="false"
-                                                android:gravity="left"
-                                                android:text="Manage workplan"
-                                                android:textColor="@color/officialBlue"
-                                                android:visibility="gone"
-                                                app:backgroundTint="@android:color/transparent"
-                                                app:elevation="0dp"
-                                                app:icon="@drawable/ic_arrow_back_black_24dp"
-                                                app:iconGravity="end"
-                                                app:iconTint="@color/TextNotSelected"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/view3O" />
-
-                                            <TextView
-                                                android:id="@+id/textView25O"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="16dp"
-                                                android:layout_marginLeft="16dp"
-                                                android:layout_marginTop="17dp"
-                                                android:text="Add a new post to be able to oil control."
-                                                android:textSize="18sp"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/textView4O" />
-
-                                            <TextView
-                                                android:id="@+id/textView12sO"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="16dp"
-                                                android:layout_marginLeft="16dp"
-                                                android:layout_marginTop="15dp"
-                                                android:text="Note : May request administrative access."
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/textView25O" />
-
-                                            <androidx.core.widget.NestedScrollView
-                                                android:id="@+id/nestedPost"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="300dp"
-                                                android:layout_marginStart="10dp"
-                                                android:layout_marginLeft="10dp"
-                                                android:layout_marginEnd="10dp"
-                                                android:layout_marginRight="10dp"
-                                                android:fillViewport="true"
-                                                android:visibility="gone"
-                                                app:layout_constraintBottom_toBottomOf="parent"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/addNewPost">
-
-                                                <LinearLayout
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="wrap_content"
-                                                    android:orientation="vertical">
-
-                                                    <androidx.recyclerview.widget.RecyclerView
-                                                        android:id="@+id/postRecy"
-                                                        android:layout_width="match_parent"
-                                                        android:layout_height="match_parent" />
-                                                </LinearLayout>
-                                            </androidx.core.widget.NestedScrollView>
-
-                                            <Button
-                                                android:id="@+id/addNewPost"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginTop="10dp"
-                                                android:layout_marginEnd="10dp"
-                                                android:layout_marginRight="10dp"
-                                                android:text="Add New Post"
-                                                android:visibility="gone"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintTop_toBottomOf="@+id/indicateurPost" />
-
-                                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                                    </androidx.cardview.widget.CardView>
-                                </androidx.cardview.widget.CardView>
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-                        </LinearLayout>
-                    </androidx.core.widget.NestedScrollView>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ajoutcategories"
@@ -1390,12 +1405,12 @@
         android:id="@+id/ajout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="120dp"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="120dp"
-        android:layout_marginRight="120dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="200dp"
+        android:layout_marginRight="200dp"
+        android:layout_marginBottom="100dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -1473,9 +1488,9 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/namePost"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
 
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"

@@ -15,14 +15,14 @@ import java.util.List;
 
 @Dao
 public interface TacheDao {
-    @Query("SELECT * FROM Tache")
-    LiveData<List<TacheWithSurfaceAndCategoryTache>> getAllTache();
+    @Query("SELECT * FROM Tache ORDER By createdAt desc ")
+    LiveData<List<Tache>> getAllTache();
 
     @Query("SELECT * FROM Tache where idCategorie =:id ")
-    LiveData<List<TacheWithSurfaceAndCategoryTache>> getTacheByCategorie(int id);
+    LiveData<List<Tache>> getTacheByCategorie(String id);
 
     @Query("SELECT * FROM Tache where statut =:statut ")
-    LiveData<List<TacheWithSurfaceAndCategoryTache>> getTacheByStatus(boolean statut);
+    LiveData<List<Tache>> getTacheByStatus(boolean statut);
 
     @Insert
     void insertOne(Tache tache);
