@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.R;
-import com.example.bioregproject.entities.Account;
 import com.example.bioregproject.entities.Products;
 import com.example.bioregproject.ui.Authentication.AccountBinderViewModel;
 
@@ -172,7 +170,7 @@ public class ManualTracedAdapater extends ListAdapter<Products,ManualTracedAdapa
             text_brand=itemView.findViewById(R.id.text_brand);
             delete = itemView.findViewById(R.id.delete);
             edit = itemView.findViewById(R.id.edit);
-            print = itemView.findViewById(R.id.print);
+            print = itemView.findViewById(R.id.next);
             warn = itemView.findViewById(R.id.warn);
             name_c = itemView.findViewById(R.id.name_c);
             menu = itemView.findViewById(R.id.menu);

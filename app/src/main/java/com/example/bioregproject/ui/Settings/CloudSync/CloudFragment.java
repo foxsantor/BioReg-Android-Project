@@ -172,10 +172,7 @@ public class CloudFragment extends Fragment {
                 if(SYNC_CODE != 0)
                 {
                     requestSignIn();
-                    history.setChecked(false);
-                    tasks.setChecked(false);
-                    products.setChecked(false);
-                    account.setChecked(false);
+
 
                 }else {
                     Toast.makeText(getActivity(), "Nothing to Sync please check at least one table ", Toast.LENGTH_SHORT).show();

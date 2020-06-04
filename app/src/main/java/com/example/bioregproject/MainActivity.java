@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity  {
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         mViewModelPro = ViewModelProviders.of(this).get(ManageDataViewModel.class);
         deviceHistoryViewModel = ViewModelProviders.of(this).get(DeviceHistoryViewModel.class);
-        //mViewModel.deleteAllNotif();
+         //mViewModel.deleteAllNotif();
         setContentView(R.layout.activity_main);
         conx = this;
         layout = findViewById(R.id.connetcd);

@@ -4,7 +4,7 @@ public class SpnModelsItem {
     private String mModelName = "";
     private int mModelConstant = 0;
 
-    SpnModelsItem(String modelName, int modelConstant) {
+    public SpnModelsItem(String modelName, int modelConstant) {
         mModelName = modelName;
         mModelConstant = modelConstant;
     }

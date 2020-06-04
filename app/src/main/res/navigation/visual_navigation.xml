@@ -91,6 +91,9 @@
             app:destination="@id/manageData"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_iamgeFlowPrinting_to_printingConfig"
+            app:destination="@id/printingConfig" />
     </fragment>
     <fragment
         android:id="@+id/printerMainPage"
@@ -110,6 +113,17 @@
         <action
             android:id="@+id/action_manageData_to_imageFlowAddImage"
             app:destination="@id/imageFlowAddImage"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/printingConfig"
+        android:name="com.example.bioregproject.ui.Printing.PrintingOverView.PrintingConfig"
+        android:label="printing_config_fragment"
+        tools:layout="@layout/printing_config_fragment" >
+        <action
+            android:id="@+id/action_printingConfig_to_iamgeFlowPrinting"
+            app:destination="@id/iamgeFlowPrinting"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>

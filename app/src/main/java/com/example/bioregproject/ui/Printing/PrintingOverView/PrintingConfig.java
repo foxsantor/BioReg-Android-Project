@@ -1,7 +1,6 @@
-package com.example.bioregproject.ui.Printing;
+package com.example.bioregproject.ui.Printing.PrintingOverView;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -23,368 +22,113 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.os.Handler;
-import android.text.Editable;
-import android.text.Html;
-import android.text.TextWatcher;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.epson.epos2.Epos2Exception;
 import com.epson.epos2.Log;
 import com.epson.epos2.printer.Printer;
 import com.epson.epos2.printer.PrinterStatusInfo;
 import com.epson.epos2.printer.ReceiveListener;
+
+import com.bumptech.glide.Glide;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
-import com.example.bioregproject.ui.Printing.PrintingOverView.PrinterDiscovery;
-import com.example.bioregproject.ui.Printing.PrintingOverView.ShowMsg;
-import com.example.bioregproject.ui.Printing.PrintingOverView.SpnModelsItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.oned.EAN13Writer;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
-public class Labels extends Fragment implements ReceiveListener {
+public class PrintingConfig extends Fragment implements  ReceiveListener{
 
-
-    private Button next,back,clear,clearCode,span,title,submit,generate,line,gen2,back2,prints;
-    private TextInputLayout content,code,barscode;
-    private TextView mainContentPreview,discoverTextx3;
-    private LabelsViewModel mViewModel;
-    private ConstraintLayout mother;
-    private ImageView barCode,QrCode,barCodeH,qrCodeH;
-    private CheckBox barCodeCheck,qrCodeCheck;
-    private static Bitmap bitmap;
-    private QRGEncoder qrgEncoder;
-    private CardView firstCard,secondCard;
-    private EditText warn;
-    private Spinner spinner,spinner2;
+    private PrintingConfigViewModel mViewModel;
+    private static final int REQUEST_PERMISSION = 100;
+    private ConstraintLayout background;
+    private Button back,print;
+    private TextView discoverText,title,creation,brand;
     private FloatingActionButton discovery;
-    private static  String printerContent,barCodeInfo,targets;
+    private EditText warn;
+    private Bundle bundle;
+    private ImageView qrCode;
+    private static String bigString,targets;
+    private static Spinner spinner,spinner2;
+    private Bitmap bitmap;
+    private QRGEncoder qrgEncoder;
+
     public static Printer  mPrinter = null;
     private Context mContext = null;
 
-    private static final Pattern PASSWORD_CHECHER =  Pattern.compile("^" +
-            //"(?=.*[0-9])" +         //at least 1 digit
-            //"(?=.*[a-z])" +         //at least 1 lower case letter
-            //"(?=.*[A-Z])" +         //at least 1 upper case letter
-            //"(?=.*[a-zA-Z])" +      //any letter
-            //"(?=.*[@#$%^&+=])" +    //at least 1 special character
-            //"(?=\\S+$)" +           //no white spaces
-            ".{12,}" +               //at least 8 characters
-            "$");
-    private static final int REQUEST_PERMISSION = 100;
-
-    public static Labels newInstance() {
-        return new Labels();
+    public static PrintingConfig newInstance() {
+        return new PrintingConfig();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.labels_fragment, container, false);
+        return inflater.inflate(R.layout.printing_config_fragment, container, false);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        bundle = getArguments();
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(PrintingConfigViewModel.class);
         mContext = getActivity();
-
-        mViewModel = ViewModelProviders.of(this).get(LabelsViewModel.class);
-        mother = view.findViewById(R.id.mother);
-        StaticUse.backgroundAnimator(mother);
-        firstCard = view.findViewById(R.id.firstCard);
-        secondCard = view.findViewById(R.id.secondCard);
-        secondCard.setVisibility(View.GONE);
-        firstCard.setVisibility(View.VISIBLE);
-        back2 = view.findViewById(R.id.back2);
-        prints = view.findViewById(R.id.prints);
-        next = view.findViewById(R.id.next);
-        back = view.findViewById(R.id.back);
-        qrCodeH= view.findViewById(R.id.qrcodeh);
-        clear = view.findViewById(R.id.clear);
-        clearCode = view.findViewById(R.id.clear2);
-        span = view.findViewById(R.id.span);
-        title = view.findViewById(R.id.title);
-        submit = view.findViewById(R.id.button19);
-        generate = view.findViewById(R.id.gen);
-        line = view.findViewById(R.id.button21);
-        content = view.findViewById(R.id.content);
-        code = view.findViewById(R.id.code);
-        mainContentPreview = view.findViewById(R.id.contentP);
-        barCode = view.findViewById(R.id.abrcodeP);
-        QrCode = view.findViewById(R.id.qrcodeP);
-        barCodeCheck = view.findViewById(R.id.barcode);
-        qrCodeCheck = view.findViewById(R.id.qrcode);
-        gen2 =view.findViewById(R.id.gen2);
-        barscode =view.findViewById(R.id.barscode);
-        discoverTextx3 = view.findViewById(R.id.discoverTextx3);
-        discovery = view.findViewById(R.id.discovery2);
-        spinner = view.findViewById(R.id.series3);
-        spinner2 = view.findViewById(R.id.lang3);
-        warn = view.findViewById(R.id.warn3);
-
-        warn.setEnabled(false);
-        warn.setClickable(false);
-        barscode.setClickable(false);
-        barscode.setEnabled(false);
-        gen2.setClickable(false);
-        gen2.setEnabled(false);
-        code.setClickable(false);
-        code.setEnabled(false);
-        generate.setClickable(false);
-        generate.setEnabled(false);
-        clearCode.setClickable(false);
-        clearCode.setEnabled(false);
-
-        qrCodeCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                {
-                    code.setClickable(true);
-                    code.setEnabled(true);
-                    generate.setClickable(true);
-                    generate.setEnabled(true);
-                    clearCode.setClickable(true);
-                    clearCode.setEnabled(true);
-                }else
-                {
-                    code.setClickable(false);
-                    code.setEnabled(false);
-                    generate.setClickable(false);
-                    generate.setEnabled(false);
-                    clearCode.setClickable(false);
-                    clearCode.setEnabled(false);
-                    code.getEditText().setText("");
-                    Glide.with(getActivity()).clear(QrCode);
-                    Glide.with(getActivity()).clear(qrCodeH);
-                }
-
-            }
-        });
-
-        barCodeCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                {
-                    barscode.setClickable(true);
-                    barscode.setEnabled(true);
-                    gen2.setClickable(true);
-                    gen2.setEnabled(true);
-                }else
-                {
-                    barscode.setClickable(false);
-                    barscode.setEnabled(false);
-                    gen2.setClickable(false);
-                    gen2.setEnabled(false);
-                    barscode.getEditText().setText("");
-                   Glide.with(getActivity()).clear(barCode);
-                   barCodeInfo="";
-                }
-
-            }
-        });
-
-        gen2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if( !StaticUse.validCellPhone("BarCode",barscode)| !BarCodeChecker(barscode,"BarCode") )
-                {
-                    return;
-                }else
-                {
-                    generateBarCode(barCode);
-                }
-
-            }
-        });
-
-
+        requestRuntimePermission();
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                Navigation.findNavController(view).navigate(R.id.mainMenu);
+                Navigation.findNavController(view).navigate(R.id.action_printingConfig_to_iamgeFlowPrinting,bundle);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.mainMenu);
-            }
-        });
 
-        span.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String span ="------------------------------";
-                String current_comment = content.getEditText().getText().toString();
-                current_comment = "<br>"+span+ "<br>"+ current_comment ;
-                content.getEditText().append("<br>"+span+ "<br>");
+        background = view.findViewById(R.id.background);
+        back = view.findViewById(R.id.back);
+        print = view.findViewById(R.id.next);
+        discoverText = view.findViewById(R.id.discoverTextx);
+        discovery = view.findViewById(R.id.discovery);
+        qrCode = view.findViewById(R.id.qrcode);
+        spinner = view.findViewById(R.id.series2);
+        spinner2 = view.findViewById(R.id.lang);
+        title = view.findViewById(R.id.titleT);
+        creation = view.findViewById(R.id.creationD);
+        brand = view.findViewById(R.id.brand);
+        warn = view.findViewById(R.id.warn);
+        StaticUse.backgroundAnimator(background);
+        warn.setEnabled(false);
+        warn.setClickable(false);
 
-            }
-        });
-        line.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String current_comment = content.getEditText().getText().toString();
-                current_comment = current_comment+"<br>";
-                content.getEditText().append("<br>");
-            }
-        });
+        if(bundle != null)
+        {
+            creation.setText(bundle.getString("created",""));
+            title.setText(bundle.getString("name",""));
+            brand.setText(bundle.getString("brand",""));
+            //Glide.with(getActivity()).asBitmap().load(bundle.getByteArray("image")).into(preview);
+            bigString = bundle.getString("bigString","");
+            //Toast.makeText(getActivity(), ""+inputValue, Toast.LENGTH_SHORT).show();
 
-        title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String current_comment = content.getEditText().getText().toString();
-                //current_comment = "<h3>"+current_comment+"</h3>";
-                content.getEditText().getText().insert(current_comment.length(),"<h3>"+"</h3>");
-                content.getEditText().setSelection(content.getEditText().getText().length()-5);
-            }
-        });
-        clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                content.getEditText().setText("");
-            }
-        });
-        clearCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                code.getEditText().setText("");
-            }
-        });
-        content.getEditText().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mainContentPreview.setText(Html.fromHtml(s.toString()));
-            }
-        });
-
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(content.getEditText().getText().toString().isEmpty())
-                {
-                    content.setError("Nothing to submit");
-                    return;
-                }else
-                {
-                    content.setError(null);
-                    printerContent = stringPrcessor(content.getEditText().getText().toString());
-                }
-            }
-        });
-
-        generate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                code.setError(null);
-                if(code.getEditText().getText().toString().isEmpty())
-                {
-                    code.setError("no data to process ");
-                    return;
-                }else
-                {
-                            generateQrCode(QrCode,qrCodeH);
-
-                }
-            }
-        });
-
-        back2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Animation animFadeIn = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),R.anim.slide_left);
-                secondCard.startAnimation(animFadeIn);
-                secondCard.setVisibility(View.GONE);
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Animation animFadeIn = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),R.anim.slide_right);
-                        firstCard.startAnimation(animFadeIn);
-                        firstCard.setVisibility(View.VISIBLE);
-                    }
-                }, 600);
-            }
-        });
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(printerContent==null || printerContent.equals("") || printerContent.isEmpty())
-                {
-                    Toast.makeText(mContext, "Please submit content to print", Toast.LENGTH_SHORT).show();
-                    return;
-                }else {
-                    requestRuntimePermission();
-                    Animation animFadeIn = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.slide_left);
-                    firstCard.startAnimation(animFadeIn);
-                    firstCard.setVisibility(View.GONE);
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            Animation animFadeIn = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.slide_right);
-                            secondCard.startAnimation(animFadeIn);
-                            secondCard.setVisibility(View.VISIBLE);
-                        }
-                    }, 600);
-                }  }
-        });
-
-    //SecondHalf
-
-        prints.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateButtonState(false);
-                if (!runPrintCouponSequence()) {
-                    updateButtonState(true);
-                }
-            }
-        });
+        }
 
         ArrayAdapter<SpnModelsItem> seriesAdapter = new ArrayAdapter<SpnModelsItem>(getActivity(), android.R.layout.simple_spinner_item);
         seriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -425,11 +169,49 @@ public class Labels extends Fragment implements ReceiveListener {
         spinner2.setSelection(0);
 
         try {
-            Log.setLogSettings(getActivity(), Log.PERIOD_TEMPORARY, Log.OUTPUT_STORAGE, null, 0, 1, Log.LOGLEVEL_LOW);
+            Log.setLogSettings(mContext, Log.PERIOD_TEMPORARY, Log.OUTPUT_STORAGE, null, 0, 1, Log.LOGLEVEL_LOW);
         }
         catch (Exception e) {
-            ShowMsg.showException(e, "setLogSettings", getActivity());
+            ShowMsg.showException(e, "setLogSettings", mContext);
         }
+
+
+
+        WindowManager manager = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+        Display display = manager.getDefaultDisplay();
+        Point point = new Point();
+        display.getSize(point);
+        int width = point.x;
+        int height = point.y;
+        int smallerDimension = width < height ? width : height;
+        smallerDimension = smallerDimension * 1;
+        qrgEncoder = new QRGEncoder(bigString, null, QRGContents.Type.TEXT, smallerDimension);
+        try {
+            // Getting QR-Code as Bitmap
+            bitmap = qrgEncoder.getBitmap();
+            // Setting Bitmap to ImageView
+            Glide.with(getActivity()).asBitmap().load(bitmap).into(qrCode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateButtonState(false);
+                if (!runPrintCouponSequence()) {
+                    updateButtonState(true);
+                }
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Navigation.findNavController(view).navigate(R.id.action_printingConfig_to_iamgeFlowPrinting,bundle);
+                                    }
+                                }
+        );
 
         discovery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -440,71 +222,6 @@ public class Labels extends Fragment implements ReceiveListener {
         });
 
 
-
-
-
-    }
-
-    private void generateQrCode(ImageView preview,ImageView realDeal)
-    {
-        WindowManager manager = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        Point point = new Point();
-        display.getSize(point);
-        int width = point.x;
-        int height = point.y;
-        int smallerDimension = width < height ? width : height;
-        smallerDimension = smallerDimension * 1;
-        qrgEncoder = new QRGEncoder(code.getEditText().getText().toString(), null, QRGContents.Type.TEXT, smallerDimension);
-        try {
-            // Getting QR-Code as Bitmap
-            bitmap = qrgEncoder.getBitmap();
-            // Setting Bitmap to ImageView
-            Glide.with(getActivity()).asBitmap().load(bitmap).into(preview);
-            Glide.with(getActivity()).asBitmap().load(bitmap).into(realDeal);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    private void generateBarCode(ImageView preview)
-    {
-        try {
-            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            Bitmap bitmap = barcodeEncoder.encodeBitmap(barscode.getEditText().getText().toString(), BarcodeFormat.EAN_13, 500, 100);
-            barCodeInfo=barscode.getEditText().getText().toString();
-            Glide.with(getActivity()).asBitmap().load(bitmap).into(preview);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private String stringPrcessor(String string)
-    {
-        string = string.replace("<br>","\n");
-
-        return string;
-    }
-
-    private boolean BarCodeChecker (TextInputLayout text , String type)
-    {
-        if(text.getError()!= null)
-        {text.setError(null);}
-        String textToCheck = text.getEditText().getText().toString().trim();
-        if(textToCheck.isEmpty()){
-            text.setError(type +" can't be empty");
-
-            return false;}
-
-        else if (!PASSWORD_CHECHER.matcher(textToCheck).matches()){
-            text.setError(Html.fromHtml("*BarCode must be 12 digits"));
-            return false;
-        }else
-        {
-            text.setError(null);
-            return true;
-        }
-
     }
 
     @Override
@@ -512,9 +229,8 @@ public class Labels extends Fragment implements ReceiveListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null && resultCode == Activity.RESULT_OK) {
             String target = data.getStringExtra(getString(R.string.title_target));
-
             if (target != null) {
-                discoverTextx3.setText(target);
+                discoverText.setText(target);
                 targets=target;
             }
         }}
@@ -574,7 +290,7 @@ public class Labels extends Fragment implements ReceiveListener {
             return false;
         }
 
-        if (!createCouponDataPerso(qrCodeH,printerContent,barCodeInfo)) {
+        if (!createCouponData()) {
             finalizeObject();
             return false;
         }
@@ -587,9 +303,10 @@ public class Labels extends Fragment implements ReceiveListener {
         return true;
     }
 
-    private boolean createCouponDataPerso(ImageView qrCode,String content,String barCodeInfo) {
+    private boolean createCouponData() {
         String method = "";
         //Bitmap coffeeData = BitmapFactory.decodeResource(getResources(), R.drawable.accountadd);
+        Bitmap wmarkData = BitmapFactory.decodeByteArray(StaticUse.transformerImageBytes(qrCode), 0, StaticUse.transformerImageBytes(qrCode).length);
 
         final int barcodeWidth = 4;
         final int barcodeHeight = 80;
@@ -614,41 +331,36 @@ public class Labels extends Fragment implements ReceiveListener {
             mPrinter.addTextAlign(Printer.ALIGN_CENTER);
             method = "addFeedLine";
             mPrinter.addFeedLine(1);
-            textData.append(content);
-//            textData.append("Object title: "+bundle.getString("name","")+"\n");
-//            textData.append("------------------------------\n");
-            textData.append("\nPrinted on the : "+newstring+"\n");
+            textData.append("Object title: "+bundle.getString("name","")+"\n");
+            textData.append("------------------------------\n");
+            textData.append("Printed on the : "+newstring+"\n");
             textData.append("\n");
-//            textData.append("Brand Name: "+bundle.getString("brand","") +"\n");
-//            textData.append("\n");
-//            textData.append("Creation Date: "+bundle.getString("created","") +"\n");
-           textData.append("------------------------------\n");
+            textData.append("Brand Name: "+bundle.getString("brand","") +"\n");
+            textData.append("\n");
+            textData.append("Creation Date: "+bundle.getString("created","") +"\n");
+            textData.append("------------------------------\n");
             mPrinter.addText(textData.toString());
+            method = "addPageArea";
+            mPrinter.addPageArea(0, 0, pageAreaWidth, pageAreaHeight);
 
-            if(bitmap == null) {
+            method = "addPageDirection";
+            mPrinter.addPageDirection(Printer.DIRECTION_TOP_TO_BOTTOM);
 
-            }else
-            {
-                method = "addPageArea";
-                mPrinter.addPageArea(0, 0, pageAreaWidth, pageAreaHeight);
-                method = "addPageDirection";
-                mPrinter.addPageDirection(Printer.DIRECTION_TOP_TO_BOTTOM);
-                mPrinter.addPagePosition(0, bitmap.getHeight());
-                Bitmap wmarkData = BitmapFactory.decodeByteArray(StaticUse.transformerImageBytes(qrCode), 0, StaticUse.transformerImageBytes(qrCode).length);
-                method = "addPagePosition";
-                method = "addImage";
-                mPrinter.addImage(wmarkData, 0, 0,
-                        wmarkData.getWidth(),
-                        wmarkData.getHeight(),
-                        Printer.PARAM_DEFAULT,
-                        Printer.PARAM_DEFAULT,
-                        Printer.PARAM_DEFAULT,
-                        Printer.PARAM_DEFAULT,
-                        Printer.PARAM_DEFAULT);
-                method = "addPageEnd";
-                mPrinter.addPageEnd();
-            }
-
+            method = "addPagePosition";
+            mPrinter.addPagePosition(0, bitmap.getHeight());
+            method = "addImage";
+            mPrinter.addImage(wmarkData, 0, 0,
+                    wmarkData.getWidth(),
+                    wmarkData.getHeight(),
+                    Printer.PARAM_DEFAULT,
+                    Printer.PARAM_DEFAULT,
+                    Printer.PARAM_DEFAULT,
+                    Printer.PARAM_DEFAULT,
+                    Printer.PARAM_DEFAULT);
+            method = "addPageEnd";
+            mPrinter.addPageEnd();
+            method = "addCut";
+            mPrinter.addCut(Printer.CUT_FEED);
             //textData.append("7/01/07 16:58 6153 05 0191 134\n");
             //textData.append("ST# 21 OP# 001 TE# 01 TR# 747\n");
 
@@ -703,21 +415,16 @@ public class Labels extends Fragment implements ReceiveListener {
             textData.delete(0, textData.length());
             method = "addFeedLine";
             mPrinter.addFeedLine(2);*/
-           if(barCodeInfo== null || barCodeInfo.isEmpty()||barCodeInfo.equals(""))
-           {
-
-           }else
-           {
-               method = "addBarcode";
-               mPrinter.addBarcode(barCodeInfo,
-                       Printer.BARCODE_EAN13,
-                       Printer.HRI_BELOW,
-                       Printer.FONT_A,
-                       barcodeWidth,
-                       barcodeHeight);
-           }
-            method = "addCut";
-            mPrinter.addCut(Printer.CUT_FEED);
+//            method = "addBarcode";
+//            mPrinter.addBarcode("helllo",
+//                    Printer.SYMBOL_QRCODE_MODEL_2,
+//                    Printer.HRI_BELOW,
+//                    Printer.FONT_A,
+//                    barcodeWidth,
+//                    barcodeHeight);
+//
+//            method = "addCut";
+//            mPrinter.addCut(Printer.CUT_FEED);
         }
         catch (Exception e) {
             ShowMsg.showException(e, method, mContext);
@@ -956,8 +663,7 @@ public class Labels extends Fragment implements ReceiveListener {
 
     private void updateButtonState(boolean state) {
 
-        prints.setEnabled(state);
-        prints.setClickable(state);
+        print.setEnabled(state);
     }
 
     @Override
@@ -983,3 +689,4 @@ public class Labels extends Fragment implements ReceiveListener {
 
 
 }
+

@@ -73,19 +73,19 @@ public class OilAdapter extends ListAdapter <Oil,OilAdapter.OilHolder> {
 mViewModel.getAllSetting().observe(fragment, new Observer<List<SettingOil>>() {
     @Override
     public void onChanged(List<SettingOil> settingOils) {
-       if (settingOils.get(0).getVerif())
-       {
+        if(!settingOils.isEmpty())
+        {
+       if (settingOils.get(0).getVerif()) {
 
            holder.message.setVisibility(View.VISIBLE);
-           if (currentOil.getFiltrage()<20){
+           if (currentOil.getFiltrage() < 20) {
                holder.message.setText("Everything is in order");
                holder.message.setTextColor(Color.parseColor("#28a745"));
                holder.suu.setVisibility(View.VISIBLE);
                holder.wa.setVisibility(View.GONE);
-           holder.err.setVisibility(View.GONE);
+               holder.err.setVisibility(View.GONE);
 
-       }
-           else if((currentOil.getFiltrage()<24) && (currentOil.getFiltrage()>24)){
+           } else if ((currentOil.getFiltrage() < 24) && (currentOil.getFiltrage() > 24)) {
                holder.message.setText("We will have to think about replace oil");
                holder.message.setTextColor(Color.parseColor("#ffc107"));
                holder.wa.setVisibility(View.VISIBLE);
@@ -93,20 +93,16 @@ mViewModel.getAllSetting().observe(fragment, new Observer<List<SettingOil>>() {
                holder.suu.setVisibility(View.GONE);
 
 
-
-           }
-           else{
+           } else {
                holder.message.setText("The oil must be replaced");
                holder.message.setTextColor(Color.parseColor("#dc3545"));
-           holder.err.setVisibility(View.VISIBLE);
+               holder.err.setVisibility(View.VISIBLE);
                holder.suu.setVisibility(View.GONE);
                holder.wa.setVisibility(View.GONE);
 
 
-
-
            }
-
+       }
        }
        else{
            holder.err.setVisibility(View.GONE);

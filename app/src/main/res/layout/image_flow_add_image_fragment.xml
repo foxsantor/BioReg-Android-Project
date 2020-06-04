@@ -186,7 +186,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/Preview" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/brand"
+                android:id="@+id/titleT"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -230,7 +230,7 @@
                 app:helperTextEnabled="true"
                 app:hintEnabled="true"
                 app:hintTextColor="@color/officialBlue"
-                app:layout_constraintBottom_toTopOf="@+id/brand"
+                app:layout_constraintBottom_toTopOf="@+id/titleT"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/local"

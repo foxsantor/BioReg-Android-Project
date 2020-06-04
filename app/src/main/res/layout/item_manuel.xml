@@ -59,12 +59,12 @@
                 android:textColor="@color/redErrorDeep"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/print"
+                app:layout_constraintEnd_toStartOf="@+id/next"
                 app:layout_constraintStart_toEndOf="@+id/warn"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/print"
+                android:id="@+id/next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"

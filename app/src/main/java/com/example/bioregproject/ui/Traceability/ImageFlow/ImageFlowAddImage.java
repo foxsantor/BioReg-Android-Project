@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -28,7 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
@@ -42,31 +40,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.MainActivityViewModel;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.AspectRatioFragment;
 import com.example.bioregproject.Utils.StaticUse;
-import com.example.bioregproject.entities.Account;
-import com.example.bioregproject.entities.History;
-import com.example.bioregproject.entities.Notification;
 import com.example.bioregproject.entities.Products;
 import com.example.bioregproject.ui.History.DeviceHistoryViewModel;
 import com.google.android.cameraview.AspectRatio;
 import com.google.android.cameraview.CameraView;
-import com.google.android.gms.vision.text.Text;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -147,7 +135,7 @@ public class ImageFlowAddImage extends Fragment implements
         cancel =view.findViewById(R.id.cancel);
         local = view.findViewById(R.id.local);
         preview = view.findViewById(R.id.Preview);
-        brand = view.findViewById(R.id.brand);
+        brand = view.findViewById(R.id.titleT);
         name = view.findViewById(R.id.name);
         done = view.findViewById(R.id.done);
         toolbar =view.findViewById(R.id.toolbar);
@@ -255,7 +243,7 @@ public class ImageFlowAddImage extends Fragment implements
                     Toast.makeText(getActivity(), "added Successfully", Toast.LENGTH_SHORT).show();
 
                     StaticUse.SaveNotification(getActivity(),mainActivityViewModel,getActivity(),"Traceability Module"
-                            ,"has added a Traced Product"+" from ","Visual Traceability",imageHolder,null,R.drawable.ic_add_circle_blue_24dp);
+                            ,"has added a Traced Product"+" from ","Visual Traceability",null,null,R.drawable.ic_add_circle_blue_24dp);
 
 //                    mainActivityViewModel.getAccount(StaticUse.loadSession(getContext()).getId()).observe(getActivity(), new Observer<List<Account>>() {
 //                        @Override

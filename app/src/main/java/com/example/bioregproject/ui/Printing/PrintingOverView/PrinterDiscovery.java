@@ -1,5 +1,7 @@
 package com.example.bioregproject.ui.Printing.PrintingOverView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
@@ -25,17 +27,20 @@ import com.epson.epos2.discovery.Discovery;
 import com.epson.epos2.discovery.DiscoveryListener;
 import com.epson.epos2.discovery.FilterOption;
 import com.example.bioregproject.R;
+import com.example.bioregproject.Utils.StaticUse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PrinterDiscovery extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener  {
+public class PrinterDiscovery extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener  {
 
     private PrinterDiscoveryViewModel mViewModel;
     private Context mContext = null;
     private ArrayList<HashMap<String, String>> mPrinterList = null;
     private SimpleAdapter mPrinterListAdapter = null;
     private FilterOption mFilterOption = null;
+    private ConstraintLayout mother;
+    private Button back;
 
     public static PrinterDiscovery newInstance() {
         return new PrinterDiscovery();
@@ -48,6 +53,15 @@ public class PrinterDiscovery extends Activity implements View.OnClickListener, 
         setContentView(R.layout.printer_discovery_fragment);
         Button button = findViewById(R.id.btnRestart);
         button.setOnClickListener(this);
+        mother = findViewById(R.id.mother);
+        back= findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        StaticUse.backgroundAnimator(mother);
         mPrinterList = new ArrayList<HashMap<String, String>>();
         mPrinterListAdapter = new SimpleAdapter(this, mPrinterList, R.layout.list_at,
                 new String[] { "PrinterName", "Target" },

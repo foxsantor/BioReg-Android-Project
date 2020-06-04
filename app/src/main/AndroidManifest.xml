@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.bioregproject">
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -17,7 +18,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18"/>
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
     <dist:module dist:instant="true" />
 
     <application
@@ -46,7 +47,6 @@
             android:resource="@xml/device_filter" />
 
         </activity>
-
         <activity
             android:name=".ui.Printing.PrintingOverView.PrinterDiscovery"
             android:label="@string/app_name"
@@ -62,7 +62,7 @@
                 android:resource="@xml/file_paths"/>
         </provider>
 
-        
+
     </application>
 
 </manifest>

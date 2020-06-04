@@ -522,7 +522,7 @@ public class StaticUse extends AppCompatActivity {
         String textToCheck = textInputLayout.getEditText().getText().toString().trim();
         if(!textToCheck.isEmpty())
         {
-        if(android.util.Patterns.PHONE.matcher(textToCheck).matches()){
+        if(!android.util.Patterns.PHONE.matcher(textToCheck).matches()){
             textInputLayout.setError(""+ type +" must be a number");
             return false;}
         else

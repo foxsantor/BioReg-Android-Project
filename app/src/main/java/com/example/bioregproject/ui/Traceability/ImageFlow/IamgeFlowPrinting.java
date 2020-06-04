@@ -22,7 +22,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.bioregproject.R;
@@ -39,7 +38,7 @@ public class IamgeFlowPrinting extends Fragment {
     private TextView id,created;
     private ConstraintLayout mother;
     private Bundle bundle;
-    String inputValue;
+    String inputValue,bigString;
     Bitmap bitmap;
     QRGEncoder qrgEncoder;
 
@@ -66,16 +65,14 @@ public class IamgeFlowPrinting extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                if(bundle.getInt("dest")==1)
-                {
+
                     Navigation.findNavController(view).navigate(R.id.action_iamgeFlowPrinting_to_manageData);
-                }else
-                Navigation.findNavController(view).navigate(R.id.action_iamgeFlowPrinting_to_imageFlowQrCode);
+                //Navigation.findNavController(view).navigate(R.id.action_iamgeFlowPrinting_to_imageFlowQrCode);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
-        print = view.findViewById(R.id.print);
+        print = view.findViewById(R.id.next);
         qrCode = view.findViewById(R.id.Qrcode);
         mother = view.findViewById(R.id.mother);
         StaticUse.backgroundAnimator(mother);
@@ -88,28 +85,40 @@ public class IamgeFlowPrinting extends Fragment {
             created.setText(bundle.getString("created",""));
             Glide.with(getActivity()).asBitmap().load(bundle.getByteArray("image")).into(preview);
             inputValue = bundle.getString("id","");
-            Toast.makeText(getActivity(), ""+inputValue, Toast.LENGTH_SHORT).show();
+            //String imageString= StaticUse.transformerImageBase64frombytes(bundle.getByteArray("image"));
+            //Toast.makeText(getActivity(), ""+inputValue, Toast.LENGTH_SHORT).show();
+            bigString=bundle.getString("id","")+","+bundle.getString("name","")
+                    +","+bundle.getString("brand","")  +","+bundle.getString("created","")
+                    ;
+
+            WindowManager manager = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+            Display display = manager.getDefaultDisplay();
+            Point point = new Point();
+            display.getSize(point);
+            int width = point.x;
+            int height = point.y;
+            int smallerDimension = width < height ? width : height;
+            smallerDimension = smallerDimension * 3 / 4;
+            qrgEncoder = new QRGEncoder(bigString, null, QRGContents.Type.TEXT, smallerDimension);
+            try {
+                // Getting QR-Code as Bitmap
+                bitmap = qrgEncoder.getBitmap();
+                // Setting Bitmap to ImageView
+                Glide.with(getActivity()).asBitmap().load(bitmap).into(qrCode);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
 
         }
-        WindowManager manager = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        Point point = new Point();
-        display.getSize(point);
-        int width = point.x;
-        int height = point.y;
-        int smallerDimension = width < height ? width : height;
-        smallerDimension = smallerDimension * 3 / 4;
-        qrgEncoder = new QRGEncoder("hello", null, QRGContents.Type.TEXT, smallerDimension);
-        try {
-            // Getting QR-Code as Bitmap
-            bitmap = qrgEncoder.getBitmap();
-            // Setting Bitmap to ImageView
-            Glide.with(getActivity()).asBitmap().load(bitmap).into(qrCode);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-
+        print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bundle.putString("bigString",bigString);
+                Navigation.findNavController(view).navigate(R.id.action_iamgeFlowPrinting_to_printingConfig,bundle);
+            }
+        });
 
 
 

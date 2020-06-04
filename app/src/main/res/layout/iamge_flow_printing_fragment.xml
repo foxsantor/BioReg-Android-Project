@@ -9,7 +9,7 @@
     tools:context=".ui.Traceability.ImageFlow.IamgeFlowPrinting">
 
     <Button
-        android:id="@+id/print"
+        android:id="@+id/next"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
