@@ -15,6 +15,7 @@ import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ public class ManualHome extends Fragment {
     private Button addNew;
     private TextView tracedObj;
     private RecyclerView manual;
+    private ConstraintLayout loading,empty;
 
     public static ManualHome newInstance() {
         return new ManualHome();
@@ -64,6 +66,11 @@ public class ManualHome extends Fragment {
         addNew =view.findViewById(R.id.addNew);
         tracedObj = view.findViewById(R.id.traced);
         manual = view.findViewById(R.id.manual);
+
+        loading = view.findViewById(R.id.loading);
+        loading.setVisibility(View.VISIBLE);
+        empty = view.findViewById(R.id.empty);
+
         StaticUse.backgroundAnimator(constraintLayout);
 
         mViewModel.initAllTeams(BioRegDB.getInstance(getActivity()).productDAO());
@@ -75,12 +82,27 @@ public class ManualHome extends Fragment {
                     @Override
                     public void onChanged(PagedList<Products> pagedList) {
                         try {
+                            if(pagedList.isEmpty())
+                            {
+                                empty.setVisibility(View.VISIBLE);
+                                loading.setVisibility(View.GONE);
+                            }else
+                            {
                             //Toast.makeText(getActivity(), ""+pagedList.get(0).getId(), Toast.LENGTH_SHORT).show();
                             Log.e("Paging ", "PageAll" + pagedList.size());
                             //refresh current list
                             adapter.submitList(pagedList);
                             tracedObj.setText("Traced items "+pagedList.size());
+                                final Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        loading.setVisibility(View.GONE);
+                                        handler.removeCallbacksAndMessages(null);
+                                    }
+                                }, 1000);
                             //adapter.submitList(pagedList);
+                                }
                         } catch (Exception e) {
                         }
                     }

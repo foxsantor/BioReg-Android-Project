@@ -35,6 +35,9 @@ public interface ProductDAO {
     @Query("SELECT * from product_table where id = :id LIMIT 1")
     LiveData<List<Products>> loadProductById(long id);
 
+    @Query("SELECT * from product_table where type = :type")
+    LiveData<List<Products>> loadProductByType(String type);
+
     @Query("SELECT * from product_table where name = :name and brandName=:brandName LIMIT 1")
     LiveData<List<Products>> loadProductByNameAndBrand(String name,String brandName);
 
@@ -50,6 +53,11 @@ public interface ProductDAO {
     @Transaction
     @Query("SELECT * FROM product_table")
     LiveData<List<LogsAndProducts>> LogsAndProducts();
+    @Query("SELECT * from product_table where name = :name and brandName=:brandName and id=:id LIMIT 1")
+    LiveData<List<Products>> loadProductByNameAndBrandAndId(String name,String brandName,long id);
+
+    @Query("SELECT * from product_table where name = :name and brandName=:brandName and type=:Type LIMIT 1")
+    LiveData<List<Products>> loadProductByNameAndBrandAndType(String name,String brandName,String Type);
 
 
 }

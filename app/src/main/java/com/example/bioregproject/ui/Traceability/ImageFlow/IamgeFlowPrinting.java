@@ -24,6 +24,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
 
@@ -83,12 +86,21 @@ public class IamgeFlowPrinting extends Fragment {
         {
             id.setText(bundle.getString("id",""));
             created.setText(bundle.getString("created",""));
-            Glide.with(getActivity()).asBitmap().load(bundle.getByteArray("image")).into(preview);
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.progress_animation)
+                    .error(R.drawable.ic_warning_black_24dp)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH)
+                    .dontAnimate()
+                    .dontTransform();
+            Glide.with(getActivity()).asBitmap().load(bundle.getByteArray("image")).apply(options).into(preview);
             inputValue = bundle.getString("id","");
             //String imageString= StaticUse.transformerImageBase64frombytes(bundle.getByteArray("image"));
             //Toast.makeText(getActivity(), ""+inputValue, Toast.LENGTH_SHORT).show();
             bigString=bundle.getString("id","")+","+bundle.getString("name","")
                     +","+bundle.getString("brand","")  +","+bundle.getString("created","")
+                    +","+bundle.getString("Type","")
                     ;
 
             WindowManager manager = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
@@ -104,7 +116,7 @@ public class IamgeFlowPrinting extends Fragment {
                 // Getting QR-Code as Bitmap
                 bitmap = qrgEncoder.getBitmap();
                 // Setting Bitmap to ImageView
-                Glide.with(getActivity()).asBitmap().load(bitmap).into(qrCode);
+                Glide.with(getActivity()).asBitmap().load(bitmap).apply(options).into(qrCode);
             } catch (Exception e) {
                 e.printStackTrace();
             }

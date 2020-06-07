@@ -48,7 +48,6 @@ public class Products extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.mainMenu);
-
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);

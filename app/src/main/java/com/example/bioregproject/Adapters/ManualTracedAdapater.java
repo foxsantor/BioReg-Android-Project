@@ -3,6 +3,7 @@ package com.example.bioregproject.Adapters;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,9 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.R;
 import com.example.bioregproject.entities.Products;
@@ -76,7 +80,15 @@ public class ManualTracedAdapater extends ListAdapter<Products,ManualTracedAdapa
         holder.warn.setVisibility(View.GONE);
         holder.exp.setVisibility(View.GONE);
         final byte[] image = currentItem.getImage();
-        Glide.with(mContext).asBitmap().load(image).into(holder.mImageView);
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.ic_warning_black_24dp)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .dontAnimate()
+                .dontTransform();
+        Glide.with(mContext).asBitmap().load(image).apply(options).into(holder.mImageView);
         final String creationString = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(currentItem.getCreationDate());
         final String fabricationString = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(currentItem.getFabricationDate());
         final String expirationString = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(currentItem.getExpirationDate());
@@ -123,12 +135,23 @@ public class ManualTracedAdapater extends ListAdapter<Products,ManualTracedAdapa
         holder.print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* final Bundle bundle = new Bundle();
-                bundle.putString("id",""+currentItem.getId());
-                bundle.putString("created",newstring);
+               final Bundle bundle = new Bundle();
                 bundle.putByteArray("image",image);
-                bundle.putInt("dest",1);
-                Navigation.findNavController(v).navigate(R.id.action_manageData_to_iamgeFlowPrinting,bundle);*/
+                bundle.putString("id",""+currentItem.getId());
+                bundle.putString("expirationString",expirationString);
+                bundle.putString("ref",currentItem.getRefrence());
+                bundle.putString("fabricationString",fabricationString);
+                bundle.putString("created",creationString);
+                bundle.putString("name",currentItem.getName());
+                bundle.putString("brand",currentItem.getBrandName());
+                bundle.putString("CategoryName",currentItem.getCategoryName());
+                bundle.putString("Type",currentItem.getType());
+                String bigString = ""+currentItem.getId()+","+currentItem.getName()+","+currentItem.getBrandName()+","+
+                        creationString+","+currentItem.getType()+","+currentItem.getRefrence()+","+currentItem.getCategoryName()
+                        +","+fabricationString+","+expirationString;
+                bundle.putString("bigString",bigString);
+                bundle.putInt("dest",3);
+                Navigation.findNavController(v).navigate(R.id.printingConfig2,bundle);
             }
         });
 

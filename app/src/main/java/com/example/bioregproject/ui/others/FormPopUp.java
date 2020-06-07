@@ -18,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
@@ -79,14 +82,21 @@ public class FormPopUp extends Fragment {
 
 
 
-
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.admin_user)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .dontAnimate()
+                .dontTransform();
         if(bundle !=null)
         {
             fullName = StaticUse.capitalize(bundle.getString("FirstName",""))
                     +" "+StaticUse.capitalize(bundle.getString("LastName",""));
               name.setText(fullName);
             imageBytes = bundle.getByteArray("image");
-            Glide.with(getActivity()).asBitmap().load(imageBytes).into(profile);
+            Glide.with(getActivity()).asBitmap().load(imageBytes).apply(options).into(profile);
             checker = bundle.getString("password","");
             id = bundle.getLong("id",0);
 

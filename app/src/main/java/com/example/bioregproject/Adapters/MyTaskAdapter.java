@@ -37,6 +37,9 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.MainActivityViewModel;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
@@ -111,6 +114,14 @@ public class MyTaskAdapter extends ListAdapter<PersoTask,MyTaskAdapter.PersoTask
     @Override
     public void onBindViewHolder(@NonNull PersoTaskHolder holder, int position) {
 
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.ic_warning_black_24dp)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .dontAnimate()
+                .dontTransform();
         final PersoTask currentItem = getItem(position);
         PrettyTime p = new PrettyTime();
         Date creation = currentItem.getCreation();
@@ -177,14 +188,14 @@ public class MyTaskAdapter extends ListAdapter<PersoTask,MyTaskAdapter.PersoTask
             holder.prorityImage.setVisibility(View.VISIBLE);
             holder.priority.setText("Critic");
             holder.priority.setTextColor(mContext.getResources().getColor(R.color.redErrorDeep));
-            Glide.with(mContext).load(R.drawable.ic_error_outline_red_24dp).into(holder.prorityImage);
+            Glide.with(mContext).load(R.drawable.ic_error_outline_red_24dp).apply(options).into(holder.prorityImage);
 
         }else if(priority.equals("High"))
         { holder.priority.setVisibility(View.VISIBLE);
             holder.prorityImage.setVisibility(View.VISIBLE);
             holder.priority.setText("High");
             holder.priority.setTextColor(mContext.getResources().getColor(R.color.yellowWarning));
-            Glide.with(mContext).load(R.drawable.ic_error_outline_warning_24dp).into(holder.prorityImage);
+            Glide.with(mContext).load(R.drawable.ic_error_outline_warning_24dp).apply(options).into(holder.prorityImage);
         }else
         {
             holder.priority.setVisibility(View.INVISIBLE);
@@ -382,7 +393,7 @@ public class MyTaskAdapter extends ListAdapter<PersoTask,MyTaskAdapter.PersoTask
                                         attach.setVisibility(View.VISIBLE);
                                         imageind.setVisibility(View.VISIBLE);
                                         attachedimage.setVisibility(View.VISIBLE);
-                                        Glide.with(activity).load(StaticUse.transsformerImageBytesBase64(currentItem.getImageBase64())).into(attachedimage);
+                                        Glide.with(activity).load(StaticUse.transsformerImageBytesBase64(currentItem.getImageBase64())).apply(options).into(attachedimage);
                                     }
                                   }
 
@@ -409,13 +420,13 @@ public class MyTaskAdapter extends ListAdapter<PersoTask,MyTaskAdapter.PersoTask
                                     {
                                         prio.setText("Critic");
                                         prio.setTextColor(mContext.getResources().getColor(R.color.redErrorDeep));
-                                        Glide.with(mContext).load(R.drawable.ic_error_outline_red_24dp).into(prioImage);
+                                        Glide.with(mContext).load(R.drawable.ic_error_outline_red_24dp).apply(options).into(prioImage);
 
                                     }else if(priority.equals("High"))
                                     {
                                         prio.setText("High");
                                         prio.setTextColor(mContext.getResources().getColor(R.color.yellowWarning));
-                                        Glide.with(mContext).load(R.drawable.ic_error_outline_warning_24dp).into(prioImage);
+                                        Glide.with(mContext).load(R.drawable.ic_error_outline_warning_24dp).apply(options).into(prioImage);
                                     }else
                                     {
                                         prio.setText(priority);
@@ -570,7 +581,7 @@ public class MyTaskAdapter extends ListAdapter<PersoTask,MyTaskAdapter.PersoTask
                                             attach.setVisibility(View.VISIBLE);
                                             imageind.setVisibility(View.VISIBLE);
                                             attachedimage.setVisibility(View.VISIBLE);
-                                            Glide.with(activity).load(StaticUse.transsformerImageBytesBase64(currentItem.getImageBase64())).into(attachedimage);
+                                            Glide.with(activity).load(StaticUse.transsformerImageBytesBase64(currentItem.getImageBase64())).apply(options).into(attachedimage);
                                         }
                                     }
 
@@ -597,13 +608,13 @@ public class MyTaskAdapter extends ListAdapter<PersoTask,MyTaskAdapter.PersoTask
                                     {
                                         prio.setText("Critic");
                                         prio.setTextColor(mContext.getResources().getColor(R.color.redErrorDeep));
-                                        Glide.with(mContext).load(R.drawable.ic_error_outline_red_24dp).into(prioImage);
+                                        Glide.with(mContext).load(R.drawable.ic_error_outline_red_24dp).apply(options).into(prioImage);
 
                                     }else if(priority.equals("High"))
                                     {
                                         prio.setText("High");
                                         prio.setTextColor(mContext.getResources().getColor(R.color.yellowWarning));
-                                        Glide.with(mContext).load(R.drawable.ic_error_outline_warning_24dp).into(prioImage);
+                                        Glide.with(mContext).load(R.drawable.ic_error_outline_warning_24dp).apply(options).into(prioImage);
                                     }else
                                     {
                                         prio.setText(priority);

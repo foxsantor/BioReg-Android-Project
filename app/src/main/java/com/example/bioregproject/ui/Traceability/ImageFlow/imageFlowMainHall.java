@@ -27,6 +27,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.CustomViewPager;
 import com.example.bioregproject.Utils.StaticUse;
@@ -126,7 +129,7 @@ public class imageFlowMainHall extends Fragment {
             //final ImageButton delete = view.findViewById(R.id.delete);
             final TextView created = view.findViewById(R.id.created);
             mViewModel = ViewModelProviders.of(imageFlowMainHall).get(ImageFlowMainHallViewModel.class);
-            mViewModel.getAllProducts().observe(imageFlowMainHall, new Observer<List<Products>>() {
+            mViewModel.getAllProductsbyType().observe(imageFlowMainHall, new Observer<List<Products>>() {
                 @Override
                 public void onChanged(final List<Products> product) {
                     if (product.isEmpty()) {
@@ -134,7 +137,15 @@ public class imageFlowMainHall extends Fragment {
                     } else {
                         String newstring = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(product.get(position).getCreationDate());
                         created.setText("Taken at: " + newstring);
-                        Glide.with(getActivity()).asBitmap().load(product.get(position).getImage()).into(imageView);
+                        RequestOptions options = new RequestOptions()
+                                .centerCrop()
+                                .placeholder(R.drawable.progress_animation)
+                                .error(R.drawable.ic_warning_black_24dp)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .priority(Priority.HIGH)
+                                .dontAnimate()
+                                .dontTransform();
+                        Glide.with(getActivity()).asBitmap().load(product.get(position).getImage()).apply(options).into(imageView);
                         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 }}});
 

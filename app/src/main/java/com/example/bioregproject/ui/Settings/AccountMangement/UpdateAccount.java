@@ -22,6 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.R;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -73,7 +76,15 @@ public class UpdateAccount extends Fragment {
         account = getArguments();
         if(account!=null)
         {
-            Glide.with(getActivity()).asBitmap().load(account.getByteArray("image")).into(profile);
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.progress_animation)
+                    .error(R.drawable.ic_warning_black_24dp)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH)
+                    .dontAnimate()
+                    .dontTransform();
+            Glide.with(getActivity()).asBitmap().load(account.getByteArray("image")).apply(options).into(profile);
             FirstNameText.setText(account.getString("firstname"));
             passwordText.setText(account.getString("password"));
             lastNameText.setText(account.getString("lastname"));

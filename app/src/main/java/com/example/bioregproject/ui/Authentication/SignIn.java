@@ -1,12 +1,15 @@
 package com.example.bioregproject.ui.Authentication;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,16 +50,19 @@ import java.util.HashMap;
 public class SignIn extends Fragment {
 
     private SignInViewModel mViewModel;
-    private Button login,forgetPassword;
-    private ConstraintLayout loading_1;
+        private Button login,forgetPassword;
+    private ConstraintLayout loading_1,mother;
     private TextView error;
     private ImageButton close;
     private ImageView icon;
     private TextInputLayout email,password;
     private RequestQueue requestQueue;
     private String emailS;
+    private static boolean exit;
+    private ImageButton notifcation;
     private CardView errors,closer;
     private final String URL = StaticUse.SKELETON+"login";
+    private final String URLRESET ="http://localhost:4200/forgotPasswordApp" ;
 
 
     public static SignIn newInstance() {
@@ -71,6 +78,33 @@ public class SignIn extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                if(exit)
+                {
+                    StaticUse.clearShared(StaticUse.SHARED_NAME_USER_LOG,getActivity());
+                    getActivity().finish();
+                    System.exit(0);
+                }
+
+                exit = true;
+                Toast.makeText(getActivity(), "Click BACK again to exit", Toast.LENGTH_SHORT).show();
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        exit =false;
+                    }
+                }, 2000);
+
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+        ((MainActivity) requireActivity()).getSupportActionBar().hide();
+        notifcation = getActivity().findViewById(R.id.notification);
+        notifcation.setVisibility(View.GONE);
         requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.start();
         emailS = StaticUse.loadEmail(getActivity());
@@ -84,6 +118,8 @@ public class SignIn extends Fragment {
 
         //Section fo binding views
         login = view.findViewById(R.id.login);
+        mother =  view.findViewById(R.id.mother);
+        StaticUse.backgroundAnimator(mother);
         loading_1 = view.findViewById(R.id.loading_1);
         close = view.findViewById(R.id.close);
         forgetPassword = view.findViewById(R.id.forget);
@@ -94,7 +130,13 @@ public class SignIn extends Fragment {
         icon = view.findViewById(R.id.icon);
 
         errors.setVisibility(View.GONE);
-
+        forgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+                startActivity(browserIntent);
+            }
+        });
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override

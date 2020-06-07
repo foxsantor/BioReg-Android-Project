@@ -44,6 +44,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.Adapters.SpinnerCatAdapter;
 import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.MainActivityViewModel;
@@ -103,23 +106,7 @@ public class FormManual extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
          bundle = getArguments();
-        if(bundle !=null)
-        {
-            id =bundle.getLong("id");
-            image = bundle.getByteArray("image");
-            expirationString= bundle.getString("expirationString");
-            fabricationString=bundle.getString("fabricationString");
-            creationString =bundle.getString("creationString");
-            name=bundle.getString("name");
-            ref=bundle.getString("ref");
-            brand=bundle.getString("brand");
-            category=bundle.getString("CategoryName");
-            CURRENT_RUNNING_CODE = CODE_UPDATE;
 
-        }else
-        {
-            CURRENT_RUNNING_CODE = CODE_ADD;
-        }
         super.onCreate(savedInstanceState);
     }
 
@@ -142,6 +129,7 @@ public class FormManual extends Fragment {
         addImage2 = view.findViewById(R.id.addImage2);
         preiview = view.findViewById(R.id.preiview);
         fref = view.findViewById(R.id.fref);
+
         imageNote= view.findViewById(R.id.imagNote);
         fabrication = view.findViewById(R.id.fabrication);
         Category = view.findViewById(R.id.Category);
@@ -151,18 +139,63 @@ public class FormManual extends Fragment {
         layoutPreview = view.findViewById(R.id.layoutingPreview);
         spinner = view.findViewById(R.id.spinner);
         cancel.setVisibility(View.GONE);
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
-            @Override
-            public void handleOnBackPressed() {
-                Navigation.findNavController(view).navigate(R.id.action_formManual_to_manualHome);
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
-
         SpinnerLoader(spinner);
         constraintLayout = view.findViewById(R.id.constraintlayout);
         StaticUse.backgroundAnimator(constraintLayout);
         dateTimeExipartion = view.findViewById(R.id.expiration);
+        if(bundle !=null)
+        {
+            if(bundle.getInt("dest")>0)
+            {
+                expirationString= bundle.getString("expirationString");
+                fabricationString=bundle.getString("fabricationString");
+                name=bundle.getString("name");
+                ref=bundle.getString("ref");
+                brand=bundle.getString("brand");
+                category=bundle.getString("CategoryName");
+                CURRENT_RUNNING_CODE = CODE_ADD;
+                fabrication.getEditText().setText(fabricationString);
+                dateTimeExipartion.getEditText().setText(expirationString);
+                calender2.setEnabled(true);
+                calender2.setClickable(true);
+                calender2.setImageResource(R.drawable.ic_date_range_blue_24dp);
+                fref.getEditText().setText(ref);
+                fname.getEditText().setText(name);
+                brandName.getEditText().setText(brand);
+
+            }else {
+                id = bundle.getLong("id");
+                image = bundle.getByteArray("image");
+                expirationString = bundle.getString("expirationString");
+                fabricationString = bundle.getString("fabricationString");
+                creationString = bundle.getString("creationString");
+                name = bundle.getString("name");
+                ref = bundle.getString("ref");
+                brand = bundle.getString("brand");
+                category = bundle.getString("CategoryName");
+                CURRENT_RUNNING_CODE = CODE_UPDATE;
+            }
+        }else
+        {
+            CURRENT_RUNNING_CODE = CODE_ADD;
+        }
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                if(bundle == null || bundle.getInt("dest",0)==0)
+                {
+                        Navigation.findNavController(view).navigate(R.id.action_formManual_to_manualHome);
+                }
+                else
+                {
+                    Navigation.findNavController(view).navigate(R.id.action_formManual2_to_imageFlowHome);
+                }
+
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
+
         dateTimeExipartion.getEditText().setEnabled(false);
         fabrication.getEditText().setEnabled(false);
         calender2.setOnClickListener(new View.OnClickListener() {
@@ -193,9 +226,17 @@ public class FormManual extends Fragment {
             fref.getEditText().setText(ref);
             fname.getEditText().setText(name);
             brandName.getEditText().setText(brand);
-            Toast.makeText(getActivity(), ""+category, Toast.LENGTH_SHORT).show();
-            Toast.makeText(getActivity(), ""+getIndex(spinner,category), Toast.LENGTH_SHORT).show();
-            Glide.with(getActivity()).asBitmap().load(image).into(preiview);
+           // Toast.makeText(getActivity(), ""+category, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), ""+getIndex(spinner,category), Toast.LENGTH_SHORT).show();
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.progress_animation)
+                    .error(R.drawable.ic_warning_black_24dp)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH)
+                    .dontAnimate()
+                    .dontTransform();
+            Glide.with(getActivity()).asBitmap().load(image).apply(options).into(preiview);
             //Glide.with(getActivity()).asBitmap().load(image).into(container);
             layoutPreview.setVisibility(View.GONE);
             cancel.setVisibility(View.VISIBLE);
@@ -283,7 +324,14 @@ public class FormManual extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().onBackPressed();
+                if(bundle == null || bundle.getInt("dest",0)==0)
+                {
+                    Navigation.findNavController(view).navigate(R.id.mainMenu);
+                }
+                else
+                {
+                    Navigation.findNavController(view).navigate(R.id.imageFlowHome);
+                }
             }
         });
         save.setOnClickListener(new View.OnClickListener() {
@@ -322,14 +370,9 @@ public class FormManual extends Fragment {
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                mainActivityViewModel.getProductByNameAndBrand(product.getName(),product.getBrandName()).observe(getActivity(), new Observer<List<Products>>() {
-                                    @Override
-                                    public void onChanged(List<Products> products) {
-                                        StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Traceability Module",
-                                                "has added a new Traced Product by the name of ",
-                                                fname.getEditText().getText().toString(),products.get(0).getId(),"Manuel Traceability");
-                                    }
-                                });
+                                StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Traceability Module",
+                                        "has added a new Traced Product by the name of ",
+                                        fname.getEditText().getText().toString(),0,"Manuel Traceability");
                                 handler.removeCallbacksAndMessages(null);
                             }
                         }, 500);
@@ -398,6 +441,7 @@ public class FormManual extends Fragment {
 //                        });
 
                     }
+
                     getActivity().onBackPressed();
                 }
             }
@@ -502,8 +546,15 @@ public class FormManual extends Fragment {
                         //imageHinter.setVisibility(View.GONE);
                         cancel.setVisibility(View.VISIBLE);
                         layoutPreview.setVisibility(View.GONE);
-
-                        Glide.with(getActivity()).asBitmap().load(bitmap).into(preiview);
+                        RequestOptions options = new RequestOptions()
+                                .centerCrop()
+                                .placeholder(R.drawable.progress_animation)
+                                .error(R.drawable.ic_warning_black_24dp)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .priority(Priority.HIGH)
+                                .dontAnimate()
+                                .dontTransform();
+                        Glide.with(getActivity()).asBitmap().load(bitmap).apply(options).into(preiview);
                         //container.setImageBitmap(bitmap);
                         // Glide.with(getActivity()).asBitmap().load(bitmap).into(ImageView10);
                         container.setImageBitmap(bitmap);
@@ -523,7 +574,15 @@ public class FormManual extends Fragment {
             cancel.setVisibility(View.VISIBLE);
             layoutPreview.setVisibility(View.GONE);
             //container.setImageBitmap(photo);
-            Glide.with(getActivity()).asBitmap().load(photo).into(preiview);
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.progress_animation)
+                    .error(R.drawable.ic_warning_black_24dp)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH)
+                    .dontAnimate()
+                    .dontTransform();
+            Glide.with(getActivity()).asBitmap().load(photo).apply(options).into(preiview);
             //Glide.with(getActivity()).asBitmap().load(photo).into(ImageView10);
             container.setImageBitmap(photo);
             bitmapContainer = photo;

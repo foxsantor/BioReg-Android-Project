@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.R;
 import com.example.bioregproject.entities.Category;
 import com.example.bioregproject.entities.Realtions.CategorywithSurfaces;
@@ -55,7 +58,15 @@ public class CategoryAdapter extends ListAdapter <CategorywithSurfaces,CategoryA
         CategorywithSurfaces currentCategorie = getItem(position);
         holder.namecategory.setText(currentCategorie.categorieTache.getName());
         final byte[] image = currentCategorie.categorieTache.getCategorieImage();
-        Glide.with(mContext).asBitmap().load(image).into(holder.imageCategorie);
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.ic_warning_black_24dp)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .dontAnimate()
+                .dontTransform();
+        Glide.with(mContext).asBitmap().load(image).apply(options).into(holder.imageCategorie);
 
 
 

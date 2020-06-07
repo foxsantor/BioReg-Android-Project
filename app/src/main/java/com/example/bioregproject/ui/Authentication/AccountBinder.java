@@ -28,11 +28,13 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.bioregproject.Adapters.AccountAdapter;
+import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.Account;
@@ -51,6 +53,7 @@ public class AccountBinder extends Fragment {
     private ImageView admin;
     private RecyclerView accounts;
     private CardView cardFirst;
+    private ImageButton notifcation;
     private ConstraintLayout first;
     private TextInputLayout password,confirmPassword;
     private static final Pattern PASSWORD_CHECHER =  Pattern.compile("^" +
@@ -82,6 +85,9 @@ public class AccountBinder extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ((MainActivity) requireActivity()).getSupportActionBar().show();
+        notifcation = getActivity().findViewById(R.id.notification);
+        notifcation.setVisibility(View.VISIBLE);
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
@@ -219,7 +225,7 @@ public class AccountBinder extends Fragment {
         admin.setPassword(password.getEditText().getText().toString());
         admin.setCreationDate(new Date());
         admin.setLastLoggedIn(new Date());
-        this.admin.setImageResource(R.drawable.admin_settings);
+        this.admin.setImageResource(R.drawable.admin_user);
         byte[] bitmapdata = StaticUse.transformerImageBytes(this.admin);
         admin.setProfileImage(bitmapdata);
         mViewModel.insert(admin);

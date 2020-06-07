@@ -15,6 +15,9 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.Account;
@@ -62,7 +65,15 @@ public class UsersAdapter2T extends ListAdapter<Account, UsersAdapter2T.Accounts
 
         final Account currentItem = getItem(position);
         final byte[] image = currentItem.getProfileImage();
-        Glide.with(mContext).asBitmap().load(image).into(holder.mImageView);
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.ic_warning_black_24dp)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .dontAnimate()
+                .dontTransform();
+        Glide.with(mContext).asBitmap().load(image).apply(options).into(holder.mImageView);
         final String fullName = StaticUse.capitalize(currentItem.getFirstName())+" "+StaticUse.capitalize(currentItem.getLastName());
         holder.back.setBackgroundColor(mContext.getResources().getColor(R.color.White));
         //final String newstring = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(currentItem.getCreationDate());

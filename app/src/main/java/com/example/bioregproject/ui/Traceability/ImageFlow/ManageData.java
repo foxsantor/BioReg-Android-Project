@@ -1,6 +1,7 @@
 package com.example.bioregproject.ui.Traceability.ImageFlow;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -14,18 +15,21 @@ import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.bioregproject.Adapters.AccountSettingsAdapter;
 import com.example.bioregproject.Adapters.DataTracedAdapater;
 import com.example.bioregproject.DAOs.ProductDAO;
 import com.example.bioregproject.DataBases.BioRegDB;
 import com.example.bioregproject.R;
+import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.Account;
 import com.example.bioregproject.entities.Products;
 import com.example.bioregproject.ui.Settings.AccountMangement.MangeAccountViewModel;
@@ -36,6 +40,8 @@ public class ManageData extends Fragment {
     private ManageDataViewModel mViewModel;
     private RecyclerView recyclerView;
     private TextInputLayout searchView;
+    private ConstraintLayout mother,loading,empty;
+    private Button gallary;
 
     public static ManageData newInstance() {
         return new ManageData();
@@ -52,7 +58,14 @@ public class ManageData extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(ManageDataViewModel.class);
         //searchView = view.findViewById(R.id.search);
+        empty= view.findViewById(R.id.empty);
+        mother= view.findViewById(R.id.constraintLayout);
+        loading= view.findViewById(R.id.loading);
+        gallary= view.findViewById(R.id.galV);
         recyclerView= view.findViewById(R.id.ManageData);
+        loading.setVisibility(View.VISIBLE);
+        empty.setVisibility(View.GONE);
+        StaticUse.backgroundAnimator(mother);
 
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
@@ -72,10 +85,30 @@ public class ManageData extends Fragment {
                     @Override
                     public void onChanged(PagedList<Products> pagedList) {
                         try {
+                            if(pagedList.isEmpty())
+                            {
+                                empty.setVisibility(View.VISIBLE);
+                                loading.setVisibility(View.GONE);
+                                gallary.setEnabled(false);
+                                gallary.setClickable(false);
+                            }else
+                            {
+                                empty.setVisibility(View.GONE);
+                                gallary.setEnabled(true);
+                                gallary.setClickable(true);
                             //Toast.makeText(getActivity(), ""+pagedList.get(0).getId(), Toast.LENGTH_SHORT).show();
                             Log.e("Paging ", "PageAll" + pagedList.size());
                             //refresh current list
                             adapter.submitList(pagedList);
+                                final Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        loading.setVisibility(View.GONE);
+                                        handler.removeCallbacksAndMessages(null);
+                                    }
+                                }, 1000);
+                            }
                             //adapter.submitList(pagedList);
                         } catch (Exception e) {
                         }
@@ -98,5 +131,15 @@ public class ManageData extends Fragment {
                         setValue("ImageT");
             }
         });*/
+
+        gallary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_manageData_to_imageFlowQrCode);
+            }
+        });
+
     }
+
+
 }

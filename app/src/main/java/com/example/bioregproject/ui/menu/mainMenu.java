@@ -1,12 +1,16 @@
 package com.example.bioregproject.ui.menu;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,10 +27,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.bioregproject.Adapters.ExportAdapter;
 import com.example.bioregproject.Adapters.MenuAdapter;
+import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.ExportFiles;
@@ -42,6 +49,9 @@ public class mainMenu extends Fragment {
     private ArrayList<MenuItems>  categoryItems;
     private MenuAdapter categoryAdapter;
     private LifecycleOwner lifecycleOwner;
+    private ConstraintLayout mother;
+    private ImageButton notifcation;
+    private ConstraintLayout layout;
 
     public static mainMenu newInstance() {
         return new mainMenu();
@@ -53,9 +63,22 @@ public class mainMenu extends Fragment {
         return inflater.inflate(R.layout.main_menu_fragment, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((MainActivity) requireActivity()).getSupportActionBar().show();
+        notifcation = getActivity().findViewById(R.id.notification);
+        notifcation.setVisibility(View.VISIBLE);
+        mother = view.findViewById(R.id.mother);
+        StaticUse.backgroundAnimator(mother);
+//        Toolbar actionBar = getActivity().findViewById(R.id.toolbar);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            actionBar.setNavigationIcon(null);
+//        }else
+//        {
+//
+//        }
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
@@ -87,6 +110,7 @@ public class mainMenu extends Fragment {
         categoryAdapter = new MenuAdapter(getActivity(),categoryItems);
         gridView.setAdapter(categoryAdapter);
         lifecycleOwner = this;
+
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {

@@ -31,6 +31,11 @@
             app:destination="@id/manageData"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_imageFlowHome_to_QRInputImageFlow"
+            app:destination="@id/QRInputImageFlow"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/imageFlowMainHall"
@@ -70,6 +75,11 @@
         <action
             android:id="@+id/action_imageFlowQrCode_to_iamgeFlowPrinting"
             app:destination="@id/iamgeFlowPrinting"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_imageFlowQrCode_to_manageData"
+            app:destination="@id/manageData"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
@@ -115,6 +125,11 @@
             app:destination="@id/imageFlowAddImage"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_manageData_to_imageFlowQrCode"
+            app:destination="@id/imageFlowQrCode"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/printingConfig"
@@ -124,6 +139,38 @@
         <action
             android:id="@+id/action_printingConfig_to_iamgeFlowPrinting"
             app:destination="@id/iamgeFlowPrinting"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/QRInputImageFlow"
+        android:name="com.example.bioregproject.ui.Traceability.ImageFlow.QRInputImageFlow"
+        android:label="qrinput_image_flow_fragment"
+        tools:layout="@layout/qrinput_image_flow_fragment" >
+        <action
+            android:id="@+id/action_QRInputImageFlow_to_imageFlowHome"
+            app:destination="@id/imageFlowHome"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_QRInputImageFlow_to_formManual2"
+            app:destination="@id/formManual2"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_enter_anim" />
+        <action
+            android:id="@+id/action_QRInputImageFlow_to_imageFlowAddImage"
+            app:destination="@id/imageFlowAddImage"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/formManual2"
+        android:name="com.example.bioregproject.ui.Traceability.ManualTraceablility.FormManual"
+        android:label="form_manual_fragment"
+        tools:layout="@layout/form_manual_fragment" >
+        <action
+            android:id="@+id/action_formManual2_to_imageFlowHome"
+            app:destination="@id/imageFlowHome"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>

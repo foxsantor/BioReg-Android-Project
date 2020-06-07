@@ -20,6 +20,9 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
@@ -82,7 +85,15 @@ public class AccountSettingsAdapter extends ListAdapter<Account,AccountSettingsA
         {
             holder.delete.setVisibility(View.GONE);
         }
-        Glide.with(mContext).asBitmap().load(image).into(holder.mImageView);
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.ic_warning_black_24dp)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .dontAnimate()
+                .dontTransform();
+        Glide.with(mContext).asBitmap().load(image).apply(options).into(holder.mImageView);
         holder.mTextViewName.setText(fullName);
         holder.mTextViewLoggedIn.setText("Created "+p.format(lastLoggedIn));
 

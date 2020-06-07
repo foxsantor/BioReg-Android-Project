@@ -42,7 +42,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
         android:layout_marginBottom="50dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:cardCornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,6 +78,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
+                app:tint="@color/White"
                 android:clickable="true"
                 app:backgroundTint="@color/officialBlue"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -237,7 +238,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
         android:layout_marginBottom="50dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:cardCornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -248,16 +249,34 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/textView93"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="16dp"
+                android:text="Preview"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/nestedScrollView10"
+                app:layout_constraintTop_toTopOf="@+id/view37" />
+
             <ImageView
                 android:id="@+id/qrcodeh"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@tools:sample/avatars" />
 
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/nestedScrollView10"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:fillViewport="true"
@@ -389,12 +408,11 @@
                         android:layout_height="47dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
                         android:visibility="gone"
                         app:icon="@drawable/ic_title_black_24dp"
                         app:iconPadding="0dp"
                         app:layout_constraintStart_toEndOf="@+id/button21"
-                        app:layout_constraintTop_toBottomOf="@+id/textView93" />
+                        tools:layout_editor_absoluteY="54dp" />
 
                     <Button
                         android:id="@+id/button21"
@@ -407,7 +425,7 @@
                         app:icon="@drawable/ic_keyboard_return_black_24dp"
                         app:iconPadding="0dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView93" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView104" />
 
                     <Button
                         android:id="@+id/clear"
@@ -420,7 +438,7 @@
                         app:icon="@drawable/ic_clear_all_black_24dp"
                         app:iconPadding="0dp"
                         app:layout_constraintStart_toEndOf="@+id/span"
-                        app:layout_constraintTop_toBottomOf="@+id/textView93" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView104" />
 
                     <Button
                         android:id="@+id/clear2"
@@ -462,7 +480,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
-                        android:id="@+id/textView93"
+                        android:id="@+id/textView104"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:padding="16dp"
@@ -485,7 +503,7 @@
                         app:icon="@drawable/ic_power_input_black_24dp"
                         app:iconPadding="0dp"
                         app:layout_constraintStart_toEndOf="@+id/title"
-                        app:layout_constraintTop_toBottomOf="@+id/textView93" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView104" />
 
                     <Button
                         android:id="@+id/button19"
@@ -520,14 +538,13 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/next"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/view37"
-                app:layout_constraintTop_toBottomOf="@+id/textView87">
+                app:layout_constraintTop_toBottomOf="@+id/textView93">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

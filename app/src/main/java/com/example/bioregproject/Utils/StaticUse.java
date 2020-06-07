@@ -536,6 +536,17 @@ public class StaticUse extends AppCompatActivity {
 
     }
 
+    public static boolean validNumber(String textToCheck)
+    {
+            if(!textToCheck.matches("[0-9]+")){
+
+                return false;}
+            else
+            {
+                return true;
+            }
+    }
+
     public static void displayNotification (Activity activity,int icon,Notification notification)
     {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(activity,"1234");

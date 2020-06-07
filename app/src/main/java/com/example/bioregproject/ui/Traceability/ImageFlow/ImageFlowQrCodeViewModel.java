@@ -45,4 +45,8 @@ public class ImageFlowQrCodeViewModel extends AndroidViewModel {
     {
         return allProducts;
     }
+    public LiveData<List<Products>> getAllProductsbyType()
+    {
+        return repository.getProductByType("ImageT");
+    }
 }

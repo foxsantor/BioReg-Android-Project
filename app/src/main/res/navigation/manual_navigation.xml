@@ -14,6 +14,11 @@
             app:destination="@id/formManual"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_manualHome_to_printingConfig2"
+            app:destination="@id/printingConfig2"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/formManual"
@@ -22,6 +27,17 @@
         tools:layout="@layout/form_manual_fragment" >
         <action
             android:id="@+id/action_formManual_to_manualHome"
+            app:destination="@id/manualHome"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/printingConfig2"
+        android:name="com.example.bioregproject.ui.Printing.PrintingOverView.PrintingConfig"
+        android:label="printing_config_fragment"
+        tools:layout="@layout/printing_config_fragment" >
+        <action
+            android:id="@+id/action_printingConfig2_to_manualHome"
             app:destination="@id/manualHome"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />

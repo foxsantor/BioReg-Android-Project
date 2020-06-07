@@ -44,6 +44,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.MainActivityViewModel;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.AspectRatioFragment;
@@ -144,12 +147,29 @@ public class ImageFlowAddImage extends Fragment implements
 
 
         if(bundle != null){
-            CODE = UPDATE_CODE;
-            Glide.with(getActivity()).clear(preview);
-            Glide.with(getActivity()).asBitmap().load(bundle.getByteArray("image")).into(preview);
-            brand.getEditText().setText(bundle.getString("brand"));
-            name.getEditText().setText(bundle.getString("name"));
 
+            if(bundle.getInt("dest",0)>0)
+            {
+                CODE = ADD_CODE;
+                brand.getEditText().setText(bundle.getString("brand"));
+                name.getEditText().setText(bundle.getString("name"));
+
+
+            }else {
+                CODE = UPDATE_CODE;
+                Glide.with(getActivity()).clear(preview);
+                RequestOptions options = new RequestOptions()
+                        .centerCrop()
+                        .placeholder(R.drawable.progress_animation)
+                        .error(R.drawable.cover_image)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .priority(Priority.HIGH)
+                        .dontAnimate()
+                        .dontTransform();
+                Glide.with(getActivity()).asBitmap().load(bundle.getByteArray("image")).apply(options).into(preview);
+                brand.getEditText().setText(bundle.getString("brand"));
+                name.getEditText().setText(bundle.getString("name"));
+            }
         }else
         {
             CODE = ADD_CODE;
@@ -163,10 +183,11 @@ public class ImageFlowAddImage extends Fragment implements
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                if(bundle== null)
-                Navigation.findNavController(view).navigate(R.id.action_imageFlowAddImage_to_imageFlowHome);
+                if(CODE==UPDATE_CODE)
+
+                Navigation.findNavController(view).navigate(R.id.action_imageFlowAddImage_to_manageData);
                 else
-                    Navigation.findNavController(view).navigate(R.id.action_imageFlowAddImage_to_manageData);
+                    Navigation.findNavController(view).navigate(R.id.action_imageFlowAddImage_to_imageFlowHome);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
@@ -174,7 +195,11 @@ public class ImageFlowAddImage extends Fragment implements
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().onBackPressed();
+                if(CODE==UPDATE_CODE)
+                {
+                    Navigation.findNavController(view).navigate(R.id.action_imageFlowAddImage_to_manageData);
+                }else{
+                Navigation.findNavController(view).navigate(R.id.action_imageFlowAddImage_to_imageFlowHome);}
             }
         });
         local.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -272,15 +297,10 @@ public class ImageFlowAddImage extends Fragment implements
                         @Override
                         public void run() {
 
-                            mainActivityViewModel.getProductByNameAndBrand(products.getName(),products.getBrandName()).observe(getActivity(), new Observer<List<Products>>() {
-                                @Override
-                                public void onChanged(List<Products> products) {
-                                    StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Traceability Module",
-                                            "has added a new Traced Product by the name of ",
-                                            products.get(0).getName(),products.get(0).getId(),"Manuel Traceability");
+                            StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Traceability Module",
+                                    "has added a new Traced Product by the name of ",
+                                    products.getName(),0,"Manuel Traceability");
 
-                                }
-                            });
                             handler.removeCallbacksAndMessages(null);
                         }
                     }, 1000);
@@ -487,7 +507,15 @@ public class ImageFlowAddImage extends Fragment implements
     @Override
     public void onPictureTaken(CameraView cameraView, final byte[] data) {
         Log.d(TAG, "onPictureTaken " + data.length);
-        Glide.with(getActivity()).asBitmap().load(data).into(preview);
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.cover_image)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .dontAnimate()
+                .dontTransform();
+        Glide.with(getActivity()).asBitmap().load(data).apply(options).into(preview);
         imageHolder = data;
 
     }

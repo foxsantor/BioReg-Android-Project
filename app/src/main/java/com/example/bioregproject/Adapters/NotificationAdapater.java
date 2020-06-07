@@ -19,6 +19,9 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.Notification;
@@ -93,8 +96,16 @@ public class NotificationAdapater extends ListAdapter<Notification,NotificationA
             holder.background.setBackgroundColor(activity.getResources().getColor(R.color.backgroundNotSelected));
         }
 
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.ic_warning_black_24dp)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .dontAnimate()
+                .dontTransform();
          final byte[] imageOwner = Base64.decode(imageBase64, Base64.DEFAULT);
-       Glide.with(mContext).asBitmap().load(imageOwner).into(holder.ownerImage);
+       Glide.with(mContext).asBitmap().load(imageOwner).apply(options).into(holder.ownerImage);
 
         if(objectImage64==null || objectImage64.isEmpty() || objectImage64.equals(""))
         {
@@ -102,7 +113,7 @@ public class NotificationAdapater extends ListAdapter<Notification,NotificationA
         }else
         {
             final byte[] imageObject = Base64.decode(objectImage64, Base64.DEFAULT);
-            Glide.with(mContext).asBitmap().load(imageObject).into(holder.objectImage);
+            Glide.with(mContext).asBitmap().load(imageObject).apply(options).into(holder.objectImage);
         }
     }
 

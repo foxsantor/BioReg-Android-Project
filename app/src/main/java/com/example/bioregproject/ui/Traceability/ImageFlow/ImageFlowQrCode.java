@@ -40,7 +40,7 @@ public class ImageFlowQrCode extends Fragment {
 
     private ImageFlowQrCodeViewModel mViewModel;
     private RecyclerView recyclerView;
-    private TextView id,creation;
+    private TextView id,creation,name,brand;
     private ImageButton scan,print;
     private ImageView imageView;
     private AlertDialog alerti;
@@ -69,7 +69,7 @@ public class ImageFlowQrCode extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                Navigation.findNavController(view).navigate(R.id.action_imageFlowQrCode_to_imageFlowHome);
+                Navigation.findNavController(view).navigate(R.id.action_imageFlowQrCode_to_manageData);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
@@ -82,13 +82,15 @@ public class ImageFlowQrCode extends Fragment {
         creation= view.findViewById(R.id.created);
         scan= view.findViewById(R.id.Bind1);
         print= view.findViewById(R.id.Bind);
+        name= view.findViewById(R.id.name);
+        brand= view.findViewById(R.id.barnd);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
         qrItemAdapater= new QrItemAdapater(getActivity(),getActivity());
         recyclerView.setAdapter(qrItemAdapater);
         recyclerView.hasFixedSize();
 
-        mViewModel.getAllProducts().observe(this, new Observer<List<Products>>() {
+        mViewModel.getAllProductsbyType().observe(this, new Observer<List<Products>>() {
             @Override
             public void onChanged(List<Products> products) {
                 if(hasEntredFirst)
@@ -97,6 +99,8 @@ public class ImageFlowQrCode extends Fragment {
                     Glide.with(getActivity()).asBitmap().load(products.get(0).getImage()).into(imageView);
                     String newstring = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(products.get(0).getCreationDate());
                     creation.setText("Created at: "+newstring);
+                    name.setText("Title: "+products.get(0).getName());
+                    brand.setText("Brand: "+products.get(0).getBrandName());
                     hasEntredFirst = false;
                     image=products.get(0).getImage();
 
@@ -112,6 +116,8 @@ public class ImageFlowQrCode extends Fragment {
                 Glide.with(getActivity()).asBitmap().load(account.getImage()).into(imageView);
                 String newstring = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(account.getCreationDate());
                 creation.setText("Created at: "+newstring);
+                name.setText("Title: "+account.getName());
+                brand.setText("Brand: "+account.getBrandName());
                 image=account.getImage();
             }
         });
@@ -132,17 +138,7 @@ public class ImageFlowQrCode extends Fragment {
             }
         });
 
-        print.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Bundle bundle = new Bundle();
-                bundle.putString("id",id.getText().toString().trim());
-                bundle.putString("created",creation.getText().toString().trim());
-                bundle.putByteArray("image",image);
-                bundle.putInt("dest",0);
-                Navigation.findNavController(view).navigate(R.id.action_imageFlowQrCode_to_iamgeFlowPrinting,bundle);
-            }
-        });
+
 
 
 

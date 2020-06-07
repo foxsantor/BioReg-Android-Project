@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.Account;
@@ -74,14 +77,21 @@ public class AccountAdapter extends ListAdapter<Account,AccountAdapter.AccountsH
         final   ConstraintLayout layout = activity.findViewById(R.id.connetcd);
         final ImageView profileImage= activity.findViewById(R.id.image);
         final TextView nameProfile= activity.findViewById(R.id.namePopup);
-
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.ic_warning_black_24dp)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .dontAnimate()
+                .dontTransform();
 
         final String firstName = currentItem.getFirstName();
         String lastName = currentItem.getLastName();
         Date lastLoggedIn = currentItem.getLastLoggedIn();
         final String fullName = StaticUse.capitalize(firstName)+" "+StaticUse.capitalize(lastName);
         final byte[] image = currentItem.getProfileImage();
-        Glide.with(mContext).asBitmap().load(image).into(holder.mImageView);
+        Glide.with(mContext).asBitmap().load(image).apply(options).into(holder.mImageView);
         holder.mTextViewName.setText(fullName);
         holder.mTextViewLoggedIn.setText("Last Logged in "+p.format(lastLoggedIn));
         holder.button.setOnClickListener(new View.OnClickListener() {

@@ -15,6 +15,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.Adapters.AccountPopUp;
 import com.example.bioregproject.Adapters.NotificationAdapater;
 import com.example.bioregproject.Services.TaskManger;
@@ -27,6 +30,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
@@ -40,6 +45,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.bioregproject.entities.Notification;
 import com.example.bioregproject.entities.Products;
 import com.example.bioregproject.ui.History.DeviceHistoryViewModel;
+import com.example.bioregproject.ui.Planification.taskPlan;
 import com.example.bioregproject.ui.Traceability.ImageFlow.ManageDataViewModel;
 import com.google.android.cameraview.AspectRatio;
 import com.google.android.material.navigation.NavigationView;
@@ -73,6 +79,7 @@ import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
+
 
     private AppBarConfiguration mAppBarConfiguration;
     private static MainActivityViewModel mViewModel;
@@ -258,7 +265,15 @@ public class MainActivity extends AppCompatActivity  {
                     public void onChanged(List<Account> accounts) {
                         //Toast.makeText(MainActivity.this, ""+accounts.get(0).getId(), Toast.LENGTH_SHORT).show();
                         fullNameView.setText("Logged in as "+accounts.get(0).getFirstName());
-                        Glide.with(conx).asBitmap().load(accounts.get(0).getProfileImage()).into(profilePop);
+                        RequestOptions options = new RequestOptions()
+                                .centerCrop()
+                                .placeholder(R.drawable.progress_animation)
+                                .error(R.drawable.ic_warning_black_24dp)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .priority(Priority.HIGH)
+                                .dontAnimate()
+                                .dontTransform();
+                        Glide.with(conx).asBitmap().load(accounts.get(0).getProfileImage()).apply(options).into(profilePop);
                     }
                 });
 
@@ -290,7 +305,15 @@ public class MainActivity extends AppCompatActivity  {
             layout.setVisibility(View.VISIBLE);
             Account currentAccount = StaticUse.loadSession(conx);
             name.setText(currentAccount.getFirstName());
-            Glide.with(conx).asBitmap().load(currentAccount.getProfileImage()).into(image);
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.progress_animation)
+                    .error(R.drawable.ic_warning_black_24dp)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH)
+                    .dontAnimate()
+                    .dontTransform();
+            Glide.with(conx).asBitmap().load(currentAccount.getProfileImage()).apply(options).into(image);
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         //NavigationView navigationView = findViewById(R.id.nav_view);
@@ -393,7 +416,15 @@ public class MainActivity extends AppCompatActivity  {
                 @Override
                 public void onChanged(List<Account> accounts) {
                     name.setText(accounts.get(0).getFirstName());
-                    Glide.with(conx).asBitmap().load(accounts.get(0).getProfileImage()).into(image);
+                    RequestOptions options = new RequestOptions()
+                            .centerCrop()
+                            .placeholder(R.drawable.progress_animation)
+                            .error(R.drawable.ic_warning_black_24dp)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .priority(Priority.HIGH)
+                            .dontAnimate()
+                            .dontTransform();
+                    Glide.with(conx).asBitmap().load(accounts.get(0).getProfileImage()).apply(options).into(image);
                     mViewModel.getAccount(currentAccount.getId()).removeObservers(MainActivity.this);
                 }
             });
@@ -408,40 +439,41 @@ public class MainActivity extends AppCompatActivity  {
 
     public static AlertDialog AskOption(final Context context, final Account account)
     {
+        final AlertDialog.Builder alerto = new AlertDialog.Builder(context);
+        LayoutInflater layoutInflatero =  (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogueViewo =layoutInflatero.inflate(R.layout.delete_dialogue,null);
+        alerto.setView(dialogueViewo);
+        Button delete,cancelo;
+        alerto.setTitle("Delete User N° "+account.getId());
+        delete = dialogueViewo.findViewById(R.id.delete);
+        cancelo= dialogueViewo.findViewById(R.id.cancel);
+        final AlertDialog alertio =alerto.show();
+        cancelo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertio.dismiss();
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.delete(account);
+                StaticUse.SaveNotification((LifecycleOwner)context,mViewModel,(Activity)context,"Administration Module"
+                        ,"has deleted a User by the name of"+account.getFirstName()+" "+account.getLastName()+" from ",
+                        "Account Management",account.getProfileImage(),null,R.drawable.ic_delete_blue_24dp);
+
+                StaticUse.SaveHistory((LifecycleOwner)context,deviceHistoryViewModel,(Activity)context,"Traceability Module",
+                        "has deleted the User ",
+                        account.getFirstName()+" "+account.getLastName(),account.getId(),"");
+
+                Toast.makeText(context, "The account of "+account.getFirstName()+" "+account.getLastName()+" has been deleted", Toast.LENGTH_SHORT).show();
+                alertio.dismiss();
+            }
+        });
 
 
-        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(context)
-                // set message, title, and icon
-                .setTitle("Delete")
-                .setMessage("Do you want to Delete")
-                .setIcon(R.drawable.ic_delete_red)
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        mViewModel.delete(account);
-                        StaticUse.SaveNotification((LifecycleOwner)context,mViewModel,(Activity)context,"Administration Module"
-                                ,"has deleted a User by the name of"+account.getFirstName()+" "+account.getLastName()+" from ",
-                                "Account Management",account.getProfileImage(),null,R.drawable.ic_delete_blue_24dp);
-
-                        StaticUse.SaveHistory((LifecycleOwner)context,deviceHistoryViewModel,(Activity)context,"Traceability Module",
-                                "has deleted the User ",
-                                account.getFirstName()+" "+account.getLastName(),account.getId(),"");
-
-                        Toast.makeText(context, "The account of "+account.getFirstName()+" "+account.getLastName()+" has been deleted", Toast.LENGTH_SHORT).show();
-
-                    }
-
-                })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
-
-                    }
-                })
-                .create();
-
-        return myQuittingDialogBox;
+        return alertio;
     }
 
     public static void insertNotification(final Notification notification)
@@ -457,23 +489,35 @@ public class MainActivity extends AppCompatActivity  {
     public static AlertDialog AskOptionPro(final Context context, final Products account, final LifecycleOwner activity, final String type)
     {
 
-        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(context)
-                // set message, title, and icon
-                .setTitle("Delete")
-                .setMessage("Do you want to Delete")
-                .setIcon(R.drawable.ic_delete_red)
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        mViewModelPro.delete(account);
 
-                        StaticUse.SaveNotification(activity,mViewModel,(Activity)context,"Traceability Module"
-                                ,"has deleted a Traced Product"+ " from ",
-                                "Traceability",account.getImage(),null,R.drawable.ic_delete_blue_24dp);
+        final AlertDialog.Builder alerto = new AlertDialog.Builder(context);
+        LayoutInflater layoutInflatero =  (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogueViewo =layoutInflatero.inflate(R.layout.delete_dialogue,null);
+        alerto.setView(dialogueViewo);
+        Button delete,cancelo;
+        alerto.setTitle("Delete Traced Product N° "+account.getId());
+        delete = dialogueViewo.findViewById(R.id.delete);
+        cancelo= dialogueViewo.findViewById(R.id.cancel);
+        final AlertDialog alertio =alerto.show();
+        cancelo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertio.dismiss();
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModelPro.delete(account);
 
-                        StaticUse.SaveHistory(activity,deviceHistoryViewModel,(Activity)context,"Traceability Module",
-                                "has deleted a Traced Product",
-                                "",account.getId(),"");
+                StaticUse.SaveNotification(activity,mViewModel,(Activity)context,"Traceability Module"
+                        ,"has deleted a Traced Product"+ " from ",
+                        "Traceability",account.getImage(),null,R.drawable.ic_delete_blue_24dp);
+
+                StaticUse.SaveHistory(activity,deviceHistoryViewModel,(Activity)context,"Traceability Module",
+                        "has deleted a Traced Product",
+                        "",account.getId(),"");
 
 //                        mViewModel.getAccount(StaticUse.loadSession(context).getId()).observe(activity, new Observer<List<Account>>() {
 //                            @Override
@@ -493,20 +537,13 @@ public class MainActivity extends AppCompatActivity  {
 //                                StaticUse.displayNotification((Activity)context,R.drawable.ic_delete_blue_24dp,notification);
 //                            }
 //                        });
-                        dialog.dismiss();
-                        Toast.makeText(context, "The Trace of "+account.getId()+" has been deleted", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
+                alertio.dismiss();
+                Toast.makeText(context, "The Trace of "+account.getId()+" has been deleted", Toast.LENGTH_SHORT).show();
+                alertio.dismiss();
+            }
+        });
 
-                })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .create();
-
-        return myQuittingDialogBox;
+        return alertio;
     }
 //
 //    @Override

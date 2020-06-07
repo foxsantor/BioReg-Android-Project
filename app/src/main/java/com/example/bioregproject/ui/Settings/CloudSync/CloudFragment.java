@@ -31,6 +31,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.DatabaseExporter;
 import com.example.bioregproject.Utils.DriveServiceHelper;
@@ -104,7 +107,15 @@ public class CloudFragment extends Fragment {
         tasks= view.findViewById(R.id.taskSw);
         profile= view.findViewById(R.id.portrait);
         coud = view.findViewById(R.id.Coud);
-        Glide.with(getActivity()).load(R.drawable.google_drive_logo).into(coud);
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.ic_warning_black_24dp)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .dontAnimate()
+                .dontTransform();
+        Glide.with(getActivity()).load(R.drawable.google_drive_logo).apply(options).into(coud);
         loadingLayout = view.findViewById(R.id.leoadding);
         progressBar = view.findViewById(R.id.progressBar);
 
@@ -359,7 +370,15 @@ public class CloudFragment extends Fragment {
                     else {
                         profileT.setVisibility(View.GONE);
                         profile.setVisibility(View.VISIBLE);
-                        Glide.with(getActivity()).load(googleAccount.getPhotoUrl()).into(profile);
+                        RequestOptions options = new RequestOptions()
+                                .centerCrop()
+                                .placeholder(R.drawable.progress_animation)
+                                .error(R.drawable.ic_warning_black_24dp)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .priority(Priority.HIGH)
+                                .dontAnimate()
+                                .dontTransform();
+                        Glide.with(getActivity()).load(googleAccount.getPhotoUrl()).apply(options).into(profile);
                     }
                     Drive googleDriveService =
                             new Drive.Builder(

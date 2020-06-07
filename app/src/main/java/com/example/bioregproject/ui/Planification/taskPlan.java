@@ -45,6 +45,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.Adapters.HistoryAdapter;
 import com.example.bioregproject.Adapters.HistorySearchAdapter;
 import com.example.bioregproject.Adapters.MyTaskAdapter;
@@ -562,10 +565,18 @@ public class taskPlan extends Fragment {
 
     public static  void ProfileImageGetter(ImageView imageView,long id)
     {
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.admin_user)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .dontAnimate()
+                .dontTransform();
         mainActivityViewModel.getAccount(id).observe(lifecycleOwner, new Observer<List<Account>>() {
             @Override
             public void onChanged(List<Account> accounts) {
-                Glide.with(activity).load(accounts.get(0).getProfileImage()).into(imageView);
+                Glide.with(activity).load(accounts.get(0).getProfileImage()).apply(options).into(imageView);
                 mainActivityViewModel.getAccount(id).removeObservers(lifecycleOwner);
             }
         });
@@ -681,10 +692,18 @@ public class taskPlan extends Fragment {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        RequestOptions options = new RequestOptions()
+                                .centerCrop()
+                                .placeholder(R.drawable.progress_animation)
+                                .error(R.drawable.ic_warning_black_24dp)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .priority(Priority.HIGH)
+                                .dontAnimate()
+                                .dontTransform();
                         //imageContainer.setVisibility(View.VISIBLE);
                         //imageHinter.setVisibility(View.GONE);
                         cancelD.setVisibility(View.VISIBLE);
-                        Glide.with(getActivity()).asBitmap().load(bitmap).into(contaienr);
+                        Glide.with(getActivity()).asBitmap().load(bitmap).apply(options).into(contaienr);
                         //container.setImageBitmap(bitmap);
                         // Glide.with(getActivity()).asBitmap().load(bitmap).into(ImageView10);
                         balster.setImageBitmap(bitmap);
@@ -705,7 +724,15 @@ public class taskPlan extends Fragment {
             //container.setImageBitmap(photo);
             cancelD.setVisibility(View.VISIBLE);
             imgIndi.setVisibility(View.GONE);
-            Glide.with(getActivity()).asBitmap().load(photo).into(contaienr);
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.progress_animation)
+                    .error(R.drawable.ic_warning_black_24dp)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH)
+                    .dontAnimate()
+                    .dontTransform();
+            Glide.with(getActivity()).asBitmap().load(photo).apply(options).into(contaienr);
             //Glide.with(getActivity()).asBitmap().load(photo).into(ImageView10);
             balster.setImageBitmap(photo);
             imageBytes = photo;
@@ -736,12 +763,28 @@ public class taskPlan extends Fragment {
         {
             imgIndi.setVisibility(View.VISIBLE);
             imageT.setText("Attach an Image :");
-            Glide.with(activity).load(R.drawable.black_back).into(contaienr);
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.progress_animation)
+                    .error(R.drawable.ic_warning_black_24dp)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH)
+                    .dontAnimate()
+                    .dontTransform();
+            Glide.with(activity).load(R.drawable.black_back).apply(options).into(contaienr);
         }else
         {
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.progress_animation)
+                    .error(R.drawable.ic_warning_black_24dp)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH)
+                    .dontAnimate()
+                    .dontTransform();
             imgIndi.setVisibility(View.GONE);
             imageT.setText("Change the Image :");
-            Glide.with(activity).load(currentItem.getImageBase64()).into(contaienr);
+            Glide.with(activity).load(currentItem.getImageBase64()).apply(options).into(contaienr);
         }
         if(currentItem.getComment()==null)
         {
@@ -782,7 +825,15 @@ public class taskPlan extends Fragment {
             public void onClick(View v) {
                 imgIndi.setVisibility(View.VISIBLE);
                 imageT.setText("Attach an Image :");
-                Glide.with(activity).load(R.drawable.black_back).into(contaienr);
+                RequestOptions options = new RequestOptions()
+                        .centerCrop()
+                        .placeholder(R.drawable.progress_animation)
+                        .error(R.drawable.ic_warning_black_24dp)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .priority(Priority.HIGH)
+                        .dontAnimate()
+                        .dontTransform();
+                Glide.with(activity).load(R.drawable.black_back).apply(options).into(contaienr);
             }
         });
 

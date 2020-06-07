@@ -19,10 +19,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.R;
 
 import com.example.bioregproject.Utils.StaticUse;
@@ -36,6 +40,7 @@ public class ImageFlowHome extends Fragment {
     private ConstraintLayout constraintLayout,imageItems;
     private ImageView imageView8;
     private TextView number;
+    private ProgressBar progressBar;
     private ImageButton gallary,addImage,scanQr,bindData;
     private int size=0;
 
@@ -73,17 +78,26 @@ public class ImageFlowHome extends Fragment {
         imageItems = view.findViewById(R.id.imageItems);
         imageView8 = view.findViewById(R.id.imageView8);
         mViewModel = ViewModelProviders.of(this).get(ImageFlowMainHallViewModel.class);
-        mViewModel.getAllProducts().observe(this, new Observer<List<Products>>() {
+        mViewModel.getAllProductsbyType().observe(this, new Observer<List<Products>>() {
             @Override
             public void onChanged(List<Products> product) {
                 if(product.size()!=0) {
-                    Glide.with(getActivity()).asBitmap().load(product.get(0).getImage()).into(imageView8);
+                     RequestOptions options = new RequestOptions()
+                            .centerCrop()
+                            .placeholder(R.drawable.progress_animation)
+                            .error(R.drawable.cover_image)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .priority(Priority.HIGH)
+                            .dontAnimate()
+                            .dontTransform();
+                    Glide.with(getActivity()).asBitmap().load(product.get(0).getImage()).apply(options).into(imageView8);
                     size = product.size();
                     number.setText("" + product.size());
                 }else{
                     imageItems.setBackgroundColor(getActivity().getResources().getColor(R.color.bpWhite));
+
                     Glide.with(getActivity()).asDrawable().load(R.drawable.cover_image).into(imageView8);
-                    return;}
+                  }
             }
         });
 
@@ -114,7 +128,7 @@ public class ImageFlowHome extends Fragment {
         scanQr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_imageFlowHome_to_imageFlowQrCode);
+                Navigation.findNavController(v).navigate(R.id.action_imageFlowHome_to_QRInputImageFlow);
             }
         });
         bindData.setOnClickListener(new View.OnClickListener() {

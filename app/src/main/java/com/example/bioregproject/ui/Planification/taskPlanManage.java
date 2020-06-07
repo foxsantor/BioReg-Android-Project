@@ -34,6 +34,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.Adapters.SpinnerCatAdapter;
 import com.example.bioregproject.Adapters.UsersAdapter2;
 import com.example.bioregproject.MainActivityViewModel;
@@ -177,7 +180,15 @@ public class taskPlanManage extends Fragment {
             @Override
             public void OnItemClick(Account account) {
                 idChosen = account.getId();
-                Glide.with(getActivity()).load(account.getProfileImage()).into(container);
+                RequestOptions options = new RequestOptions()
+                        .centerCrop()
+                        .placeholder(R.drawable.progress_animation)
+                        .error(R.drawable.admin_user)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .priority(Priority.HIGH)
+                        .dontAnimate()
+                        .dontTransform();
+                Glide.with(getActivity()).load(account.getProfileImage()).apply(options).into(container);
                 fullName = account.getFirstName()+" "+account.getLastName();
                 textView31.setText("Assigned To: "+fullName);
                 mainActivityViewModel.getAllAccounts().observe(lifecycleOwner, new Observer<List<Account>>() {

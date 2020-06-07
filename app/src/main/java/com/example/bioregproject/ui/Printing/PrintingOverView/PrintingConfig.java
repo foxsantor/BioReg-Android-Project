@@ -60,15 +60,16 @@ public class PrintingConfig extends Fragment implements  ReceiveListener{
     private static final int REQUEST_PERMISSION = 100;
     private ConstraintLayout background;
     private Button back,print;
-    private TextView discoverText,title,creation,brand;
+    private TextView discoverText,title,creation,brand,ref,cat,exp,fab;
     private FloatingActionButton discovery;
     private EditText warn;
     private Bundle bundle;
-    private ImageView qrCode;
+    private ImageView qrCode,qrCodeH;
     private static String bigString,targets;
     private static Spinner spinner,spinner2;
     private Bitmap bitmap;
     private QRGEncoder qrgEncoder;
+    private static Boolean allow = false;
 
     public static Printer  mPrinter = null;
     private Context mContext = null;
@@ -98,17 +99,28 @@ public class PrintingConfig extends Fragment implements  ReceiveListener{
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                Navigation.findNavController(view).navigate(R.id.action_printingConfig_to_iamgeFlowPrinting,bundle);
+                if(bundle.getInt("dest")==3)
+                {
+                    Navigation.findNavController(view).navigate(R.id.action_printingConfig2_to_manualHome);
+                }else
+                {
+                    Navigation.findNavController(view).navigate(R.id.action_printingConfig_to_iamgeFlowPrinting,bundle);
+                }
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
         background = view.findViewById(R.id.background);
         back = view.findViewById(R.id.back);
+        ref = view.findViewById(R.id.Ref);
+        cat = view.findViewById(R.id.Cat);
+        exp = view.findViewById(R.id.ExpD);
+        fab = view.findViewById(R.id.fabD);
         print = view.findViewById(R.id.next);
         discoverText = view.findViewById(R.id.discoverTextx);
         discovery = view.findViewById(R.id.discovery);
         qrCode = view.findViewById(R.id.qrcode);
+        qrCodeH =view.findViewById(R.id.qrCodeH);
         spinner = view.findViewById(R.id.series2);
         spinner2 = view.findViewById(R.id.lang);
         title = view.findViewById(R.id.titleT);
@@ -118,6 +130,10 @@ public class PrintingConfig extends Fragment implements  ReceiveListener{
         StaticUse.backgroundAnimator(background);
         warn.setEnabled(false);
         warn.setClickable(false);
+        exp.setVisibility(View.GONE);
+        fab.setVisibility(View.GONE);
+        cat.setVisibility(View.GONE);
+        ref.setVisibility(View.GONE);
 
         if(bundle != null)
         {
@@ -125,9 +141,21 @@ public class PrintingConfig extends Fragment implements  ReceiveListener{
             title.setText(bundle.getString("name",""));
             brand.setText(bundle.getString("brand",""));
             //Glide.with(getActivity()).asBitmap().load(bundle.getByteArray("image")).into(preview);
-            bigString = bundle.getString("bigString","");
-            //Toast.makeText(getActivity(), ""+inputValue, Toast.LENGTH_SHORT).show();
+            bigString = bundle.getString("bigString","")+",BioReg";
+            if(bundle.getInt("dest")==3)
+            {
+                allow = true;
+                exp.setVisibility(View.VISIBLE);
+                fab.setVisibility(View.VISIBLE);
+                cat.setVisibility(View.VISIBLE);
+                ref.setVisibility(View.VISIBLE);
+                exp.setText(bundle.getString("expirationString",""));
+                fab.setText(bundle.getString("fabricationString",""));
+                cat.setText(bundle.getString("CategoryName",""));
+                ref.setText(bundle.getString("ref",""));
 
+            }
+            //Toast.makeText(getActivity(), ""+inputValue, Toast.LENGTH_SHORT).show();
         }
 
         ArrayAdapter<SpnModelsItem> seriesAdapter = new ArrayAdapter<SpnModelsItem>(getActivity(), android.R.layout.simple_spinner_item);
@@ -191,6 +219,7 @@ public class PrintingConfig extends Fragment implements  ReceiveListener{
             bitmap = qrgEncoder.getBitmap();
             // Setting Bitmap to ImageView
             Glide.with(getActivity()).asBitmap().load(bitmap).into(qrCode);
+            Glide.with(getActivity()).asBitmap().load(bitmap).into(qrCodeH);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -208,7 +237,13 @@ public class PrintingConfig extends Fragment implements  ReceiveListener{
         back.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Navigation.findNavController(view).navigate(R.id.action_printingConfig_to_iamgeFlowPrinting,bundle);
+                                        if(bundle.getInt("dest")==3)
+                                        {
+                                            Navigation.findNavController(view).navigate(R.id.action_printingConfig2_to_manualHome);
+                                        }else
+                                        {
+                                            Navigation.findNavController(view).navigate(R.id.action_printingConfig_to_iamgeFlowPrinting,bundle);
+                                        }
                                     }
                                 }
         );
@@ -306,7 +341,7 @@ public class PrintingConfig extends Fragment implements  ReceiveListener{
     private boolean createCouponData() {
         String method = "";
         //Bitmap coffeeData = BitmapFactory.decodeResource(getResources(), R.drawable.accountadd);
-        Bitmap wmarkData = BitmapFactory.decodeByteArray(StaticUse.transformerImageBytes(qrCode), 0, StaticUse.transformerImageBytes(qrCode).length);
+        Bitmap wmarkData = BitmapFactory.decodeByteArray(StaticUse.transformerImageBytes(qrCodeH), 0, StaticUse.transformerImageBytes(qrCodeH).length);
 
         final int barcodeWidth = 4;
         final int barcodeHeight = 80;
@@ -338,6 +373,17 @@ public class PrintingConfig extends Fragment implements  ReceiveListener{
             textData.append("Brand Name: "+bundle.getString("brand","") +"\n");
             textData.append("\n");
             textData.append("Creation Date: "+bundle.getString("created","") +"\n");
+            if(allow)
+            {
+                textData.append("\n");
+                textData.append("Category : "+bundle.getString("CategoryName","")+"\n");
+                textData.append("\n");
+                textData.append("Reference: "+bundle.getString("ref","") +"\n");
+                textData.append("\n");
+                textData.append("Fabrication Date: "+bundle.getString("fabricationString","") +"\n");
+                textData.append("\n");
+                textData.append("Expiration Date: "+bundle.getString("expirationString","") +"\n");
+            }
             textData.append("------------------------------\n");
             mPrinter.addText(textData.toString());
             method = "addPageArea";

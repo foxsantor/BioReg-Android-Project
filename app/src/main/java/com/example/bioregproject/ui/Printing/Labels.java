@@ -45,6 +45,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.epson.epos2.Epos2Exception;
 import com.epson.epos2.Log;
 import com.epson.epos2.printer.Printer;
@@ -184,6 +187,7 @@ public class Labels extends Fragment implements ReceiveListener {
                     clearCode.setClickable(false);
                     clearCode.setEnabled(false);
                     code.getEditText().setText("");
+
                     Glide.with(getActivity()).clear(QrCode);
                     Glide.with(getActivity()).clear(qrCodeH);
                 }
@@ -460,7 +464,15 @@ public class Labels extends Fragment implements ReceiveListener {
             // Getting QR-Code as Bitmap
             bitmap = qrgEncoder.getBitmap();
             // Setting Bitmap to ImageView
-            Glide.with(getActivity()).asBitmap().load(bitmap).into(preview);
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.progress_animation)
+                    .error(R.drawable.ic_warning_black_24dp)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH)
+                    .dontAnimate()
+                    .dontTransform();
+            Glide.with(getActivity()).asBitmap().load(bitmap).apply(options).into(preview);
             Glide.with(getActivity()).asBitmap().load(bitmap).into(realDeal);
         } catch (Exception e) {
             e.printStackTrace();
@@ -472,7 +484,15 @@ public class Labels extends Fragment implements ReceiveListener {
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.encodeBitmap(barscode.getEditText().getText().toString(), BarcodeFormat.EAN_13, 500, 100);
             barCodeInfo=barscode.getEditText().getText().toString();
-            Glide.with(getActivity()).asBitmap().load(bitmap).into(preview);
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.progress_animation)
+                    .error(R.drawable.ic_warning_black_24dp)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH)
+                    .dontAnimate()
+                    .dontTransform();
+            Glide.with(getActivity()).asBitmap().load(bitmap).apply(options).into(preview);
         } catch(Exception e) {
             e.printStackTrace();
         }

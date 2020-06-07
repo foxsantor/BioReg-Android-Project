@@ -21,6 +21,9 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
@@ -73,18 +76,28 @@ public class DataTracedAdapater extends ListAdapter<Products,DataTracedAdapater.
 
         final Products currentItem = getItem(position);
         final byte[] image = currentItem.getImage();
-        Glide.with(mContext).asBitmap().load(image).into(holder.mImageView);
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.ic_warning_black_24dp)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .dontAnimate()
+                .dontTransform();
+        Glide.with(mContext).asBitmap().load(image).apply(options).into(holder.mImageView);
        final String newstring = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(currentItem.getCreationDate());
         holder.mTextcreated.setText("Taken at: " + newstring);
-        holder.mTextId.setText("Id: "+currentItem.getId());
-        if(currentItem.getName() == null || currentItem.getName().equals("") )
-        {
-            holder.state.setText("Not Bound");
-            holder.state.setBackgroundColor(mContext.getResources().getColor(R.color.yellowWarning));
-        }else{
-            holder.state.setText("Bound");
-            holder.state.setBackgroundColor(mContext.getResources().getColor(R.color.greenJade));
-        }
+        holder.state.setText("Id: "+currentItem.getId());
+        holder.mTextId.setText("Title: "+currentItem.getName());
+        holder.name.setText("Brand: "+currentItem.getBrandName());
+//        if(currentItem.getName() == null || currentItem.getName().equals("") )
+//        {
+//            holder.state.setText("Not Bound");
+//            holder.state.setBackgroundColor(mContext.getResources().getColor(R.color.yellowWarning));
+//        }else{
+//
+//            holder.state.setBackgroundColor(mContext.getResources().getColor(R.color.greenJade));
+//        }
 
         holder.bind.setVisibility(View.GONE);
         holder.edit.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +132,7 @@ public class DataTracedAdapater extends ListAdapter<Products,DataTracedAdapater.
                 bundle.putString("name",currentItem.getName());
                 bundle.putString("brand",currentItem.getBrandName());
                 bundle.putByteArray("image",image);
+                bundle.putString("Type",currentItem.getType());
                 bundle.putInt("dest",1);
                 Navigation.findNavController(v).navigate(R.id.action_manageData_to_iamgeFlowPrinting,bundle);
             }
@@ -156,7 +170,7 @@ public class DataTracedAdapater extends ListAdapter<Products,DataTracedAdapater.
 
         public ImageView mImageView;
         public Button state;
-        public TextView mTextcreated,mTextId;
+        public TextView mTextcreated,mTextId,name;
         public ImageButton delete,edit,qr,bind,zoom;
 
 
@@ -165,6 +179,7 @@ public class DataTracedAdapater extends ListAdapter<Products,DataTracedAdapater.
 
             mImageView = itemView.findViewById(R.id.preview);
             mTextcreated = itemView.findViewById(R.id.created);
+            name = itemView.findViewById(R.id.name);
             mTextId=itemView.findViewById(R.id.id);
             delete = itemView.findViewById(R.id.delete);
             edit = itemView.findViewById(R.id.edit);

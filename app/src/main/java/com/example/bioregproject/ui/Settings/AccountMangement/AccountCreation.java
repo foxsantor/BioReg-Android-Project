@@ -34,6 +34,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.MainActivityViewModel;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
@@ -124,7 +127,15 @@ public class AccountCreation extends Fragment {
         addImage= view.findViewById(R.id.addImage);
         seeAlone= view.findViewById(R.id.seealone);
         imagenote = view.findViewById(R.id.imagenote);
-        Glide.with(getActivity()).load(R.drawable.avatar).into(profile);
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.ic_warning_black_24dp)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .dontAnimate()
+                .dontTransform();
+        Glide.with(getActivity()).load(R.drawable.avatar).apply(options).into(profile);
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -375,8 +386,15 @@ public class AccountCreation extends Fragment {
                         imageHinter.setVisibility(View.GONE);
                         close.setVisibility(View.VISIBLE);
                         buttons.setVisibility(View.GONE);
-
-                        Glide.with(getActivity()).asBitmap().load(bitmap).into(imageContainer);
+                        RequestOptions options = new RequestOptions()
+                                .centerCrop()
+                                .placeholder(R.drawable.progress_animation)
+                                .error(R.drawable.ic_warning_black_24dp)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .priority(Priority.HIGH)
+                                .dontAnimate()
+                                .dontTransform();
+                        Glide.with(getActivity()).asBitmap().load(bitmap).apply(options).into(imageContainer);
                         //container.setImageBitmap(bitmap);
                         // Glide.with(getActivity()).asBitmap().load(bitmap).into(ImageView10);
                         imageView10.setImageBitmap(bitmap);
@@ -396,7 +414,15 @@ public class AccountCreation extends Fragment {
             close.setVisibility(View.VISIBLE);
             buttons.setVisibility(View.GONE);
             //container.setImageBitmap(photo);
-            Glide.with(getActivity()).asBitmap().load(photo).into(imageContainer);
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.progress_animation)
+                    .error(R.drawable.ic_warning_black_24dp)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.HIGH)
+                    .dontAnimate()
+                    .dontTransform();
+            Glide.with(getActivity()).asBitmap().load(photo).apply(options).into(imageContainer);
             //Glide.with(getActivity()).asBitmap().load(photo).into(ImageView10);
             imageView10.setImageBitmap(photo);
             bitmapContainer = photo;
