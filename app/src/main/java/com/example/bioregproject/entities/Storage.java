@@ -34,7 +34,7 @@ public class Storage {
     public void setOwner(String owner) {
         this.owner = owner;
     }
-
+    @Ignore
     public Storage(String owner ,String produit, String categorie, int quantite, Date creation, Date updatedAT, String fournisseur, float temperature, Date dateReception, String natureProduit, Boolean status) {
        this.owner=owner;
         this.produit = produit;

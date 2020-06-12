@@ -1,6 +1,7 @@
 package com.example.bioregproject.entities;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -69,7 +70,7 @@ public class Oil {
     public void setDateUtilisation(Date dateUtilisation) {
         this.dateUtilisation = dateUtilisation;
     }
-
+    @Ignore
     public Oil(  float filtrage, Date creationDate, Date dateUtilisation,String action,String post) {
         this.filtrage = filtrage;
         this.creationDate = creationDate;

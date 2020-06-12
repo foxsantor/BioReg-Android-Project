@@ -23,6 +23,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.Account;
+import com.example.bioregproject.ui.Authentication.AccountBinder;
 import com.example.bioregproject.ui.Authentication.AccountBinderViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -130,6 +131,9 @@ public class AccountAdapter extends ListAdapter<Account,AccountAdapter.AccountsH
                             layout.setVisibility(View.VISIBLE);
                             nameProfile.setText(fullName);
                             Glide.with(mContext).asBitmap().load(image).into(profileImage);
+                                Account account = currentItem;
+                                account.setLastLoggedIn(new Date());
+                                AccountBinder.UpdateAccountLastLogin(account);
                             Navigation.findNavController(v).navigate(R.id.mainMenu);
                             alerti.dismiss();
                             }else

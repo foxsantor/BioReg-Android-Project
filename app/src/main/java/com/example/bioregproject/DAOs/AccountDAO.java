@@ -36,7 +36,7 @@ public interface AccountDAO {
     @Query("DELETE FROM account_table")
     void deleteAllAccounts();
 
-    @Query("SELECT * FROM account_table ORDER BY lastLoggedIn")
+    @Query("SELECT * FROM account_table ORDER BY creationDate")
     LiveData<List<Account>> getAllAccounts();
 
     @Query("SELECT * from account_table where id = :id LIMIT 1")

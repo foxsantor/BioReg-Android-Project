@@ -21,8 +21,8 @@ public class Notification {
     private Date creation;
     private String categoryName;
     private boolean isSeen;
-    private String imageBase64;
-    private String objectImageBase64;
+    private byte[] imageBase64;
+    private byte[] objectImageBase64;
 
     public Notification() {
         super();
@@ -92,19 +92,19 @@ public class Notification {
         isSeen = seen;
     }
 
-    public String getImageBase64() {
+    public byte[] getImageBase64() {
         return imageBase64;
     }
 
-    public void setImageBase64(String imageBase64) {
+    public void setImageBase64(byte[] imageBase64) {
         this.imageBase64 = imageBase64;
     }
 
-    public String getObjectImageBase64() {
+    public byte[] getObjectImageBase64() {
         return objectImageBase64;
     }
 
-    public void setObjectImageBase64(String objectImageBase64) {
+    public void setObjectImageBase64(byte[] objectImageBase64) {
         this.objectImageBase64 = objectImageBase64;
     }
 }

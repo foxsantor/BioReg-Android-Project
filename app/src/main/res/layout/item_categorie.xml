@@ -24,7 +24,7 @@
         android:background="@color/White">
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/preview"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
@@ -48,7 +48,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView6"
+            app:layout_constraintStart_toEndOf="@+id/preview"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

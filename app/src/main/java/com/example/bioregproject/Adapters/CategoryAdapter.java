@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +17,6 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bioregproject.R;
-import com.example.bioregproject.entities.Category;
 import com.example.bioregproject.entities.Realtions.CategorywithSurfaces;
 
 
@@ -82,7 +80,7 @@ public class CategoryAdapter extends ListAdapter <CategorywithSurfaces,CategoryA
         public CategoryHolder(@NonNull View itemView) {
             super(itemView);
             namecategory=itemView.findViewById(R.id.categoryname);
-            imageCategorie=itemView.findViewById(R.id.imageView6);
+            imageCategorie=itemView.findViewById(R.id.preview);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

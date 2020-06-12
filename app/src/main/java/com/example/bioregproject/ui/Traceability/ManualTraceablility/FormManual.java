@@ -114,8 +114,6 @@ public class FormManual extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(FormManualViewModel.class);
-        mViewModel.insert(new Category("food",new Date()));
-        mViewModel.insert(new Category("Drinks",new Date()));
         mainActivityViewModel  = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         deviceHistoryViewModel = ViewModelProviders.of(this).get(DeviceHistoryViewModel.class);
         cancel = view.findViewById(R.id.cancel);

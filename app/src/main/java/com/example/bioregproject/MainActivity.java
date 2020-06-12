@@ -42,11 +42,13 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.bioregproject.entities.Category;
 import com.example.bioregproject.entities.Notification;
 import com.example.bioregproject.entities.Products;
 import com.example.bioregproject.ui.History.DeviceHistoryViewModel;
 import com.example.bioregproject.ui.Planification.taskPlan;
 import com.example.bioregproject.ui.Traceability.ImageFlow.ManageDataViewModel;
+import com.example.bioregproject.ui.Traceability.ManualTraceablility.FormManualViewModel;
 import com.google.android.cameraview.AspectRatio;
 import com.google.android.material.navigation.NavigationView;
 
@@ -82,8 +84,10 @@ public class MainActivity extends AppCompatActivity  {
 
 
     private AppBarConfiguration mAppBarConfiguration;
+    private FormManualViewModel mViewModelsx;
     private static MainActivityViewModel mViewModel;
     private static ManageDataViewModel mViewModelPro;
+    private static LifecycleOwner lifecycleOwner;
     private static DeviceHistoryViewModel deviceHistoryViewModel;
     private static  Context conx;
     private static RequestQueue requestQueue;
@@ -105,6 +109,19 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         Intent stickyService = new Intent(this, TaskManger.class);
         startService(stickyService);
+        mViewModelsx = ViewModelProviders.of(this).get(FormManualViewModel.class);
+
+        if(!StaticUse.loadCategorySave(this))
+        {
+            mViewModelsx.insert(new Category("Raw materials ",new Date()));
+            mViewModelsx.insert(new Category("Food ",new Date()));
+            mViewModelsx.insert(new Category("Beverages",new Date()));
+            mViewModelsx.insert(new Category("Tools",new Date()));
+            mViewModelsx.insert(new Category("Herbs",new Date()));
+            mViewModelsx.insert(new Category("Industrial Items",new Date()));
+            StaticUse.saveCategoryInput(this);
+        }
+        lifecycleOwner = MainActivity.this;
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         mViewModelPro = ViewModelProviders.of(this).get(ManageDataViewModel.class);
         deviceHistoryViewModel = ViewModelProviders.of(this).get(DeviceHistoryViewModel.class);
@@ -274,6 +291,7 @@ public class MainActivity extends AppCompatActivity  {
                                 .dontAnimate()
                                 .dontTransform();
                         Glide.with(conx).asBitmap().load(accounts.get(0).getProfileImage()).apply(options).into(profilePop);
+                        mViewModel.getAccount(account.getId()).removeObservers(lifecycleOwner);
                     }
                 });
 
@@ -544,6 +562,12 @@ public class MainActivity extends AppCompatActivity  {
         });
 
         return alertio;
+    }
+
+    public static void stopRefreshing()
+    {
+
+        mViewModel.getAllAccounts().removeObservers(lifecycleOwner);
     }
 //
 //    @Override

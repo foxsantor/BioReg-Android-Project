@@ -57,7 +57,7 @@ public class ManualHome extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.nav_home);
+                Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.mainMenu);
 
             }
         };

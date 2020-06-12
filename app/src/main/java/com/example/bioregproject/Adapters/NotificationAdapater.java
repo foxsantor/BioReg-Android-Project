@@ -75,8 +75,8 @@ public class NotificationAdapater extends ListAdapter<Notification,NotificationA
         Date creation = currentItem.getCreation();
         String owner = currentItem.getOwnerFirstName() + " "+ currentItem.getOwnerLastName();
         String categoryName = currentItem.getCategoryName();
-        String imageBase64 = currentItem.getImageBase64();
-        String objectImage64 = currentItem.getObjectImageBase64();
+        byte[] imageBase64 = currentItem.getImageBase64();
+        byte[] objectImage64 = currentItem.getObjectImageBase64();
         final String ownerormated = StaticUse.capitalize(owner);
         //Log.i("owner", "onBindViewHolder: "+owner);
         final String nameFormated = StaticUse.capitalize(name);
@@ -104,16 +104,16 @@ public class NotificationAdapater extends ListAdapter<Notification,NotificationA
                 .priority(Priority.HIGH)
                 .dontAnimate()
                 .dontTransform();
-         final byte[] imageOwner = Base64.decode(imageBase64, Base64.DEFAULT);
-       Glide.with(mContext).asBitmap().load(imageOwner).apply(options).into(holder.ownerImage);
 
-        if(objectImage64==null || objectImage64.isEmpty() || objectImage64.equals(""))
+       Glide.with(mContext).asBitmap().load(imageBase64).apply(options).into(holder.ownerImage);
+
+        if(objectImage64==null)
         {
             holder.objectImage.setVisibility(View.GONE);
         }else
         {
-            final byte[] imageObject = Base64.decode(objectImage64, Base64.DEFAULT);
-            Glide.with(mContext).asBitmap().load(imageObject).apply(options).into(holder.objectImage);
+
+            Glide.with(mContext).asBitmap().load(objectImage64).apply(options).into(holder.objectImage);
         }
     }
 

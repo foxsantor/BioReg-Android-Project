@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Update;
 
 import android.os.Handler;
 import android.os.UserHandle;
@@ -47,7 +48,7 @@ import java.util.regex.Pattern;
 
 public class AccountBinder extends Fragment {
 
-    private AccountBinderViewModel mViewModel;
+    private static AccountBinderViewModel mViewModel;
     private Button save;
     private boolean exit = false;
     private ImageView admin;
@@ -231,6 +232,11 @@ public class AccountBinder extends Fragment {
         mViewModel.insert(admin);
         StaticUse.saveAdmin(getActivity(),password.getEditText().getText().toString());
 
+    }
+
+    public static void UpdateAccountLastLogin(Account account)
+    {
+        mViewModel.update(account);
     }
 
 }

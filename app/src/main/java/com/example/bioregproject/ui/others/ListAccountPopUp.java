@@ -1,5 +1,6 @@
 package com.example.bioregproject.ui.others;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -29,6 +30,7 @@ public class ListAccountPopUp extends Fragment {
 
     private ListAccountPopUpViewModel mViewModel;
     private RecyclerView recyclerView;
+    private LifecycleOwner lifecycleOwner;
 
 
     private AccountPopUp adapter;
@@ -56,6 +58,7 @@ public class ListAccountPopUp extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         adapter = new AccountPopUp(getActivity(),getActivity());
         recyclerView.setAdapter(adapter);
+        lifecycleOwner = this;
         mViewModel.getAllAccounts().observe(this, new Observer<List<Account>>() {
             @Override
             public void onChanged(List<Account> accounts) {
@@ -66,6 +69,7 @@ public class ListAccountPopUp extends Fragment {
                     accounts.remove(i);
                     adapter.submitList(accounts);
                 }
+                
             }
         });
 

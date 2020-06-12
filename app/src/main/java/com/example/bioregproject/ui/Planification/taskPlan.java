@@ -280,7 +280,7 @@ public class taskPlan extends Fragment {
         });
 
         mViewModel.initAllTeams(BioRegDB.getInstance(getActivity()).persoTaskDAO(),StaticUse.loadSession(getActivity()).getId(),"","");
-        adapter = new MyTaskAdapter(getActivity(), getActivity(),2,this);
+        adapter = new MyTaskAdapter(getActivity(), getActivity(),0,this);
         searchTask.setLayoutManager(new LinearLayoutManager(getContext()));
         searchTask.setAdapter(adapter);
         mViewModel.teamAllList.observe(
@@ -320,7 +320,35 @@ public class taskPlan extends Fragment {
                         }
                     }
                 });
+        adapter.setOnIteemClickListener(new MyTaskAdapter.OnItemClickLisnter() {
+            @Override
+            public void OnItemClick(PersoTask PersoTask) {
 
+            }
+
+            @Override
+            public void Select(View v, long position, long id) {
+                if(position == 0){
+                    counter = counter -1;
+                    listsOfDeletableItems.remove(id);
+                    count.setText(""+counter+" Selected");
+                    if(counter == 0){
+                        count.setVisibility(View.INVISIBLE);
+                        clear.setVisibility(View.INVISIBLE);
+                        markDone.setVisibility(View.INVISIBLE);
+                    }
+                }
+                else {
+                    counter++;
+                    listsOfDeletableItems.add(id);
+                    count.setVisibility(View.VISIBLE);
+                    markDone.setVisibility(View.VISIBLE);
+                    clear.setVisibility(View.VISIBLE);
+                    count.setText(""+counter+" Selected");
+                }
+
+            }
+        });
         //first time set an empty value to get all data
         mViewModel.filterTextAll.setValue("");
 
@@ -431,10 +459,12 @@ public class taskPlan extends Fragment {
                             if(pagedList.size() ==0)
                             {
                                 not.setVisibility(View.VISIBLE);
+                                task.setVisibility(View.GONE);
 
                             }else
                             {
                                 not.setVisibility(View.GONE);
+                                task.setVisibility(View.VISIBLE);
                                 adapter.submitList(pagedList);
                             }
                             //refresh current list
@@ -614,7 +644,12 @@ public class taskPlan extends Fragment {
             }, 500);
     }
     }
+    public static void DeleteTaskOneTrue(long id) {
 
+        PersoTask persoTask = new PersoTask();
+        persoTask.setId(id);
+        mViewModel.delete(persoTask);
+    }
 
     public static void DeleteTaskOne(long id)
     {
@@ -858,13 +893,15 @@ public class taskPlan extends Fragment {
                          Toast.makeText(activity.getActivity(), "Nothing to Join", Toast.LENGTH_SHORT).show();
                  }else
                      {
-                         String imageBase64,Comment;
+                         byte[] imageBase64;
+                         String Comment;
                          if(imageBytes ==null)
                          {
 
                          }else
                          {
-                             imageBase64= StaticUse.transformerImageBase64(balster);
+                             balster.setImageBitmap(imageBytes);
+                             imageBase64= StaticUse.transformerImageBytes(balster);
                              persoTasks.get(0).setImageBase64(imageBase64);
                          }
 
@@ -877,7 +914,7 @@ public class taskPlan extends Fragment {
                              persoTasks.get(0).setComment(Comment);
                          }
                          mViewModel.update(persoTasks.get(0));
-                         mViewModel.loadPersoTaskOne(currentItem.getId()).removeObservers(lifecycleOwner);
+                         //mViewModel.loadPersoTaskOne(currentItem.getId()).removeObservers(lifecycleOwner);
                          alertix.dismiss();
                          Toast.makeText(activity.getActivity(), "Task's Attachment(s) has been added", Toast.LENGTH_SHORT).show();
                          Navigation.findNavController(activity.getActivity(),R.id.nav_host_fragment).navigate(R.id.taskPlan);

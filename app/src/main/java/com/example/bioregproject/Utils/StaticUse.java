@@ -95,6 +95,7 @@ public class StaticUse extends AppCompatActivity {
     public static final String SKELETON_PRIMITIVE = "http://192.168.1.8:5000/";
     public static final String SHARED_NAME_USER ="user";
     public static final String SHARED_NAME_ADMIN ="admin";
+    public static final String SHARED_SETTINGS="settings";
     public static final String SHARED_NAME_USER_LOG ="userLog";
     private static String email,password,fullName;
     private static long id;
@@ -104,6 +105,12 @@ public class StaticUse extends AppCompatActivity {
         SharedPreferences sharedPreferences= context.getSharedPreferences(SHARED_NAME_USER, Context.MODE_PRIVATE);
         email = sharedPreferences.getString("email","");
         return email;
+    }
+
+    public static Boolean loadCategorySave(Context context)
+    {
+        SharedPreferences sharedPreferences= context.getSharedPreferences(SHARED_NAME_USER, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean("cat",false);
     }
     public static String loadAdminPassword(Context context)
     {
@@ -135,6 +142,14 @@ public class StaticUse extends AppCompatActivity {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_NAME_USER, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("email",email);
+        editor.apply();
+
+    }
+    public static void  saveCategoryInput(Context context)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_SETTINGS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("cat",true);
         editor.apply();
 
     }
@@ -706,10 +721,10 @@ public class StaticUse extends AppCompatActivity {
                 notification.setDescription(description);
                 notification.setSeen(false);
                 if(imageHolder != null)
-                notification.setObjectImageBase64(StaticUse.transformerImageBase64frombytes(imageHolder));
+                notification.setObjectImageBase64(imageHolder);
                 if(container!=null)
-                notification.setObjectImageBase64(StaticUse.transformerImageBase64(container));
-                notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
+                notification.setObjectImageBase64(StaticUse.transformerImageBytes(container));
+                notification.setImageBase64(user.getProfileImage());
                 viewModel.insert(notification);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 StaticUse.createNotificationChannaelV2(activity,notification);}else {

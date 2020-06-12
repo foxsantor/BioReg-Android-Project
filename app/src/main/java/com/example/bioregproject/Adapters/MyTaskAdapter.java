@@ -313,6 +313,7 @@ public class MyTaskAdapter extends ListAdapter<PersoTask,MyTaskAdapter.PersoTask
                                         Toast.makeText(mContext, "You can't Validate an expired task", Toast.LENGTH_SHORT).show();
                                     }
                                     return true;
+
                                 case R.id.details:
                                     final AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
                                     LayoutInflater layoutInflater =  (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -393,7 +394,7 @@ public class MyTaskAdapter extends ListAdapter<PersoTask,MyTaskAdapter.PersoTask
                                         attach.setVisibility(View.VISIBLE);
                                         imageind.setVisibility(View.VISIBLE);
                                         attachedimage.setVisibility(View.VISIBLE);
-                                        Glide.with(activity).load(StaticUse.transsformerImageBytesBase64(currentItem.getImageBase64())).apply(options).into(attachedimage);
+                                        Glide.with(activity).load(currentItem.getImageBase64()).apply(options).into(attachedimage);
                                     }
                                   }
 
@@ -477,6 +478,7 @@ public class MyTaskAdapter extends ListAdapter<PersoTask,MyTaskAdapter.PersoTask
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
+
                                 case R.id.delete:
                                     final AlertDialog.Builder alerto = new AlertDialog.Builder(mContext);
                                     LayoutInflater layoutInflatero =  (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -496,11 +498,12 @@ public class MyTaskAdapter extends ListAdapter<PersoTask,MyTaskAdapter.PersoTask
                                     delete.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            taskPlan.DeleteTaskOne(currentItem.getId());
+                                            taskPlan.DeleteTaskOneTrue(currentItem.getId());
                                             alertio.dismiss();
                                         }
                                     });
                                     return true;
+
                                 case R.id.details:
                                     final AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
                                     LayoutInflater layoutInflater =  (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -581,7 +584,7 @@ public class MyTaskAdapter extends ListAdapter<PersoTask,MyTaskAdapter.PersoTask
                                             attach.setVisibility(View.VISIBLE);
                                             imageind.setVisibility(View.VISIBLE);
                                             attachedimage.setVisibility(View.VISIBLE);
-                                            Glide.with(activity).load(StaticUse.transsformerImageBytesBase64(currentItem.getImageBase64())).apply(options).into(attachedimage);
+                                            Glide.with(activity).load(currentItem.getImageBase64()).apply(options).into(attachedimage);
                                         }
                                     }
 

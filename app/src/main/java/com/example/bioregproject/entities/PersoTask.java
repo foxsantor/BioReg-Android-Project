@@ -27,7 +27,7 @@ public class PersoTask {
     private Date due;
     private String state;
     private Date creation;
-    private String imageBase64;
+    private byte[] imageBase64;
     private String comment;
     @Ignore
     private long objectId;
@@ -133,11 +133,11 @@ public class PersoTask {
         this.objectId = objectId;
     }
 
-    public String getImageBase64() {
+    public byte[]  getImageBase64() {
         return imageBase64;
     }
 
-    public void setImageBase64(String imageBase64) {
+    public void setImageBase64(byte[]  imageBase64) {
         this.imageBase64 = imageBase64;
     }
 

@@ -1,6 +1,7 @@
 package com.example.bioregproject.entities;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -33,7 +34,7 @@ public class SettingOil {
 
 
 
-
+    @Ignore
     public SettingOil(Boolean verif) {
         this.verif = verif;
     }

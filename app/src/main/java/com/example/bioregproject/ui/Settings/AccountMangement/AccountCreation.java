@@ -62,7 +62,7 @@ public class AccountCreation extends Fragment {
     private MainActivityViewModel mainActivityViewModel;
     private DeviceHistoryViewModel deviceHistoryViewModel;
     private TextView imagenote,imageHinter;
-    private CardView buttons;
+    private CardView buttons,blue;
     private ConstraintLayout loading,imageViews;
     private Button create,cancel,button7,button9;
     private ImageButton close,profileAdd,addImage,seeAlone;
@@ -112,6 +112,7 @@ public class AccountCreation extends Fragment {
         create = view.findViewById(R.id.button5);
         cancel = view.findViewById(R.id.button6);
         button7= view.findViewById(R.id.button7);
+        blue = view.findViewById(R.id.blue);
         button9 = view.findViewById(R.id.button9);
         close = view.findViewById(R.id.closeimage);
         confirm= view.findViewById(R.id.confirm);
@@ -145,6 +146,7 @@ public class AccountCreation extends Fragment {
                 imageHinter.setVisibility(View.VISIBLE);
                 close.setVisibility(View.GONE);
                 buttons.setVisibility(View.VISIBLE);
+                blue.setVisibility(View.VISIBLE);
                 bitmapContainer=null;
 
             }
@@ -324,14 +326,11 @@ public class AccountCreation extends Fragment {
                 StaticUse.SaveNotification(getActivity(),mainActivityViewModel,getActivity(),"Administration Module"
                         ,"has added a new User by the name of "+account.getFirstName()+" "+account.getLastName()+" from "
                         ,"Account Management",account.getProfileImage(),null,R.drawable.ic_add_circle_blue_24dp);
-                mainActivityViewModel.getAccountByEmail(account.getEmail()).observe(getActivity(), new Observer<List<Account>>() {
-                    @Override
-                    public void onChanged(List<Account> account) {
+
                         StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Administration Module",
-                                "has added a new User by the name of ",
-                                account.get(0).getFirstName()+" "+account.get(0).getLastName(),account.get(0).getId(),"Account Management");
-                    }
-                });
+                                "has added a new User ",
+                                "",0,"Account Management");
+
                 mainActivityViewModel.getAccountByEmail(account.getEmail()).removeObservers(getActivity());
                 handler.removeCallbacksAndMessages(null);
             }
@@ -386,6 +385,7 @@ public class AccountCreation extends Fragment {
                         imageHinter.setVisibility(View.GONE);
                         close.setVisibility(View.VISIBLE);
                         buttons.setVisibility(View.GONE);
+                        blue.setVisibility(View.GONE);
                         RequestOptions options = new RequestOptions()
                                 .centerCrop()
                                 .placeholder(R.drawable.progress_animation)
@@ -413,6 +413,7 @@ public class AccountCreation extends Fragment {
             imageHinter.setVisibility(View.GONE);
             close.setVisibility(View.VISIBLE);
             buttons.setVisibility(View.GONE);
+            blue.setVisibility(View.GONE);
             //container.setImageBitmap(photo);
             RequestOptions options = new RequestOptions()
                     .centerCrop()

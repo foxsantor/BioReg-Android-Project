@@ -95,7 +95,7 @@ public class AccountSettingsAdapter extends ListAdapter<Account,AccountSettingsA
                 .dontTransform();
         Glide.with(mContext).asBitmap().load(image).apply(options).into(holder.mImageView);
         holder.mTextViewName.setText(fullName);
-        holder.mTextViewLoggedIn.setText("Created "+p.format(lastLoggedIn));
+        holder.mTextViewLoggedIn.setText("Last Updated "+p.format(lastLoggedIn));
 
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override

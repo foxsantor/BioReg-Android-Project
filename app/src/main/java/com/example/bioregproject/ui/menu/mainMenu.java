@@ -68,6 +68,12 @@ public class mainMenu extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((MainActivity) requireActivity()).getSupportActionBar().show();
+
+
+        if(!StaticUse.loggedInInternal(getActivity()))
+        {
+            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.accountBindiner);
+        }
         notifcation = getActivity().findViewById(R.id.notification);
         notifcation.setVisibility(View.VISIBLE);
         mother = view.findViewById(R.id.mother);
@@ -152,13 +158,13 @@ public class mainMenu extends Fragment {
     private ArrayList<MenuItems> Populater()
     {
         ArrayList<MenuItems> categoryItems = new ArrayList<>();
-        categoryItems.add(new MenuItems("cleaning and disinfection",R.drawable.cleanning,R.id.cleaning));
+        categoryItems.add(new MenuItems("Cleaning and disinfection",R.drawable.cleanning,R.id.cleaning));
         categoryItems.add(new MenuItems("Oil Control",R.drawable.oilcontrol,R.id.oliControl));
         categoryItems.add(new MenuItems("Product Traceability",R.drawable.trac,R.id.products));
         categoryItems.add(new MenuItems("Task Planification ",R.drawable.task,R.id.taskPlan));
         categoryItems.add(new MenuItems("Printing Labels",R.drawable.printing,R.id.labels));
-        categoryItems.add(new MenuItems("Refrigerators temperature",R.drawable.ref,R.id.refrigerato_temperature));
-        categoryItems.add(new MenuItems("Products and Services temperature",R.drawable.serv,R.id.refrigerato_temperature));
+        //categoryItems.add(new MenuItems("Refrigerators temperature",R.drawable.ref,R.id.refrigerato_temperature));
+        //categoryItems.add(new MenuItems("Products and Services temperature",R.drawable.serv,R.id.refrigerato_temperature));
         categoryItems.add(new MenuItems("Storage Control",R.drawable.stor,R.id.storageControl));
         categoryItems.add(new MenuItems("History and logs",R.drawable.logs,R.id.hisotrys));
         categoryItems.add(new MenuItems("Documents and Sheets Management",R.drawable.docu,R.id.documents));
