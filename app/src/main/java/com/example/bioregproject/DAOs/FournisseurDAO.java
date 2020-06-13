@@ -1,6 +1,7 @@
 package com.example.bioregproject.DAOs;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -32,6 +33,13 @@ public interface FournisseurDAO {
 
     @Query("SELECT * from fournisseur_table where id = :id LIMIT 1")
     LiveData<List<Fournisseur>> loadFrsById(long id);
+
+
+    @Query("SELECT * FROM fournisseur_table where name LIKE  :name")
+    DataSource.Factory<Integer, Fournisseur> loadAllHistorybyName(String name);
+
+    @Query("SELECT * FROM fournisseur_table ")
+    DataSource.Factory<Integer, Fournisseur> loadAllHistory();
 
 
 

@@ -1,5 +1,6 @@
 package com.example.bioregproject.ui.OilControl;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -76,6 +78,15 @@ public class OliControl extends Fragment {
         View view = inflater.inflate(R.layout.oli_control_fragment, container, false);
 
         mViewModel = ViewModelProviders.of(this).get(OliControlViewModel.class);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.mainMenu);
+
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
 
 
         spinner = view.findViewById(R.id.spinner);

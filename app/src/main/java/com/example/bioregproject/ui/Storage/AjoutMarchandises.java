@@ -2,11 +2,15 @@ package com.example.bioregproject.ui.Storage;
 
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -52,8 +56,8 @@ public class AjoutMarchandises extends Fragment {
 
 
 
-    private AjoutMarchandisesViewModel mViewModel;
-    private ConstraintLayout affichage,input1,input2,ajout;
+    private static AjoutMarchandisesViewModel mViewModel;
+    private ConstraintLayout affichage,input1,input2,ajout,input1U,input2U,update;
     private RecyclerView RecpRecycle ,RecycleFrsRecp ,RecycleProduitRecp;
     private StorageAdapter storageAdapter ;
     private FournisseurAdapter fournisseurAdapter;
@@ -73,8 +77,26 @@ public class AjoutMarchandises extends Fragment {
     private CardView frozen , ambient ,chilled;
     private int nbrQ,quantitynbr;
     private MainActivityViewModel mainActivityViewModel;
-    private DeviceHistoryViewModel deviceHistoryViewModel;
+    private static DeviceHistoryViewModel deviceHistoryViewModel;
     private String description;
+    private Button saveU , nextU , backU , cancelU  ,dateU;
+    private ImageButton exitU ;
+    private CardView step2CardU;
+    private View barstepperU;
+    private TextView step2U,num2U;
+    private Button plusTU,moinsTU,plusDTU,moinsDTU,plusQU,moinsQU;
+    private TextView nbrTextViwU,nbrQuantityU;
+    private float nbrTU;
+    private TextView informationU;
+    private CardView frozenU , ambientU ,chilledU;
+    private int nbrQU,quantitynbrU;
+    private RecyclerView  RecycleFrsRecpU ,RecycleProduitRecpU;
+    private CardView acceptCardU ,refusedCardU;
+
+
+
+
+
 
 
 
@@ -132,6 +154,46 @@ public class AjoutMarchandises extends Fragment {
         plusQ=view.findViewById(R.id.plusQ);
         moinsQ=view.findViewById(R.id.moinsQ);
         nbrQuantity=view.findViewById(R.id.nbrQuantity);
+
+
+        //update
+
+        input1U = view.findViewById(R.id.input1U);
+        input2U = view.findViewById(R.id.input2U);
+        update = view.findViewById(R.id.editReception);
+        nextU = view.findViewById(R.id.nextRecpU);
+        backU = view.findViewById(R.id.backBU);
+        cancelU = view.findViewById(R.id.cancelRecpU);
+        saveU = view.findViewById(R.id.saveRecpU);
+        exitU = view.findViewById(R.id.imageButton10U);
+        barstepperU = view.findViewById(R.id.barStepperU);
+        step2U = view.findViewById(R.id.step2U);
+        num2U = view.findViewById(R.id.num2U);
+        step2CardU = view.findViewById(R.id.step2CardU);
+        dateU=view.findViewById(R.id.selectDateU);
+
+
+        plusTU=view.findViewById(R.id.plusTU);
+        moinsTU=view.findViewById(R.id.moinsTU);
+        plusDTU=view.findViewById(R.id.plusDTU);
+        moinsDTU=view.findViewById(R.id.moinsDTU);
+        nbrTextViwU=view.findViewById(R.id.nbrTU);
+
+        frozenU=view.findViewById(R.id.frozenU);
+        chilledU=view.findViewById(R.id.chilledU);
+        ambientU=view.findViewById(R.id.ambientU);
+        informationU=view.findViewById(R.id.informationU);
+
+
+        plusQU=view.findViewById(R.id.plusQU);
+        moinsQU=view.findViewById(R.id.moinsQU);
+        nbrQuantityU=view.findViewById(R.id.nbrQuantityU);
+
+        RecycleFrsRecpU = view.findViewById(R.id.RecycleFrsRecpU);
+        RecycleProduitRecpU = view.findViewById(R.id.RecyclePrdRecpU);
+
+        acceptCardU=view.findViewById(R.id.acceptCardU);
+        refusedCardU=view.findViewById(R.id.refusedCardU);
 
 
 
@@ -246,6 +308,181 @@ nbrQ=0;
 
 
 
+//temperature
+        information.setText("");
+
+        frozen.setCardBackgroundColor(Color.parseColor("#2E86C1"));
+
+
+        ambient.setCardBackgroundColor(Color.parseColor("#F8C471"));
+
+        chilled.setCardBackgroundColor(Color.parseColor("#D6EAF8"));
+
+
+
+
+
+        frozen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                information.setText("Note: Temperature should be -18°C");
+
+                frozen.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
+
+                ambientU.setCardBackgroundColor(Color.parseColor("#F8C471"));
+
+                chilledU.setCardBackgroundColor(Color.parseColor("#D6EAF8"));
+
+            }
+        });
+
+
+        ambient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                information.setText("Note: Temperature should be around +14°C to +21");
+                ambient.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
+                frozenU.setCardBackgroundColor(Color.parseColor("#2E86C1"));
+                chilledU.setCardBackgroundColor(Color.parseColor("#D6EAF8"));
+
+            }
+        });
+
+
+        chilled.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                information.setText("Note: Temperature should be around +4°C to 7°C");
+
+                chilled.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
+                frozenU.setCardBackgroundColor(Color.parseColor("#2E86C1"));
+
+                ambientU.setCardBackgroundColor(Color.parseColor("#F8C471"));
+
+
+
+            }
+        });
+
+
+
+        nbrT=0;
+        nbrQ=0;
+
+        plusQ.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nbrQ=nbrQ+1;
+                nbrQuantity.setText(String.valueOf(nbrQ));
+            }
+        });
+        moinsQ.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nbrQ=nbrQ-1;
+                nbrQuantity.setText(String.valueOf(nbrQ));
+
+            }
+        });
+
+
+
+        plusT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nbrT=nbrT+1;
+                nbrTextViw.setText(String.valueOf(nbrT));
+            }
+        });
+        moinsT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nbrT=nbrT-1;
+                nbrTextViw.setText(String.valueOf(nbrT));
+
+            }
+        });
+
+        plusDT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nbrT = (float) (nbrT + 0.1);
+                nbrTextViw.setText(String.valueOf(nbrT));
+            }
+        });
+        moinsDT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nbrT= (float) (nbrT-0.1);
+                nbrTextViw.setText(String.valueOf(nbrT));
+
+            }
+        });
+
+
+
+
+
+//temperature
+        informationU.setText("");
+
+        frozenU.setCardBackgroundColor(Color.parseColor("#2E86C1"));
+
+        ambientU.setCardBackgroundColor(Color.parseColor("#F8C471"));
+
+        chilledU.setCardBackgroundColor(Color.parseColor("#D6EAF8"));
+
+
+
+
+
+        frozenU.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                informationU.setText("Note: Temperature should be -18°C");
+
+                frozenU.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
+                ambientU.setCardBackgroundColor(Color.parseColor("#F8C471"));
+
+                chilledU.setCardBackgroundColor(Color.parseColor("#D6EAF8"));
+
+            }
+        });
+
+
+        ambientU.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                informationU.setText("Note: Temperature should be around +14°C to +21");
+                ambientU.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
+                frozenU.setCardBackgroundColor(Color.parseColor("#2E86C1"));
+
+
+                chilledU.setCardBackgroundColor(Color.parseColor("#D6EAF8"));
+
+
+            }
+        });
+
+
+        chilledU.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                informationU.setText("Note: Temperature should be around +4°C to 7°C");
+
+                chilledU.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
+                frozenU.setCardBackgroundColor(Color.parseColor("#2E86C1"));
+
+                ambientU.setCardBackgroundColor(Color.parseColor("#F8C471"));
+
+
+            }
+        });
+
+
+
+
+
 
 
 
@@ -270,13 +507,162 @@ nbrQ=0;
 
             @Override
             public void ondeleteClick(Storage Storage) {
-                  mViewModel.delete(Storage);
-                Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
+                AskOptionPro(getContext(),Storage,getActivity());
 
             }
 
             @Override
             public void onUpdateClick(Storage Storage) {
+                update.setVisibility(View.VISIBLE);
+                affichage.setVisibility(View.GONE);
+
+
+                refusedCardU.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        refusedCardU.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
+                        acceptCardU.setCardBackgroundColor(Color.parseColor("#00A86B"));
+
+                        state=false;
+                    }
+                });
+                acceptCardU.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        acceptCardU.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
+                        refusedCardU.setCardBackgroundColor(Color.parseColor("#fdc7c7"));
+
+                        state=true;
+                    }
+                });
+
+//Quntity temperature
+                nbrTU=Storage.getTemperature();
+                nbrQU=Storage.getQuantite();
+                nbrQuantityU.setText(String.valueOf(nbrQU));
+                nbrTextViwU.setText(String.valueOf(nbrTU));
+
+
+
+                plusQU.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        nbrQU=nbrQU+1;
+                        nbrQuantityU.setText(String.valueOf(nbrQU));
+                    }
+                });
+                moinsQU.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        nbrQU=nbrQU-1;
+                        nbrQuantityU.setText(String.valueOf(nbrQU));
+
+                    }
+                });
+
+
+
+                plusTU.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        nbrTU=nbrTU+1;
+                        nbrTextViwU.setText(String.valueOf(nbrTU));
+                    }
+                });
+                moinsTU.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        nbrTU=nbrTU-1;
+                        nbrTextViwU.setText(String.valueOf(nbrTU));
+
+                    }
+                });
+
+                plusDTU.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        nbrTU = (float) (nbrTU + 0.1);
+                        nbrTextViwU.setText(String.valueOf(nbrTU));
+                    }
+                });
+                moinsDTU.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        nbrTU= (float) (nbrTU-0.1);
+                        nbrTextViwU.setText(String.valueOf(nbrTU));
+
+                    }
+                });
+
+
+
+
+
+                saveU.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                       dateU.setText(Storage.getDateReception().toString());
+
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+                            try {
+                                Storage.setDateReception(simpleDateFormat.parse(dateU.getText().toString()));
+                                Storage.setUpdatedAT(new Date());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+
+
+                            Storage.setOwner(StaticUse.loadSession(getActivity()).getFirstName());
+                            Storage.setCategorie(categoriePr);
+                            Storage.setProduit(namePrd);
+                            Storage.setFournisseur(nameFrsR);
+                            Storage.setNatureProduit(naturePr);
+                            Storage.setQuantite(nbrQ);
+                            Storage.setTemperature(nbrT);
+                            Storage.setStatus(state);
+                            update.setVisibility(View.GONE);
+                            mViewModel.update(Storage);
+                            affichage.setClickable(true);
+
+                            if (state) {
+                                description = "accepted";
+                            } else {
+                                description = "refused";
+                            }
+
+
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    StaticUse.SaveHistory(getActivity(), deviceHistoryViewModel, getActivity(), "Storage",
+                                            "has " + description + "a new delevery from", nameFrsR, 0, "Storage");
+
+
+                                    handler.removeCallbacksAndMessages(null);
+                                }
+                            }, 500);
+
+
+                        }
+                });
+
+
+
+
+
+
+
+
+
+
+
 
             }
         });
@@ -299,11 +685,19 @@ nbrQ=0;
                 showDateTimeDialog(date);
             }
         });
+        dateU.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateTimeDialog(dateU);
+            }
+        });
 
         //affichage RecycleView Produit et fournisseur
         fournisseurAdapter = new FournisseurAdapter(getActivity());
         RecycleFrsRecp.setLayoutManager(new GridLayoutManager(getContext(),3));
         RecycleFrsRecp.setAdapter(fournisseurAdapter);
+        RecycleFrsRecpU.setLayoutManager(new GridLayoutManager(getContext(),3));
+        RecycleFrsRecpU.setAdapter(fournisseurAdapter);
         mViewModel.getAllFrs().observe(this, new Observer<List<Fournisseur>>() {
             @Override
             public void onChanged(List<Fournisseur> fournisseurs) {
@@ -328,6 +722,8 @@ nbrQ=0;
         produitRecpAdapter = new ProduitRecpAdapter(getActivity());
         RecycleProduitRecp.setLayoutManager(new GridLayoutManager(getContext(),3));
         RecycleProduitRecp.setAdapter(produitRecpAdapter);
+        RecycleProduitRecpU.setLayoutManager(new GridLayoutManager(getContext(),3));
+        RecycleProduitRecpU.setAdapter(produitRecpAdapter);
         mViewModel.getAllproduit().observe(this, new Observer<List<Produit>>() {
             @Override
             public void onChanged(List<Produit> produits) {
@@ -336,8 +732,6 @@ nbrQ=0;
         });
 
 
-acceptCard.setCardBackgroundColor(Color.parseColor("#00A86B"));
-        refusedCard.setCardBackgroundColor(Color.parseColor("#fdc7c7"));
 
 
         refusedCard.setOnClickListener(new View.OnClickListener() {
@@ -345,6 +739,8 @@ acceptCard.setCardBackgroundColor(Color.parseColor("#00A86B"));
             public void onClick(View v) {
 
                 refusedCard.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
+                acceptCard.setCardBackgroundColor(Color.parseColor("#00A86B"));
+
                 state=false;
             }
         });
@@ -352,6 +748,8 @@ acceptCard.setCardBackgroundColor(Color.parseColor("#00A86B"));
             @Override
             public void onClick(View v) {
                 acceptCard.setCardBackgroundColor(Color.parseColor("#e6e6e6"));
+                refusedCard.setCardBackgroundColor(Color.parseColor("#fdc7c7"));
+
                 state=true;
             }
         });
@@ -501,6 +899,67 @@ acceptCard.setCardBackgroundColor(Color.parseColor("#00A86B"));
 
 
 
+        //Steppers edit
+
+        nextU.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (nameFrsR.equals("")){
+                    Toast.makeText(getActivity(), "Please choose a supplier", Toast.LENGTH_SHORT).show();
+
+                }
+                else if (namePrd.equals("")){
+                    Toast.makeText(getActivity(), "Please choose a product", Toast.LENGTH_SHORT).show();
+
+                }
+                else {
+
+                    input1U.setVisibility(View.GONE);
+                    input2U.setVisibility(View.VISIBLE);
+                    saveU.setVisibility(View.VISIBLE);
+                    backU.setVisibility(View.VISIBLE);
+                    nextU.setVisibility(View.GONE);
+                    num2U.setTextColor(Color.parseColor("#3797DD"));
+                    step2CardU.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+                    barstepperU.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    step2U.setTextColor(Color.parseColor("#FFFFFF"));
+                }
+            }
+        });
+        backU.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                input1U.setVisibility(View.VISIBLE);
+                input2U.setVisibility(View.GONE);
+                saveU.setVisibility(View.GONE);
+                backU.setVisibility(View.GONE);
+                nextU.setVisibility(View.VISIBLE);
+                num2U.setTextColor(Color.parseColor("#FFFFFF"));
+                step2CardU.setCardBackgroundColor(Color.parseColor("#3187c6"));
+                barstepperU.setBackgroundColor(Color.parseColor("#3187c6"));
+                step2U.setTextColor(Color.parseColor("#3187c6"));
+
+
+            }
+        });
+
+        exitU.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                update.setVisibility(View.GONE);
+                affichage.setClickable(true);
+            }
+        });
+
+        cancelU.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                update.setVisibility(View.GONE);
+                affichage.setClickable(true);
+
+            }
+        });
+
 
 
 
@@ -545,6 +1004,62 @@ acceptCard.setCardBackgroundColor(Color.parseColor("#00A86B"));
     }
 
 
+
+
+
+    public static AlertDialog AskOptionPro(final Context context, final Storage account, final LifecycleOwner activity)
+    {
+        final AlertDialog.Builder alerto = new AlertDialog.Builder(context);
+        LayoutInflater layoutInflatero =  (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogueViewo =layoutInflatero.inflate(R.layout.delete_dialogue,null);
+        alerto.setView(dialogueViewo);
+        Button delete,cancelo;
+        alerto.setTitle("Delete Traced Product N° "+account.getId());
+        delete = dialogueViewo.findViewById(R.id.delete);
+        cancelo= dialogueViewo.findViewById(R.id.cancel);
+        final AlertDialog alertio =alerto.show();
+        cancelo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertio.dismiss();
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.delete(account);
+
+
+                StaticUse.SaveHistory(activity,deviceHistoryViewModel,(Activity)context,"Storage Module",
+                        "has deleted a Product",
+                        "",account.getId(),"");
+
+//                        mViewModel.getAccount(StaticUse.loadSession(context).getId()).observe(activity, new Observer<List<Account>>() {
+//                            @Override
+//                            public void onChanged(List<Account> accounts) {
+//                                final Account user = accounts.get(0);
+//                                Notification notification = new Notification();
+//                                notification.setCreation(new Date());
+//                                notification.setOwner(user.getFirstName());
+//                                notification.setCategoryName("Traceability Module");
+//                                notification.setSeen(false);
+//                                notification.setName(type);
+//                                notification.setDescription("has deleted a Traced Product by the ID of "+account.getId()+" from ");
+//                                notification.setObjectImageBase64(StaticUse.transformerImageBase64frombytes(account.getImage()));
+//                                notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
+//                                MainActivity.insertNotification(notification);
+//                                StaticUse.createNotificationChannel(notification,(Activity)context);
+//                                StaticUse.displayNotification((Activity)context,R.drawable.ic_delete_blue_24dp,notification);
+//                            }
+//                        });
+                alertio.dismiss();
+                Toast.makeText(context, "The Trace of "+account.getId()+" has been deleted", Toast.LENGTH_SHORT).show();
+                alertio.dismiss();
+            }
+        });
+
+        return alertio;
+    }
 
 
 

@@ -2,9 +2,13 @@ package com.example.bioregproject.ui.Storage;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,15 +24,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bioregproject.Adapters.ProduitAdapter;
+import com.example.bioregproject.Adapters.ProduitRecpDetails;
 import com.example.bioregproject.Adapters.SpinnerActionAdapter;
 import com.example.bioregproject.Adapters.SpinnerCatAdapter;
 import com.example.bioregproject.R;
+import com.example.bioregproject.Utils.StaticUse;
 import com.example.bioregproject.entities.Produit;
+import com.example.bioregproject.entities.Storage;
+import com.example.bioregproject.ui.History.DeviceHistoryViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -37,8 +46,8 @@ import java.util.List;
 
 public class ProductFragment extends Fragment {
 
-    private ProductViewModel mViewModel;
-    private Button  saveU , save , cancelU , cancel ,addProduit , plus , moins , updatenbr;
+    private static ProductViewModel mViewModel;
+    private Button  saveU , save , cancelU , cancel ,addProduit , updatenbr;
     private ImageButton exit , exitU , exitQ;
     private ConstraintLayout update , ajout , affichage , quantite ;
     private TextInputLayout name , nameU ;
@@ -47,8 +56,16 @@ public class ProductFragment extends Fragment {
     private Spinner spinner2,natureSpiner,natureSpiner2;
     private RecyclerView recycle1;
     private ProduitAdapter produitAdapter;
-    private TextView nameProduit , quantitenbr ,uniteQ;
-    private int nbrQ;
+    private TextView nameProduit , categorieProduit ;
+    private RecyclerView recycleViewReception;
+    private ProduitRecpDetails produitRecpDetails;
+    public static AlertDialog alerti;
+    private static DeviceHistoryViewModel deviceHistoryViewModel;
+    private TextView tvShow , tvShow1 , nbr, kg;
+    private ConstraintLayout StorageForm , ConstRecep ;
+
+
+
 
 
 
@@ -62,6 +79,8 @@ public class ProductFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.product_fragment, container, false);
         mViewModel = ViewModelProviders.of(this).get(ProductViewModel.class);
+        deviceHistoryViewModel = ViewModelProviders.of(this).get(DeviceHistoryViewModel.class);
+
 
 
         exit=view.findViewById(R.id.exit);
@@ -82,14 +101,68 @@ public class ProductFragment extends Fragment {
         natureSpiner = view.findViewById(R.id.spinnerNature);
         natureSpiner2 = view.findViewById(R.id.spinnerNatureU);
         recycle1 = view.findViewById(R.id.recycle1);
-        plus = view.findViewById(R.id.button12);
-        moins = view.findViewById(R.id.button13);
         nameProduit = view.findViewById(R.id.namePrd);
-        quantitenbr = view.findViewById(R.id.textView39);
         exitQ = view.findViewById(R.id.imageButton8);
         updatenbr=view.findViewById(R.id.updatenbr);
-        uniteQ=view.findViewById(R.id.unity);
         spinner4 = view.findViewById(R.id.spinner4);
+        categorieProduit = view.findViewById(R.id.textView60);
+
+
+
+        //Details:
+        recycleViewReception = view.findViewById(R.id.recycleViewReception);
+        tvShow = view.findViewById(R.id.tvShow);
+        tvShow1 = view.findViewById(R.id.tvShow1);
+        nbr = view.findViewById(R.id.recycleViewReception);
+        kg = view.findViewById(R.id.recycleViewReception);
+        StorageForm = view.findViewById(R.id.StorageForm);
+        ConstRecep = view.findViewById(R.id.constraintLayout11);
+
+
+
+        if (tvShow.getText().equals("show")){
+
+        tvShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               StorageForm.setVisibility(View.VISIBLE);
+               tvShow.setText("Hide");
+            }
+        });}else{
+            tvShow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    StorageForm.setVisibility(View.GONE);
+                    tvShow.setText("show");
+                }
+            });
+        }
+
+
+        if (tvShow1.getText().equals("show")) {
+            tvShow1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ConstRecep.setVisibility(View.VISIBLE);
+                    tvShow1.setText("Hide");
+
+                }
+            });
+        }else{
+            tvShow1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ConstRecep.setVisibility(View.GONE);
+                    tvShow1.setText("show");
+
+                }
+            });
+
+        }
+
+
+
+
 
 
 
@@ -122,39 +195,38 @@ mViewModel.getAllproduit().observe(this, new Observer<List<Produit>>() {
             public void onItemClick(Produit Produit) {
                 quantite.setVisibility(View.VISIBLE);
                 affichage.setVisibility(View.GONE);
-                nbrQ=Produit.getQuantite();
                 nameProduit.setText(Produit.getName());
-                quantitenbr.setText(String.valueOf(nbrQ));
+                categorieProduit.setText(Produit.getCategorie()+",");
+                nbr.setText(Produit.getQuantite());
                 if (Produit.getNature().equals("Solid")){
-                    uniteQ.setText("Kg");
+                    kg.setText("kg");
                 }else{
-                    uniteQ.setText("L");
+                    kg.setText('L');
                 }
-                plus.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                     nbrQ = nbrQ +1;
-                        quantitenbr.setText(String.valueOf(nbrQ));
+                produitRecpDetails = new ProduitRecpDetails(getActivity());
+                recycleViewReception.setLayoutManager(new LinearLayoutManager(getContext()));
+                recycleViewReception.setHasFixedSize(true);
+                recycleViewReception.setAdapter(produitRecpDetails);
 
-                    }
-                });
-                moins.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        nbrQ = nbrQ - 1 ;
-                        quantitenbr.setText(String.valueOf(nbrQ));
 
-                    }
-                });
+                mViewModel.getAllRecp(Produit.getName()).observe(getActivity(), new Observer<List<Storage>>() {
+                        @Override
+                        public void onChanged(List<Storage> storages) {
+
+                            produitRecpDetails.submitList(storages);
+                            produitRecpDetails.notifyDataSetChanged();
+
+                        }
+                    });
+
+
 
                 updatenbr.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Produit.setQuantite(nbrQ);
-                        mViewModel.update(Produit);
-                        Toast.makeText(getActivity(), " Quntity Product updated Successfully", Toast.LENGTH_SHORT).show();
-                        affichage.setClickable(false);
+                        affichage.setClickable(true);
                         quantite.setVisibility(View.GONE);
+                        affichage.setVisibility(View.VISIBLE);
 
                     }
                 });
@@ -163,8 +235,7 @@ mViewModel.getAllproduit().observe(this, new Observer<List<Produit>>() {
 
             @Override
             public void delete(Produit Produit) {
-                mViewModel.delete(Produit);
-                Toast.makeText(getActivity(), "Product deleted", Toast.LENGTH_SHORT).show();
+                AskOptionPro(getContext(),Produit,getActivity());
 
             }
 
@@ -439,6 +510,66 @@ mViewModel.getAllproduit().observe(this, new Observer<List<Produit>>() {
 
         }
     }
+
+    public static void dismissMessage() {
+        alerti.dismiss();
+    }
+
+    public static AlertDialog AskOptionPro(final Context context, final Produit account, final LifecycleOwner activity)
+    {
+        final AlertDialog.Builder alerto = new AlertDialog.Builder(context);
+        LayoutInflater layoutInflatero =  (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogueViewo =layoutInflatero.inflate(R.layout.delete_dialogue,null);
+        alerto.setView(dialogueViewo);
+        Button delete,cancelo;
+        alerto.setTitle("Delete Traced Product N° "+account.getId());
+        delete = dialogueViewo.findViewById(R.id.delete);
+        cancelo= dialogueViewo.findViewById(R.id.cancel);
+        final AlertDialog alertio =alerto.show();
+        cancelo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertio.dismiss();
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.delete(account);
+
+
+                StaticUse.SaveHistory(activity,deviceHistoryViewModel,(Activity)context,"Storage Module",
+                        "has deleted a Product",
+                        "",account.getId(),"");
+
+//                        mViewModel.getAccount(StaticUse.loadSession(context).getId()).observe(activity, new Observer<List<Account>>() {
+//                            @Override
+//                            public void onChanged(List<Account> accounts) {
+//                                final Account user = accounts.get(0);
+//                                Notification notification = new Notification();
+//                                notification.setCreation(new Date());
+//                                notification.setOwner(user.getFirstName());
+//                                notification.setCategoryName("Traceability Module");
+//                                notification.setSeen(false);
+//                                notification.setName(type);
+//                                notification.setDescription("has deleted a Traced Product by the ID of "+account.getId()+" from ");
+//                                notification.setObjectImageBase64(StaticUse.transformerImageBase64frombytes(account.getImage()));
+//                                notification.setImageBase64(StaticUse.transformerImageBase64frombytes(user.getProfileImage()));
+//                                MainActivity.insertNotification(notification);
+//                                StaticUse.createNotificationChannel(notification,(Activity)context);
+//                                StaticUse.displayNotification((Activity)context,R.drawable.ic_delete_blue_24dp,notification);
+//                            }
+//                        });
+                alertio.dismiss();
+                Toast.makeText(context, "The Trace of "+account.getId()+" has been deleted", Toast.LENGTH_SHORT).show();
+                alertio.dismiss();
+            }
+        });
+
+        return alertio;
+    }
+
+
 
 
 

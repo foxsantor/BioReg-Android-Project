@@ -1,5 +1,6 @@
 package com.example.bioregproject.ui.Cleaning;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -121,6 +123,16 @@ public class Cleaning extends Fragment {
 
 
         mViewModel = ViewModelProviders.of(this).get(ListPlanningCleanViewModel.class);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.mainMenu);
+
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
 
         mainActivityViewModel  = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         deviceHistoryViewModel = ViewModelProviders.of(this).get(DeviceHistoryViewModel.class);

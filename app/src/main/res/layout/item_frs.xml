@@ -43,6 +43,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
                     android:layout_marginBottom="10dp"
                     android:gravity="center_horizontal"
                     android:text="A"
@@ -170,10 +172,10 @@
 
                     <ImageButton
                         android:id="@+id/imageButton9"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="#1DCFC9C9"
+                        android:background="@android:color/transparent"
                         app:srcCompat="@drawable/ic_email_black_24dp" />
 
                 </LinearLayout>

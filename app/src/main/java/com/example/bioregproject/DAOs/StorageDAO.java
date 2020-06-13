@@ -32,6 +32,8 @@ public interface StorageDAO {
     @Query("SELECT * FROM storage_table where categorie =:categorie ")
     LiveData<List<Storage>> getStorageByCategorie(String categorie);
 
+    @Query("SELECT * FROM storage_table where produit =:produit ")
+    LiveData<List<Storage>> getStorageByNameProduit(String produit);
 
 
 

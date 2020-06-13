@@ -2,9 +2,11 @@ package com.example.bioregproject.ui.Storage;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
@@ -55,7 +57,14 @@ public class StorageControl extends Fragment {
         });
 
 
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.mainMenu);
 
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
 
 

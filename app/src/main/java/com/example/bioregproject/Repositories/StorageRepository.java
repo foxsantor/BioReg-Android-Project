@@ -52,6 +52,11 @@ public class StorageRepository {
     }
 
 
+    public LiveData<List<Storage>> getStorageByNameProduit(String produit){
+        getStorageByCategorie = StorageDAO.getStorageByNameProduit(produit);
+        return getStorageByCategorie ;
+    }
+
 
 
 
