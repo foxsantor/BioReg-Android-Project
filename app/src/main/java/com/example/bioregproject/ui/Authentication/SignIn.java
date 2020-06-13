@@ -37,6 +37,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.example.bioregproject.MainActivity;
 import com.example.bioregproject.R;
 import com.example.bioregproject.Utils.StaticUse;
@@ -54,7 +55,7 @@ public class SignIn extends Fragment {
     private ConstraintLayout loading_1,mother;
     private TextView error;
     private ImageButton close;
-    private ImageView icon;
+    private ImageView icon,logo;
     private TextInputLayout email,password;
     private RequestQueue requestQueue;
     private String emailS;
@@ -118,6 +119,7 @@ public class SignIn extends Fragment {
 
         //Section fo binding views
         login = view.findViewById(R.id.login);
+        logo = view.findViewById(R.id.logo);
         mother =  view.findViewById(R.id.mother);
         StaticUse.backgroundAnimator(mother);
         loading_1 = view.findViewById(R.id.loading_1);
@@ -128,6 +130,7 @@ public class SignIn extends Fragment {
         error = view.findViewById(R.id.error);
         errors = view.findViewById(R.id.errors);
         icon = view.findViewById(R.id.icon);
+        Glide.with(getActivity()).load(R.drawable.logo_transparent).into(logo);
 
         errors.setVisibility(View.GONE);
         forgetPassword.setOnClickListener(new View.OnClickListener() {

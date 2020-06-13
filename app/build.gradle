@@ -46,6 +46,14 @@ android {
         exclude 'META-INF/ASL2.0'
         exclude("META-INF/*.kotlin_module")
     }
+    splits {
+        abi {
+            enable true
+            reset()
+            include "armeabi", "armeabi-v7a", "x86", "mips"
+            universalApk true
+        }
+    }
 }
 
 dependencies {
@@ -88,6 +96,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'androidx.room:room-rxjava2:2.1.0'
     implementation 'android.arch.paging:runtime:2.1.0'
+    implementation 'gr.pantrif:easy-android-splash-screen:0.0.1'
     implementation 'com.github.crosswall:Android-Coverflow:release-v1.0.5'
     implementation 'com.github.google:cameraview:9bbe07ba44'
     implementation 'com.google.android.gms:play-services-vision:19.0.0'

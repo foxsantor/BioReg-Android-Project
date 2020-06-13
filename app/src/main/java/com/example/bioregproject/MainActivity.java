@@ -110,17 +110,17 @@ public class MainActivity extends AppCompatActivity  {
         Intent stickyService = new Intent(this, TaskManger.class);
         startService(stickyService);
         mViewModelsx = ViewModelProviders.of(this).get(FormManualViewModel.class);
-
-        if(!StaticUse.loadCategorySave(this))
-        {
-            mViewModelsx.insert(new Category("Raw materials ",new Date()));
-            mViewModelsx.insert(new Category("Food ",new Date()));
-            mViewModelsx.insert(new Category("Beverages",new Date()));
-            mViewModelsx.insert(new Category("Tools",new Date()));
-            mViewModelsx.insert(new Category("Herbs",new Date()));
-            mViewModelsx.insert(new Category("Industrial Items",new Date()));
-            StaticUse.saveCategoryInput(this);
-        }
+//
+//        if(!StaticUse.loadCategorySave(this))
+//        {
+//            mViewModelsx.insert(new Category("Raw materials ",new Date()));
+//            mViewModelsx.insert(new Category("Food ",new Date()));
+//            mViewModelsx.insert(new Category("Beverages",new Date()));
+//            mViewModelsx.insert(new Category("Tools",new Date()));
+//            mViewModelsx.insert(new Category("Herbs",new Date()));
+//            mViewModelsx.insert(new Category("Industrial Items",new Date()));
+//            StaticUse.saveCategoryInput(this);
+//        }
         lifecycleOwner = MainActivity.this;
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         mViewModelPro = ViewModelProviders.of(this).get(ManageDataViewModel.class);

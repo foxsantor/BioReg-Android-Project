@@ -35,8 +35,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/add_image"
-                tools:srcCompat="@drawable/add_image" />
+                app:srcCompat="@drawable/manageimage"
+                tools:srcCompat="@drawable/manageimage" />
 
             <TextView
                 android:id="@+id/categoryname1"
@@ -96,8 +96,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/add_image"
-                tools:srcCompat="@drawable/add_image" />
+                app:srcCompat="@drawable/qradd_image"
+                tools:srcCompat="@drawable/qradd_image" />
 
             <TextView
                 android:id="@+id/categoryname2"

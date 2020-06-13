@@ -324,7 +324,7 @@ public class FormManual extends Fragment {
             public void onClick(View v) {
                 if(bundle == null || bundle.getInt("dest",0)==0)
                 {
-                    Navigation.findNavController(view).navigate(R.id.mainMenu);
+                    Navigation.findNavController(view).navigate(R.id.action_formManual_to_manualHome);
                 }
                 else
                 {
@@ -483,16 +483,12 @@ public class FormManual extends Fragment {
     {
         final ArrayList<String> spinnerArray =  new ArrayList<>();
         spinnerArray.add("Choose a Category *");
-        mViewModel.getAllCategories().observe(this, new Observer<List<Category>>() {
-            @Override
-            public void onChanged(List<Category> categories) {
-                for (Category cat: categories
-                     ) {
-                  spinnerArray.add(cat.getName().trim());
-                }
-
-            }
-        });
+                    spinnerArray.add("Raw materials");
+                    spinnerArray.add("Food");
+                    spinnerArray.add("Beverages");
+                    spinnerArray.add("Tools");
+                    spinnerArray.add("Herbs");
+                    spinnerArray.add("Industrial Items");
         SpinnerCatAdapter adapter = new SpinnerCatAdapter(getActivity(),spinnerArray);
         spinner.setAdapter(adapter);
         if(CURRENT_RUNNING_CODE == 1 )
