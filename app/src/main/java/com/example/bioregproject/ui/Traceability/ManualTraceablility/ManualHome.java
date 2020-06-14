@@ -49,7 +49,6 @@ public class ManualHome extends Fragment {
         return inflater.inflate(R.layout.manual_home_fragment, container, false);
     }
 
-
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -86,6 +85,7 @@ public class ManualHome extends Fragment {
                             {
                                 empty.setVisibility(View.VISIBLE);
                                 loading.setVisibility(View.GONE);
+
                             }else
                             {
                             //Toast.makeText(getActivity(), ""+pagedList.get(0).getId(), Toast.LENGTH_SHORT).show();
@@ -97,6 +97,7 @@ public class ManualHome extends Fragment {
                                 handler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
+                                        empty.setVisibility(View.GONE);
                                         loading.setVisibility(View.GONE);
                                         handler.removeCallbacksAndMessages(null);
                                     }

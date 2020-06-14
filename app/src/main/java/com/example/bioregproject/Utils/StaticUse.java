@@ -91,8 +91,8 @@ import java.util.Random;
 
 public class StaticUse extends AppCompatActivity {
 
-    public static final String SKELETON = "http://192.168.1.8:5000/api/";
-    public static final String SKELETON_PRIMITIVE = "http://192.168.1.8:5000/";
+    public static final String SKELETON = "http://51.210.111.37:5000/apis/";
+    public static final String SKELETON_PRIMITIVE = "http://51.210.111.37:5000/";
     public static final String SHARED_NAME_USER ="user";
     public static final String SHARED_NAME_ADMIN ="admin";
     public static final String SHARED_SETTINGS="settings";
