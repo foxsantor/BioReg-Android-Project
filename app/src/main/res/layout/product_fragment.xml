@@ -105,10 +105,8 @@
             android:layout_height="0dp"
             android:layout_marginStart="100dp"
             android:layout_marginLeft="100dp"
-            android:layout_marginTop="80dp"
             android:layout_marginEnd="100dp"
             android:layout_marginRight="100dp"
-            android:layout_marginBottom="80dp"
             app:cardBackgroundColor="#4D000000"
             app:cardCornerRadius="4dp"
             app:cardElevation="1dp"
@@ -266,14 +264,12 @@
                         android:id="@+id/updatenbr"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="10dp"
                         android:text="Save"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout11" />
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <TextView
                         android:id="@+id/textView60"
@@ -327,15 +323,15 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout11"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:visibility="visible"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/btnExpand1">
 
                         <ScrollView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

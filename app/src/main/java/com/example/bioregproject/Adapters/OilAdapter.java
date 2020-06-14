@@ -73,9 +73,6 @@ public class OilAdapter extends ListAdapter <Oil,OilAdapter.OilHolder> {
 mViewModel.getAllSetting().observe(fragment, new Observer<List<SettingOil>>() {
     @Override
     public void onChanged(List<SettingOil> settingOils) {
-        if(!settingOils.isEmpty())
-        {
-       if (settingOils.get(0).getVerif()) {
 
            holder.message.setVisibility(View.VISIBLE);
            if (currentOil.getFiltrage() < 20) {
@@ -102,17 +99,9 @@ mViewModel.getAllSetting().observe(fragment, new Observer<List<SettingOil>>() {
 
 
            }
-       }
-       }
-       else{
-           holder.err.setVisibility(View.GONE);
-           holder.wa.setVisibility(View.GONE);
-           holder.suu.setVisibility(View.GONE);
-
-           holder.message.setVisibility(View.GONE);
 
 
-       }
+
     }
 });
 

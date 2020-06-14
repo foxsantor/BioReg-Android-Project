@@ -15,7 +15,7 @@ import java.util.Date;
 public class Tache {
 
     @PrimaryKey(autoGenerate = true)
-    private int idtask;
+    private Long idtask;
     @ColumnInfo(name = "date")
     private Date date;
     @ColumnInfo(name = "statut")
@@ -27,19 +27,49 @@ public class Tache {
     private String user;
 private Date createdAt;
     private byte[] imageCateg;
+    private Date due;
+    private String ownerName;
+    private Date validationDate;
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public Date getValidationDate() {
+        return validationDate;
+    }
+
+    public void setValidationDate(Date validationDate) {
+        this.validationDate = validationDate;
+    }
+
+    public Date getDue() {
+        return due;
+    }
+
+    public void setDue(Date due) {
+        this.due = due;
+    }
 
     public Tache() {
         super();
     }
 
     @Ignore
-    public Tache(Date date, boolean status, String idCategorie, String idSurface,String user,Date createdAt) {
+    public Tache(Date date, boolean status, String idCategorie, String idSurface,String user,Date createdAt,Date due,Date validationDate,String ownerName) {
         this.date = date;
         this.status = status;
         this.idCategorie = idCategorie;
         this.idSurface = idSurface;
         this.user=user;
         this.createdAt=createdAt;
+        this.ownerName=ownerName;
+        this.due=due;
+        this.validationDate=validationDate;
     }
 
     public byte[] getImageCateg() {
@@ -82,11 +112,11 @@ private Date createdAt;
         this.idCategorie = idCategorie;
     }
 
-    public int getIdtask() {
+    public Long getIdtask() {
         return idtask;
     }
 
-    public void setIdtask(int idtask) {
+    public void setIdtask(Long idtask) {
         this.idtask = idtask;
     }
 

@@ -56,6 +56,9 @@ public class TacheRepository {
     public LiveData<List<Tache>> getTacheByCateg (String id) {
         return tacheByCateg = tacheDao.getTacheByCategorie(id);
     }
+    public LiveData<List<Tache>> getTacheById (Long id) {
+        return tacheByCateg = tacheDao.getTacheById(id);
+    }
 
         public LiveData<List<Tache>> getTacheByStatut (Boolean statut){
             return tacheStatut=tacheDao.getTacheByStatus(statut);

@@ -65,7 +65,25 @@ public class StorageAdapter extends ListAdapter <Storage, StorageAdapter.Storage
 
 
 
+        if (currentStorage.getStatus()){
+           holder.view26.setVisibility(View.VISIBLE);
+            holder.accepted.setVisibility(View.VISIBLE);
+            holder.acceptedImage.setVisibility(View.VISIBLE);
+            holder.viewnon.setVisibility(View.GONE);
+            holder.refusedImage.setVisibility(View.GONE);
+            holder.noaccepted.setVisibility(View.GONE);
 
+
+
+        }else{
+            holder.view26.setVisibility(View.GONE);
+            holder.accepted.setVisibility(View.GONE);
+            holder.acceptedImage.setVisibility(View.GONE);
+            holder.viewnon.setVisibility(View.VISIBLE);
+            holder.refusedImage.setVisibility(View.VISIBLE);
+            holder.noaccepted.setVisibility(View.VISIBLE);
+
+        }
 
 
 

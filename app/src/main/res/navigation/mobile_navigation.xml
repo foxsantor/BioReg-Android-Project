@@ -62,7 +62,11 @@
         android:id="@+id/oliControl"
         android:name="com.example.bioregproject.ui.OilControl.OliControl"
         android:label="oli_control_fragment"
-        tools:layout="@layout/oli_control_fragment" />
+        tools:layout="@layout/oli_control_fragment" >
+        <action
+            android:id="@+id/action_oliControl_to_oilAjout"
+            app:destination="@id/oilAjout" />
+    </fragment>
     <fragment
         android:id="@+id/labels"
         android:name="com.example.bioregproject.ui.Printing.Labels"
@@ -109,6 +113,15 @@
             app:destination="@id/taskPlan"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/oilAjout"
+        android:name="com.example.bioregproject.ui.OilControl.oilAjout"
+        android:label="fragment_oil_ajout"
+        tools:layout="@layout/fragment_oil_ajout" >
+        <action
+            android:id="@+id/action_oilAjout_to_oliControl"
+            app:destination="@id/oliControl" />
     </fragment>
 
 </navigation>

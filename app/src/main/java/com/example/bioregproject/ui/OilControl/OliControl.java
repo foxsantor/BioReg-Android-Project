@@ -1,12 +1,18 @@
 package com.example.bioregproject.ui.OilControl;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,7 +33,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -50,21 +58,29 @@ import java.util.List;
 
 public class OliControl extends Fragment {
 
-    private OliControlViewModel mViewModel;
-    private Spinner spinner;
-    private TextInputLayout textInputLayout ,textInputLayout4;
-    private Button save,cancel,addOil;
-    private Button calender;
-    private EditText date;
-    private RecyclerView post1,OilRecycleView;
-    private PostAdapter postAdapter;
+    private static OliControlViewModel mViewModel;
+
+    private RecyclerView OilRecycleView;
     private String valeur;
-    private ConstraintLayout ajout,affichage;
-    private Button all,filtrageB,changenement,miseaniveau;
+    private Button all,filtrageB,changenement,miseaniveau,addOil;
     private OilAdapter oilAdapter;
     private String namePost;
     private MainActivityViewModel mainActivityViewModel;
-    private DeviceHistoryViewModel deviceHistoryViewModel;
+    private static DeviceHistoryViewModel deviceHistoryViewModel;
+    private CardView affichage;
+    private TextView noData;
+    private NestedScrollView nestedScrollView8;
+    public static AlertDialog alerti;
+    private Spinner spinner;
+    private TextInputLayout textInputLayout ,textInputLayout4;
+    private Button save,cancel;
+    private Button calender;
+    private EditText date;
+    private PostAdapter postAdapter;
+    private RecyclerView post1;
+    private CardView update , error;
+    private ImageButton close;
+
 
 
     public static OliControl newInstance() {
@@ -89,16 +105,8 @@ public class OliControl extends Fragment {
 
 
 
-        spinner = view.findViewById(R.id.spinner);
-        textInputLayout=view.findViewById(R.id.textInputLayout);
-        textInputLayout4 = view.findViewById(R.id.textInputLayout4);
-        save = view.findViewById(R.id.save);
-        cancel=view.findViewById(R.id.cancel);
-        calender = view.findViewById(R.id.calender);
-        post1 = view.findViewById(R.id.post);
-        ajout = view.findViewById(R.id.ajout);
+
         affichage=view.findViewById(R.id.affichage);
-        addOil =view.findViewById(R.id.addOil);
         all =view.findViewById(R.id.All);
         miseaniveau =view.findViewById(R.id.miseaniveau);
         changenement =view.findViewById(R.id.Changement);
@@ -106,23 +114,37 @@ public class OliControl extends Fragment {
         OilRecycleView =view.findViewById(R.id.OilRecycleView);
         mainActivityViewModel  = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         deviceHistoryViewModel = ViewModelProviders.of(this).get(DeviceHistoryViewModel.class);
+        noData =view.findViewById(R.id.noData);
+        nestedScrollView8=view.findViewById(R.id.nestedScrollView8);
+        addOil =view.findViewById(R.id.addOil);
+
+        spinner = view.findViewById(R.id.spinner);
+        textInputLayout=view.findViewById(R.id.textInputLayout);
+        textInputLayout4 = view.findViewById(R.id.textInputLayout4);
+        save = view.findViewById(R.id.save);
+        cancel=view.findViewById(R.id.cancel);
+        calender = view.findViewById(R.id.calender);
+        post1 = view.findViewById(R.id.post);
+        update = view.findViewById(R.id.updateoil);
+        error = view.findViewById(R.id.errors);
+        close = view.findViewById(R.id.close);
 
 
 
 
 
 
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                error.setVisibility(View.GONE);
+            }
+        });
 
 
 // affichage ajout
 
-        addOil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ajout.setVisibility(View.VISIBLE);
-                affichage.setVisibility(View.INVISIBLE);
-            }
-        });
+
 
         calender.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,71 +204,26 @@ public class OliControl extends Fragment {
 
 
 
-        // ajout
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ajout.setVisibility(View.GONE);
-                affichage.setVisibility(View.VISIBLE);
-            }
-        });
 
-        save.setOnClickListener(new View.OnClickListener() {
+
+        addOil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(!StaticUse.validateEmpty(textInputLayout4,"Filtrage")
-                ){return;}else {
-
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                    Oil oil = new Oil();
-                    try {
-                        oil.setDateUtilisation(simpleDateFormat.parse(calender.getText().toString()));
-                        oil.setCreationDate(new Date());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    oil.setPost(namePost);
-                    oil.setFiltrage(Float.parseFloat(textInputLayout4.getEditText().getText().toString()));
-                    oil.setAction(valeur);
-                    ajout.setVisibility(View.GONE);
-                    affichage.setVisibility(View.VISIBLE);
-
-
-                    mViewModel.insert(oil);
-                    Toast.makeText(getActivity(), "oil Added Successfully", Toast.LENGTH_SHORT).show();
-
-
-
-                    StaticUse.SaveNotification(getActivity(),mainActivityViewModel,getActivity(),"Oil Control"
-                            ,"has added a new "+valeur+" for "
-                            ,namePost,null,null,R.drawable.ic_add_circle_blue_24dp);
-
-
-
-                }
-
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+                mViewModel.getAllPost().observe(getActivity(), new Observer<List<Post>>() {
                     @Override
-                    public void run() {
-                     mViewModel.getOilById(0).observe(getActivity(), new Observer<List<Oil>>() {
-                         @Override
-                         public void onChanged(List<Oil> oils) {
-                             StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Oil Control",
-                                     "has added a new action for ",namePost,0,valeur);
+                    public void onChanged(List<Post> posts) {
 
-                         }
-                     });
-
-                        handler.removeCallbacksAndMessages(null);
-                    }
-                }, 500);
-
-
+                        if (posts.isEmpty()){
+                            error.setVisibility(View.VISIBLE);
+                        } else{
+                            Navigation.findNavController(v).navigate(R.id.oilAjout);
+                    }}
+                });
 
             }
         });
+
 
 
 // affichage Oil
@@ -259,20 +236,45 @@ public class OliControl extends Fragment {
         mViewModel.getAllOil().observe(this, new Observer<List<Oil>>() {
             @Override
             public void onChanged(List<Oil> oils) {
-                oilAdapter.submitList(oils);
-                oilAdapter.notifyDataSetChanged();
+                if (oils.isEmpty()){
+                    noData.setVisibility(View.VISIBLE);
+                    nestedScrollView8.setVisibility(View.GONE);
 
+                }else {
+                    noData.setVisibility(View.GONE);
+                    nestedScrollView8.setVisibility(View.VISIBLE);
+                    oilAdapter.submitList(oils);
+                    oilAdapter.notifyDataSetChanged();
+                }
             }
         });
         //Recherche
         all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                miseaniveau.setTextColor(getActivity().getResources().getColor(R.color.White));
+                miseaniveau.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                filtrageB.setTextColor(getActivity().getResources().getColor(R.color.White));
+                filtrageB.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                changenement.setTextColor(getActivity().getResources().getColor(R.color.White));
+                changenement.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                all.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                all.setBackgroundColor(getActivity().getResources().getColor(R.color.White));
+
+
                 mViewModel.getAllOil().observe(getActivity(), new Observer<List<Oil>>() {
                     @Override
                     public void onChanged(List<Oil> oils) {
+                        if (oils.isEmpty()){
+                            noData.setVisibility(View.VISIBLE);
+                            noData.setText("No Data Found");
+                            nestedScrollView8.setVisibility(View.GONE);
+
+                        }else {
+                            noData.setVisibility(View.GONE);
+                            nestedScrollView8.setVisibility(View.VISIBLE);
                         oilAdapter.submitList(oils);
-                        oilAdapter.notifyDataSetChanged();
+                        oilAdapter.notifyDataSetChanged();}
 
                     }
                 });
@@ -283,12 +285,28 @@ public class OliControl extends Fragment {
         miseaniveau.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                all.setTextColor(getActivity().getResources().getColor(R.color.White));
+                all.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                filtrageB.setTextColor(getActivity().getResources().getColor(R.color.White));
+                filtrageB.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                changenement.setTextColor(getActivity().getResources().getColor(R.color.White));
+                changenement.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                miseaniveau.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                miseaniveau.setBackgroundColor(getActivity().getResources().getColor(R.color.White));
                mViewModel.getOilByAction("Mise à niveau").observe(getActivity(), new Observer<List<Oil>>() {
                    @Override
                    public void onChanged(List<Oil> oils) {
-                       oilAdapter.submitList(oils);
-                       oilAdapter.notifyDataSetChanged();
+                       if (oils.isEmpty()){
+                           noData.setVisibility(View.VISIBLE);
+                           noData.setText("No Data Found");
+                           nestedScrollView8.setVisibility(View.GONE);
 
+                       }else {
+                           noData.setVisibility(View.GONE);
+                           nestedScrollView8.setVisibility(View.VISIBLE);
+                           oilAdapter.submitList(oils);
+                           oilAdapter.notifyDataSetChanged();
+                       }
                    }
                });
             }
@@ -297,13 +315,30 @@ public class OliControl extends Fragment {
         changenement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                all.setTextColor(getActivity().getResources().getColor(R.color.White));
+                all.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                filtrageB.setTextColor(getActivity().getResources().getColor(R.color.White));
+                filtrageB.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                miseaniveau.setTextColor(getActivity().getResources().getColor(R.color.White));
+                miseaniveau.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                changenement.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                changenement.setBackgroundColor(getActivity().getResources().getColor(R.color.White));
                 mViewModel.getOilByAction("Changement").observe(getActivity(), new Observer<List<Oil>>() {
                     @Override
                     public void onChanged(List<Oil> oils) {
-                        oilAdapter.submitList(oils);
-                        oilAdapter.notifyDataSetChanged();
+                        if (oils.isEmpty()){
+                            noData.setVisibility(View.VISIBLE);
+                            noData.setText("No Data Found");
+                            nestedScrollView8.setVisibility(View.GONE);
 
+                        }else {
+                            noData.setVisibility(View.GONE);
+                            nestedScrollView8.setVisibility(View.VISIBLE);
+                            oilAdapter.submitList(oils);
+                            oilAdapter.notifyDataSetChanged();
 
+                        }
                     }
                 });
 
@@ -312,11 +347,28 @@ public class OliControl extends Fragment {
         filtrageB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                all.setTextColor(getActivity().getResources().getColor(R.color.White));
+                all.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                changenement.setTextColor(getActivity().getResources().getColor(R.color.White));
+                changenement.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                miseaniveau.setTextColor(getActivity().getResources().getColor(R.color.White));
+                miseaniveau.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                filtrageB.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                filtrageB.setBackgroundColor(getActivity().getResources().getColor(R.color.White));
                 mViewModel.getOilByAction("Filtrage").observe(getActivity(), new Observer<List<Oil>>() {
                     @Override
                     public void onChanged(List<Oil> oils) {
+                        if (oils.isEmpty()){
+                            noData.setVisibility(View.VISIBLE);
+                            noData.setText("No Data Found");
+                            nestedScrollView8.setVisibility(View.GONE);
+
+                        }else {
+                            noData.setVisibility(View.GONE);
+                            nestedScrollView8.setVisibility(View.VISIBLE);
                         oilAdapter.submitList(oils);
-                        oilAdapter.notifyDataSetChanged();
+                        oilAdapter.notifyDataSetChanged();}
 
 
                     }
@@ -330,38 +382,81 @@ public class OliControl extends Fragment {
         oilAdapter.setOnItemClickListener(new OilAdapter.OnItemClickLisnter() {
             @Override
             public void onItemClick(Oil oil) {
-                ajout.setVisibility(View.VISIBLE);
-                affichage.setVisibility(View.INVISIBLE);
+                update.setVisibility(View.VISIBLE);
+                affichage.setVisibility(View.GONE);
+                textInputLayout4.getEditText().setText(String.valueOf(oil.getFiltrage()));
+                calender.setText(oil.getDateUtilisation().toString());
                 spinner.setSelection(getIndex(spinner, oil.getAction().toString()));
+
+
                 save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                        try {
-                            oil.setDateUtilisation(simpleDateFormat.parse(calender.getText().toString()));
-                            oil.setCreationDate(new Date());
-                        }catch (Exception e)
-                        {
-                            e.printStackTrace();
+                        if(!StaticUse.validateEmpty(textInputLayout4,"Filtrage")
+                        ){return;}else {
+
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                            try {
+                                oil.setDateUtilisation(simpleDateFormat.parse(calender.getText().toString()));
+                                oil.setCreationDate(new Date());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            oil.setPost(namePost);
+                            oil.setFiltrage(Float.parseFloat(textInputLayout4.getEditText().getText().toString()));
+                            oil.setAction(valeur);
+
+
+                            mViewModel.update(oil);
+                            Toast.makeText(getActivity(), "oil Action update Successfully", Toast.LENGTH_SHORT).show();
+
+affichage.setVisibility(View.VISIBLE);
+update.setVisibility(View.GONE);
+
+                            StaticUse.SaveNotification(getActivity(),mainActivityViewModel,getActivity(),"Oil Control"
+                                    ,"has updates a new "+valeur+" for "
+                                    ,namePost,null,null,R.drawable.ic_add_circle_blue_24dp);
+
+
+
                         }
-                        oil.setPost(namePost);
-                        oil.setAction(valeur);
-                        oil.setFiltrage(Float.parseFloat(textInputLayout4.getEditText().getText().toString()));
 
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mViewModel.getOilById(0).observe(getActivity(), new Observer<List<Oil>>() {
+                                    @Override
+                                    public void onChanged(List<Oil> oils) {
+                                        StaticUse.SaveHistory(getActivity(),deviceHistoryViewModel,getActivity(),"Oil Control",
+                                                "has updated a new action for ",namePost,0,valeur);
 
-                        mViewModel.update(oil);
-                        Toast.makeText(getActivity(), "oil updated Successfully", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
 
+                                handler.removeCallbacksAndMessages(null);
+                            }
+                        }, 500);
 
 
 
                     }
                 });
+
             }
 
 
         });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                affichage.setVisibility(View.VISIBLE);
+                update.setVisibility(View.GONE);
+            }
+        });
+
 
         //delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -372,8 +467,8 @@ public class OliControl extends Fragment {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                mViewModel.delete(oilAdapter.getOiltAt(viewHolder.getAdapterPosition()));
-                Toast.makeText(getActivity(), "Oil control deleted", Toast.LENGTH_SHORT).show();
+                AskOptionPro(getContext(),oilAdapter.getOiltAt(viewHolder.getAdapterPosition()),getActivity());
+
             }
         }).attachToRecyclerView(OilRecycleView);
 
@@ -384,6 +479,47 @@ public class OliControl extends Fragment {
         return view;
     }
 
+
+    public static void dismissMessage() {
+        alerti.dismiss();
+    }
+
+    public static AlertDialog AskOptionPro(final Context context, final Oil account, final LifecycleOwner activity)
+    {
+        final AlertDialog.Builder alerto = new AlertDialog.Builder(context);
+        LayoutInflater layoutInflatero =  (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogueViewo =layoutInflatero.inflate(R.layout.delete_dialogue,null);
+        alerto.setView(dialogueViewo);
+        Button delete,cancelo;
+        alerto.setTitle("Delete Action  N° "+account.getId());
+        delete = dialogueViewo.findViewById(R.id.delete);
+        cancelo= dialogueViewo.findViewById(R.id.cancel);
+        final AlertDialog alertio =alerto.show();
+        cancelo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertio.dismiss();
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.delete(account);
+
+
+                StaticUse.SaveHistory(activity,deviceHistoryViewModel,(Activity)context,"Oil Control",
+                        "has deleted a action ",
+                        "",account.getId(),"");
+
+
+                alertio.dismiss();
+                Toast.makeText(context, "The Trace of "+account.getId()+" has been deleted", Toast.LENGTH_SHORT).show();
+                alertio.dismiss();
+            }
+        });
+
+        return alertio;
+    }
     private void SpinnerLoader(final Spinner spinner)
     {
         final ArrayList<String> spinnerArray =  new ArrayList<>();
@@ -446,6 +582,7 @@ public class OliControl extends Fragment {
         new DatePickerDialog(getActivity(),dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
 
     }
+
 
 
 }

@@ -21,6 +21,9 @@ public interface TacheDao {
     @Query("SELECT * FROM Tache where idCategorie =:id ")
     LiveData<List<Tache>> getTacheByCategorie(String id);
 
+    @Query("SELECT * FROM Tache where idtask =:id ")
+    LiveData<List<Tache>> getTacheById(Long id);
+
     @Query("SELECT * FROM Tache where statut =:statut ")
     LiveData<List<Tache>> getTacheByStatus(boolean statut);
 

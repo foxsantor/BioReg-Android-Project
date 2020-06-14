@@ -113,8 +113,8 @@ public class ProductFragment extends Fragment {
         recycleViewReception = view.findViewById(R.id.recycleViewReception);
         tvShow = view.findViewById(R.id.tvShow);
         tvShow1 = view.findViewById(R.id.tvShow1);
-        nbr = view.findViewById(R.id.recycleViewReception);
-        kg = view.findViewById(R.id.recycleViewReception);
+        nbr = view.findViewById(R.id.textView81);
+        kg = view.findViewById(R.id.textView82);
         StorageForm = view.findViewById(R.id.StorageForm);
         ConstRecep = view.findViewById(R.id.constraintLayout11);
 
@@ -197,7 +197,7 @@ mViewModel.getAllproduit().observe(this, new Observer<List<Produit>>() {
                 affichage.setVisibility(View.GONE);
                 nameProduit.setText(Produit.getName());
                 categorieProduit.setText(Produit.getCategorie()+",");
-                nbr.setText(Produit.getQuantite());
+                nbr.setText(String.valueOf(Produit.getQuantite()));
                 if (Produit.getNature().equals("Solid")){
                     kg.setText("kg");
                 }else{

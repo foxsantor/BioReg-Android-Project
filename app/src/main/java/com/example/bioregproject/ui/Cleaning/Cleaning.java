@@ -10,8 +10,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -69,7 +72,7 @@ public class Cleaning extends Fragment {
     private List<Tache> selectedTasks = new ArrayList<>();
     private TacheAdapter adaptertache = new TacheAdapter(getActivity());
     private CategorieCleanAdapter adapter = new CategorieCleanAdapter(getActivity());
-    private ListPlanningCleanViewModel mViewModel;
+    private static ListPlanningCleanViewModel mViewModel;
     private ConstraintLayout input1;
     private Button all, effectue, noneffectue;
     private CardView allCategorie;
@@ -99,18 +102,28 @@ public class Cleaning extends Fragment {
     private NestedScrollView surfacesU;
     private Category2Adapter adapterCategorie1;
     private SurfaceforCategrory2Adapter adapterSurface1;
-
-
-
-
-
-
-
-
-
-
+    private TextView noData2;
+    private NestedScrollView nestedScrollView;
     private MainActivityViewModel mainActivityViewModel;
-    private DeviceHistoryViewModel deviceHistoryViewModel;
+    private static DeviceHistoryViewModel deviceHistoryViewModel;
+    public static AlertDialog alerti;
+    private List<Long> listsOfDeletableItems ;
+    private static int counter;
+    private int j,counterSaver;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static Cleaning newInstance() {
         return new Cleaning();
@@ -123,6 +136,7 @@ public class Cleaning extends Fragment {
 
 
         mViewModel = ViewModelProviders.of(this).get(ListPlanningCleanViewModel.class);
+
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
@@ -137,6 +151,8 @@ public class Cleaning extends Fragment {
         mainActivityViewModel  = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         deviceHistoryViewModel = ViewModelProviders.of(this).get(DeviceHistoryViewModel.class);
         lifecycleOwner = this;
+        listsOfDeletableItems = new ArrayList<>();
+
 
 
 
@@ -167,8 +183,8 @@ public class Cleaning extends Fragment {
         usersU = view.findViewById(R.id.usersU);
         calenderU = view.findViewById(R.id.calenderU);
         surfacesU = view.findViewById(R.id.surfacesU);
-
-
+        noData2= view.findViewById(R.id.noData2);
+        nestedScrollView =view.findViewById(R.id.nestedScrollView);
 
 
 
@@ -193,11 +209,25 @@ public class Cleaning extends Fragment {
         all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                noneffectue.setTextColor(getActivity().getResources().getColor(R.color.White));
+                noneffectue.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                effectue.setTextColor(getActivity().getResources().getColor(R.color.White));
+                effectue.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                all.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                all.setBackgroundColor(getActivity().getResources().getColor(R.color.White));
                 mViewModel.getAllTache().observe(getActivity(), new Observer<List<Tache>>() {
                     @Override
                     public void onChanged(List<Tache> taches) {
+                        if (taches.isEmpty()){
+                            noData2.setText("No Cleanning Task Found");
+                            noData2.setVisibility(View.VISIBLE);
+                            nestedScrollView.setVisibility(View.GONE);
+
+                        }else{
+                            noData2.setVisibility(View.GONE);
+                            nestedScrollView.setVisibility(View.VISIBLE);
                         adaptertache.submitList(taches);
-                        adaptertache.notifyDataSetChanged();
+                        adaptertache.notifyDataSetChanged();}
                     }
                 });
             }
@@ -207,11 +237,26 @@ public class Cleaning extends Fragment {
         effectue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                noneffectue.setTextColor(getActivity().getResources().getColor(R.color.White));
+                noneffectue.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                all.setTextColor(getActivity().getResources().getColor(R.color.White));
+                all.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                effectue.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                effectue.setBackgroundColor(getActivity().getResources().getColor(R.color.White));
                 mViewModel.getTacheByStatut(true).observe(getActivity(), new Observer<List<Tache>>() {
                     @Override
                     public void onChanged(List<Tache> taches) {
+                        if (taches.isEmpty()){
+                            noData2.setText("No Cleanning Task Found");
+                            noData2.setVisibility(View.VISIBLE);
+                            nestedScrollView.setVisibility(View.GONE);
+
+                        }else{
+                            noData2.setVisibility(View.GONE);
+                            nestedScrollView.setVisibility(View.VISIBLE);
+
                         adaptertache.submitList(taches);
-                        adaptertache.notifyDataSetChanged();
+                        adaptertache.notifyDataSetChanged();}
 
                     }
                 });
@@ -221,11 +266,25 @@ public class Cleaning extends Fragment {
         noneffectue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                effectue.setTextColor(getActivity().getResources().getColor(R.color.White));
+                effectue.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                all.setTextColor(getActivity().getResources().getColor(R.color.White));
+                all.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                noneffectue.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                noneffectue.setBackgroundColor(getActivity().getResources().getColor(R.color.White));
                 mViewModel.getTacheByStatut(false).observe(getActivity(), new Observer<List<Tache>>() {
                     @Override
                     public void onChanged(List<Tache> taches) {
+                        if (taches.isEmpty()){
+                            noData2.setText("No Cleanning Task Found");
+                            noData2.setVisibility(View.VISIBLE);
+                            nestedScrollView.setVisibility(View.GONE);
+
+                        }else{
+                            noData2.setVisibility(View.GONE);
+                            nestedScrollView.setVisibility(View.VISIBLE);
                         adaptertache.submitList(taches);
-                        adaptertache.notifyDataSetChanged();
+                        adaptertache.notifyDataSetChanged();}
 
 
 
@@ -241,9 +300,17 @@ public class Cleaning extends Fragment {
                 mViewModel.getAllTache().observe(getActivity(), new Observer<List<Tache>>() {
                     @Override
                     public void onChanged(List<Tache> tacheWithSurfaceAndCategoryTaches) {
+                        if (tacheWithSurfaceAndCategoryTaches.isEmpty()){
+                            noData2.setText("No Cleanning Task Found");
+                            noData2.setVisibility(View.VISIBLE);
+                            nestedScrollView.setVisibility(View.GONE);
+
+                        }else{
+                            noData2.setVisibility(View.GONE);
+                            nestedScrollView.setVisibility(View.VISIBLE);
                         adaptertache.submitList(tacheWithSurfaceAndCategoryTaches);
                         adaptertache.notifyDataSetChanged();
-                        titre.setText("All Categories");
+                        titre.setText("All Categories");}
 
 
 
@@ -259,10 +326,19 @@ public class Cleaning extends Fragment {
                 mViewModel.getTacheById(categorie_tache.getName()).observe(getActivity(), new Observer<List<Tache>>() {
                     @Override
                     public void onChanged(List<Tache> tacheWithSurfaceAndCategoryTaches) {
+                        if (tacheWithSurfaceAndCategoryTaches.isEmpty()){
+                            noData2.setText("No Cleanning Task Found");
+                            noData2.setVisibility(View.VISIBLE);
+                            nestedScrollView.setVisibility(View.GONE);
+
+                        }else{
+                            noData2.setVisibility(View.GONE);
+                            nestedScrollView.setVisibility(View.VISIBLE);
+
                         titre.setText(categorie_tache.getName());
                         adaptertache.submitList(tacheWithSurfaceAndCategoryTaches);
                         adaptertache.notifyDataSetChanged();
-                    }
+                    }}
                 });
             }
 
@@ -278,10 +354,17 @@ public class Cleaning extends Fragment {
         mViewModel.getAllTache().observe(this, new Observer<List<Tache>>() {
             @Override
             public void onChanged(List<Tache> taches) {
+                if (taches.isEmpty()){
+                    noData2.setVisibility(View.VISIBLE);
+                    nestedScrollView.setVisibility(View.GONE);
+
+                }else{
+                    noData2.setVisibility(View.GONE);
+                    nestedScrollView.setVisibility(View.VISIBLE);
                 adaptertache.submitList(taches);
                 adaptertache.notifyDataSetChanged();
 
-            }
+            }}
         });
 
 
@@ -295,22 +378,7 @@ public class Cleaning extends Fragment {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                mViewModel.delete(adaptertache.getTacheAt(viewHolder.getAdapterPosition()));
-
-                final Handler handler = new Handler();
-
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        StaticUse.SaveHistory(lifecycleOwner,deviceHistoryViewModel,getActivity(),"Cleaning and disinfection",
-                                "has deleted a Task",
-                                "",0,"Task Cleaning");
-                        handler.removeCallbacksAndMessages(null);
-                    }
-                }, 500);
-
-
-
+                AskOptionPro(getContext(),adaptertache.getTacheAt(viewHolder.getAdapterPosition()),getActivity());
 
                 Toast.makeText(getActivity(), "Task delete", Toast.LENGTH_SHORT).show();
             }
@@ -323,10 +391,7 @@ public class Cleaning extends Fragment {
         adaptertache.setOnItemClickListener(new TacheAdapter.OnItemClickLisnter() {
             @Override
             public void onItemClick(Tache tache) {
-                if (selectedTasks.contains(tache))
-                   selectedTasks.remove(tache);
-                else
-                   selectedTasks.add(tache);
+
 
             }
 
@@ -362,7 +427,7 @@ public class Cleaning extends Fragment {
                             @Override
                             public void run() {
 
-                                StaticUse.SaveHistory(getActivity(), deviceHistoryViewModel, getActivity(), "Cleaning Task",
+                                StaticUse.SaveHistory(getActivity(), deviceHistoryViewModel, getActivity(), "Cleaning and Disinfection",
                                         "has updated a cleaning task assigned to"+fullName, null, 0, "Cleaning Task");
 
 
@@ -375,6 +440,24 @@ public class Cleaning extends Fragment {
 
             }
 
+            @Override
+            public void Select(View v, long position, long id) {
+                if(position == 0){
+                    counter = counter -1;
+                    listsOfDeletableItems.remove(id);
+                   // count.setText(""+counter+" Selected");
+                    if(counter == 0){
+                      //  count.setVisibility(View.INVISIBLE);
+                    }
+                }
+                else {
+                    counter++;
+                    listsOfDeletableItems.add(id);
+                  //  count.setVisibility(View.VISIBLE);
+                    //count.setText(""+counter+" Selected");
+                }
+
+            }
         });
 
 
@@ -383,11 +466,33 @@ public class Cleaning extends Fragment {
 
             @Override
             public void onClick(View v) {
-                for (Tache t : selectedTasks) {
-                    t.setStatus(true);
-                    mViewModel.update(t);
-                    adaptertache.notifyDataSetChanged();
+                counterSaver=counter;
+                for (Long l : listsOfDeletableItems) {
+                    mViewModel.getTacheByIdtask(l).observe(getActivity(), new Observer<List<Tache>>() {
+                        @Override
+                        public void onChanged(List<Tache> taches) {
+                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+                            taches.get(0).setValidationDate(new Date());
+                            taches.get(0).setDue(new Date());
+                            taches.get(0).setIdtask(l);
+                            taches.get(0).setStatus(true);
+
+                            mViewModel.update(taches.get(0));
+                        }
+                    });
+
+                    counter--;
+
                 }
+                String text;
+                if (counterSaver == 1) {
+                    text = ""+counterSaver+" item deleted successfully";
+                } else{
+                    text = ""+counterSaver+" items deleted successfully";
+                }
+               // count.setVisibility(View.INVISIBLE);
+
 
             }
         });
@@ -548,6 +653,10 @@ public class Cleaning extends Fragment {
         addTaskBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(idChosen==0 || fullName.equals("")){
+                    Toast.makeText(getActivity(), "Please assign a User", Toast.LENGTH_SHORT).show();
+                    return;
+                }else{
 
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                 Tache tache = new Tache();
@@ -557,12 +666,15 @@ public class Cleaning extends Fragment {
                 } catch (Exception e) {
                 e.printStackTrace();
             }
-
+tache.setDue(new Date());
+                tache.setValidationDate(new Date());
                 tache.setCreatedAt(new Date());
                 tache.setUser(fullName);
                 tache.setIdCategorie(idCategorie);
                 tache.setIdSurface(idSurface);
                 tache.setStatus(false);
+                tache.setOwnerName(StaticUse.loadSession(getActivity()).getFirstName());
+
 
                 mViewModel.insert(tache);
                 input1.setVisibility(View.GONE);
@@ -575,7 +687,7 @@ public class Cleaning extends Fragment {
                     @Override
                     public void run() {
 
-                        StaticUse.SaveHistory(getActivity(), deviceHistoryViewModel, getActivity(), "Cleaning Task",
+                        StaticUse.SaveHistory(getActivity(), deviceHistoryViewModel, getActivity(), "Cleaning and Disinfection",
                                 "has created a new cleaning task assigned to"+fullName, null, 0, "Cleaning Task");
 
 
@@ -585,7 +697,7 @@ public class Cleaning extends Fragment {
 
 
 
-            }
+            }}
         });
 // cancel ajout
         canelAdd.setOnClickListener(new View.OnClickListener() {
@@ -703,6 +815,12 @@ public class Cleaning extends Fragment {
 
 
 
+    public static void dismissMessage() {
+        alerti.dismiss();
+    }
+
+
+
 
     private void showDateTimeDialog (Button date_time_in) {
         final Calendar calendar=Calendar.getInstance();
@@ -733,6 +851,43 @@ public class Cleaning extends Fragment {
 
         new DatePickerDialog(getActivity(),dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
 
+    }
+
+    public static AlertDialog AskOptionPro(final Context context, final Tache account, final LifecycleOwner activity)
+    {
+        final AlertDialog.Builder alerto = new AlertDialog.Builder(context);
+        LayoutInflater layoutInflatero =  (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogueViewo =layoutInflatero.inflate(R.layout.delete_dialogue,null);
+        alerto.setView(dialogueViewo);
+        Button delete,cancelo;
+        alerto.setTitle("Delete Cleaning Task N° "+account.getIdtask());
+        delete = dialogueViewo.findViewById(R.id.delete);
+        cancelo= dialogueViewo.findViewById(R.id.cancel);
+        final AlertDialog alertio =alerto.show();
+        cancelo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertio.dismiss();
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.delete(account);
+
+
+                StaticUse.SaveHistory(activity,deviceHistoryViewModel,(Activity)context,"Cleaning and Disinfection",
+                        "has deleted a cleaning task ",
+                        "",account.getIdtask(),"");
+
+
+                alertio.dismiss();
+                Toast.makeText(context, "The cleaning task N°"+account.getIdtask()+" has been deleted", Toast.LENGTH_SHORT).show();
+                alertio.dismiss();
+            }
+        });
+
+        return alertio;
     }
 
 

@@ -50,6 +50,9 @@ public class ListPlanningCleanViewModel extends AndroidViewModel {
     }
     public  LiveData<List<Tache>>getTacheById(String id){
         return  tacheById=repositorytache.getTacheByCateg(id); }
+
+    public  LiveData<List<Tache>>getTacheByIdtask(long id){
+        return  tacheById=repositorytache.getTacheById(id); }
     public  LiveData<List<Tache>>getTacheByStatut(Boolean statut){
         return  tacheById=repositorytache.getTacheByStatut(statut);
 
